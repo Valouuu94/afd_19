@@ -1,12 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { TableComponent } from 'src/app/components/table/table.component';
-import { StoreService } from 'src/app/services/store.service';
-import { ExportExcelComponent } from 'src/app/components/export-excel/export-excel.component';
-import { ExportExcelComponent as ExportExcelComponent_1 } from '../../components/export-excel/export-excel.component';
-import { TableComponent as TableComponent_1 } from '../../components/table/table.component';
+import { ExportExcelComponent } from '../../components/export-excel/export-excel.component';
+import { TableComponent } from '../../components/table/table.component';
 import { NgIf, NgClass } from '@angular/common';
 import { ContentComponent } from '../../components/content/content.component';
+import { StoreService } from '../../services/store.service';
+
 
 declare const app: any;
 declare const lang: any;
@@ -15,7 +14,7 @@ declare const lang: any;
     selector: 'app-historique-dossiers-raj',
     templateUrl: './historique-dossiers-raj.component.html',
     standalone: true,
-    imports: [ContentComponent, NgIf, NgClass, TableComponent_1, ExportExcelComponent_1]
+    imports: [ContentComponent, NgIf, NgClass, TableComponent, ExportExcelComponent]
 })
 export class HistoriqueDossiersRajComponent implements OnInit {
 

@@ -1,33 +1,22 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BtnComponent } from 'src/app/components/btn/btn.component';
-import { ControlesComponent } from 'src/app/components/controles/controles.component';
-import { InfosReglementComponent } from 'src/app/components/infos-reglement/infos-reglement.component';
-import { InfosVersementComponent } from 'src/app/components/infos-versement/infos-versement.component';
-import { TableComponent } from 'src/app/components/table/table.component';
-import { StoreService } from 'src/app/services/store.service';
-import { NotificationComponent } from 'src/app/components/notification/notification.component';
-import { InfosDossierComponent } from 'src/app/components/infos-dossier/infos-dossier.component';
+import { StoreService } from '../../services/store.service';
 import { Location, NgIf, NgClass, NgFor } from '@angular/common';
-import { InfosAvanceComponent } from 'src/app/components/infos-avance/infos-avance.component';
-import { ExportPdfBanComponent } from 'src/app/components/export-pdf-ban/export-pdf-ban.component';
-import { ExportPdfControleComponent } from 'src/app/components/export-pdf-controle/export-pdf-controle.component';
-import { ModalComponent } from 'src/app/components/modal/modal.component';
-import { ModalComponent as ModalComponent_1 } from '../../components/modal/modal.component';
-import { ExportPdfControleComponent as ExportPdfControleComponent_1 } from '../../components/export-pdf-controle/export-pdf-controle.component';
-import { ExportPdfBanComponent as ExportPdfBanComponent_1 } from '../../components/export-pdf-ban/export-pdf-ban.component';
-import { NotificationComponent as NotificationComponent_1 } from '../../components/notification/notification.component';
-import { InfosReglementComponent as InfosReglementComponent_1 } from '../../components/infos-reglement/infos-reglement.component';
-import { InfosAvanceComponent as InfosAvanceComponent_1 } from '../../components/infos-avance/infos-avance.component';
-import { ControlesComponent as ControlesComponent_1 } from '../../components/controles/controles.component';
-import { TableComponent as TableComponent_1 } from '../../components/table/table.component';
-import { InfosVersementComponent as InfosVersementComponent_1 } from '../../components/infos-versement/infos-versement.component';
-import { InfosDossierComponent as InfosDossierComponent_1 } from '../../components/infos-dossier/infos-dossier.component';
+import { ModalComponent  } from '../../components/modal/modal.component';
+import { ExportPdfControleComponent  } from '../../components/export-pdf-controle/export-pdf-controle.component';
+import { ExportPdfBanComponent } from '../../components/export-pdf-ban/export-pdf-ban.component';
+import { NotificationComponent  } from '../../components/notification/notification.component';
+import { InfosReglementComponent  } from '../../components/infos-reglement/infos-reglement.component';
+import { InfosAvanceComponent  } from '../../components/infos-avance/infos-avance.component';
+import { ControlesComponent  } from '../../components/controles/controles.component';
+import { TableComponent  } from '../../components/table/table.component';
+import { InfosVersementComponent  } from '../../components/infos-versement/infos-versement.component';
+import { InfosDossierComponent  } from '../../components/infos-dossier/infos-dossier.component';
 import { SpinnerComponent } from '../../components/spinner/spinner.component';
 import { InfosContextComponent } from '../../components/infos-context/infos-context.component';
 import { CardComponent } from '../../components/card/card.component';
 import { ContentComponent } from '../../components/content/content.component';
-import { BtnComponent as BtnComponent_1 } from '../../components/btn/btn.component';
+import { BtnComponent  } from '../../components/btn/btn.component';
 import { BtnMenuComponent } from '../../components/btnMenu/btnMenu.component';
 import { FormsModule } from '@angular/forms';
 import { NavActionsComponent } from '../../components/nav-actions/nav-actions.component';
@@ -45,7 +34,9 @@ declare const refs: any;
     selector: 'app-reglement-controles',
     templateUrl: './reglement-controles.component.html',
     standalone: true,
-    imports: [NavActionsComponent, NgIf, FormsModule, BtnMenuComponent, BtnComponent_1, ContentComponent, NgClass, CardComponent, InfosContextComponent, SpinnerComponent, InfosDossierComponent_1, InfosVersementComponent_1, TableComponent_1, NgFor, ControlesComponent_1, InfosAvanceComponent_1, InfosReglementComponent_1, NotificationComponent_1, ExportPdfBanComponent_1, ExportPdfControleComponent_1, ModalComponent_1]
+    imports: [NavActionsComponent, NgIf, FormsModule, BtnMenuComponent, BtnComponent, ContentComponent, NgClass, CardComponent, InfosContextComponent, SpinnerComponent,
+         InfosDossierComponent, InfosVersementComponent, TableComponent, NgFor, ControlesComponent, InfosAvanceComponent, InfosReglementComponent, NotificationComponent, ExportPdfBanComponent, 
+         ExportPdfControleComponent, ModalComponent]
 })
 export class ReglementControlesComponent implements OnInit {
 

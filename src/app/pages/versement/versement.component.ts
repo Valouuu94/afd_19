@@ -1,24 +1,17 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AutreDeviseComponent } from 'src/app/components/autre-devise/autre-devise.component';
-import { BtnComponent } from 'src/app/components/btn/btn.component';
-import { InfosBeneficiaireComponent } from 'src/app/components/infos-beneficiaire/infos-beneficiaire.component';
-import { TeleportComponent } from 'src/app/components/teleport/teleport.component';
-import { StoreService } from 'src/app/services/store.service';
-import { NotificationComponent } from 'src/app/components/notification/notification.component';
-import { InfosDossierComponent } from 'src/app/components/infos-dossier/infos-dossier.component';
-import { SelectBeneficiaireComponent } from 'src/app/components/select-beneficiaire/select-beneficiaire.component';
-import { SelectBeneficiaireComponent as SelectBeneficiaireComponent_1 } from '../../components/select-beneficiaire/select-beneficiaire.component';
-import { InfosBeneficiaireComponent as InfosBeneficiaireComponent_1 } from '../../components/infos-beneficiaire/infos-beneficiaire.component';
-import { AutreDeviseComponent as AutreDeviseComponent_1 } from '../../components/autre-devise/autre-devise.component';
-import { TeleportComponent as TeleportComponent_1 } from '../../components/teleport/teleport.component';
-import { NotificationComponent as NotificationComponent_1 } from '../../components/notification/notification.component';
-import { InfosDossierComponent as InfosDossierComponent_1 } from '../../components/infos-dossier/infos-dossier.component';
+import { StoreService } from '../../services/store.service';
+import { SelectBeneficiaireComponent } from '../../components/select-beneficiaire/select-beneficiaire.component';
+import { InfosBeneficiaireComponent } from '../../components/infos-beneficiaire/infos-beneficiaire.component';
+import { AutreDeviseComponent } from '../../components/autre-devise/autre-devise.component';
+import { TeleportComponent } from '../../components/teleport/teleport.component';
+import { NotificationComponent } from '../../components/notification/notification.component';
+import { InfosDossierComponent } from '../../components/infos-dossier/infos-dossier.component';
 import { SpinnerComponent } from '../../components/spinner/spinner.component';
 import { InfosContextComponent } from '../../components/infos-context/infos-context.component';
 import { CardComponent } from '../../components/card/card.component';
 import { ContentComponent } from '../../components/content/content.component';
-import { BtnComponent as BtnComponent_1 } from '../../components/btn/btn.component';
+import { BtnComponent } from '../../components/btn/btn.component';
 import { BtnMenuComponent } from '../../components/btnMenu/btnMenu.component';
 import { NgIf, NgClass } from '@angular/common';
 import { NavActionsComponent } from '../../components/nav-actions/nav-actions.component';
@@ -34,7 +27,8 @@ declare const formFields: any;
     selector: 'app-versement',
     templateUrl: './versement.component.html',
     standalone: true,
-    imports: [NavActionsComponent, NgIf, BtnMenuComponent, BtnComponent_1, ContentComponent, NgClass, CardComponent, InfosContextComponent, SpinnerComponent, InfosDossierComponent_1, NotificationComponent_1, TeleportComponent_1, AutreDeviseComponent_1, InfosBeneficiaireComponent_1, SelectBeneficiaireComponent_1]
+    imports: [NavActionsComponent, NgIf, BtnMenuComponent, BtnComponent, ContentComponent, NgClass, CardComponent, InfosContextComponent, SpinnerComponent, InfosDossierComponent,
+		 NotificationComponent, TeleportComponent, AutreDeviseComponent, InfosBeneficiaireComponent, SelectBeneficiaireComponent]
 })
 export class VersementComponent implements OnInit {
 

@@ -1,17 +1,16 @@
 import { Location, NgIf, NgFor, NgClass } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BtnComponent } from 'src/app/components/btn/btn.component';
-import { ModalComponent } from 'src/app/components/modal/modal.component';
-import { StoreService } from 'src/app/services/store.service';
-import { ModalComponent as ModalComponent_1 } from '../../components/modal/modal.component';
+import { ModalComponent } from '../../components/modal/modal.component';
 import { FormsModule } from '@angular/forms';
 import { SpinnerComponent } from '../../components/spinner/spinner.component';
 import { InfosContextComponent } from '../../components/infos-context/infos-context.component';
 import { CardComponent } from '../../components/card/card.component';
 import { ContentComponent } from '../../components/content/content.component';
-import { BtnComponent as BtnComponent_1 } from '../../components/btn/btn.component';
+import { BtnComponent } from '../../components/btn/btn.component';
 import { NavActionsComponent } from '../../components/nav-actions/nav-actions.component';
+import { StoreService } from '../../services/store.service';
+
 
 declare const app: any;
 declare const lang: any;
@@ -22,7 +21,7 @@ declare const actionsAnomalie: any;
     selector: 'app-anomalie',
     templateUrl: './anomalie.component.html',
     standalone: true,
-    imports: [NavActionsComponent, NgIf, BtnComponent_1, ContentComponent, CardComponent, InfosContextComponent, SpinnerComponent, FormsModule, NgFor, NgClass, ModalComponent_1]
+    imports: [NavActionsComponent, NgIf, BtnComponent, ContentComponent, CardComponent, InfosContextComponent, SpinnerComponent, FormsModule, NgFor, NgClass, ModalComponent]
 })
 export class AnomalieComponent implements OnInit {
 

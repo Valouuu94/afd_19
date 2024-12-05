@@ -1,25 +1,19 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BtnComponent } from 'src/app/components/btn/btn.component';
-import { ModalComponent } from 'src/app/components/modal/modal.component';
-import { TeleportComponent } from 'src/app/components/teleport/teleport.component';
-import { TypeAvanceComponent } from 'src/app/components/type-avance/type-avance.component';
-import { TableComponent } from 'src/app/components/table/table.component';
-import { StoreService } from 'src/app/services/store.service';
-import { InfosBeneficiaireComponent } from 'src/app/components/infos-beneficiaire/infos-beneficiaire.component';
-import { SelectBeneficiaireComponent } from 'src/app/components/select-beneficiaire/select-beneficiaire.component';
-import { InfosContextComponent } from 'src/app/components/infos-context/infos-context.component';
-import { ModalComponent as ModalComponent_1 } from '../../components/modal/modal.component';
-import { SelectBeneficiaireComponent as SelectBeneficiaireComponent_1 } from '../../components/select-beneficiaire/select-beneficiaire.component';
-import { InfosBeneficiaireComponent as InfosBeneficiaireComponent_1 } from '../../components/infos-beneficiaire/infos-beneficiaire.component';
-import { TableComponent as TableComponent_1 } from '../../components/table/table.component';
-import { TeleportComponent as TeleportComponent_1 } from '../../components/teleport/teleport.component';
-import { InfosContextComponent as InfosContextComponent_1 } from '../../components/infos-context/infos-context.component';
+import { ModalComponent  } from '../../components/modal/modal.component';
+import { SelectBeneficiaireComponent  } from '../../components/select-beneficiaire/select-beneficiaire.component';
+import { InfosBeneficiaireComponent  } from '../../components/infos-beneficiaire/infos-beneficiaire.component';
+import { TableComponent  } from '../../components/table/table.component';
+import { TeleportComponent  } from '../../components/teleport/teleport.component';
+import { InfosContextComponent } from '../../components/infos-context/infos-context.component';
 import { CardComponent } from '../../components/card/card.component';
 import { ContentComponent } from '../../components/content/content.component';
-import { BtnComponent as BtnComponent_1 } from '../../components/btn/btn.component';
+import { BtnComponent } from '../../components/btn/btn.component';
 import { NavActionsComponent } from '../../components/nav-actions/nav-actions.component';
 import { NgIf, NgClass, NgFor } from '@angular/common';
+import { TypeAvanceComponent } from '../../components/type-avance/type-avance.component';
+import { StoreService } from '../../services/store.service';
+
 
 declare const app: any;
 declare const appFormio: any;
@@ -33,7 +27,8 @@ declare const refs: any;
     selector: 'app-avance',
     templateUrl: './avance.component.html',
     standalone: true,
-    imports: [NgIf, NavActionsComponent, BtnComponent_1, ContentComponent, NgClass, CardComponent, InfosContextComponent_1, TeleportComponent_1, TableComponent_1, InfosBeneficiaireComponent_1, SelectBeneficiaireComponent_1, NgFor, ModalComponent_1]
+    imports: [NgIf, NavActionsComponent, BtnComponent, ContentComponent, NgClass, CardComponent, InfosContextComponent, TeleportComponent, TableComponent, InfosBeneficiaireComponent,
+		 SelectBeneficiaireComponent, NgFor, ModalComponent]
 })
 export class AvanceComponent implements OnInit {
 

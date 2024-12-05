@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { StoreService } from 'src/app/services/store.service';
 import { NgFor } from '@angular/common';
 import { ContentComponent } from '../../components/content/content.component';
+import { StoreService } from '../../services/store.service';
+
 
 declare const app: any;
 declare const lang: any;

@@ -1,9 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ModalComponent } from 'src/app/components/modal/modal.component';
-import { TableComponent } from 'src/app/components/table/table.component';
-import { ModalComponent as ModalComponent_1 } from '../../components/modal/modal.component';
-import { TableComponent as TableComponent_1 } from '../../components/table/table.component';
+import { ModalComponent  } from '../../components/modal/modal.component';
+import { TableComponent  } from '../../components/table/table.component';
 import { ContentComponent } from '../../components/content/content.component';
 import { NgIf } from '@angular/common';
 
@@ -15,7 +13,7 @@ declare const lang: any;
     selector: 'app-refs',
     templateUrl: './refs.component.html',
     standalone: true,
-    imports: [NgIf, ContentComponent, TableComponent_1, ModalComponent_1]
+    imports: [NgIf, ContentComponent, TableComponent, ModalComponent]
 })
 export class RefsComponent implements OnInit {
 

@@ -1,9 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TableComponent } from 'src/app/components/table/table.component';
-import { StoreService } from 'src/app/services/store.service';
+import { StoreService } from '../../services/store.service';
 import { ModalComponent } from '../../components/modal/modal.component';
-import { TableComponent as TableComponent_1 } from '../../components/table/table.component';
+import { TableComponent } from '../../components/table/table.component';
 import { CommentsComponent } from '../../components/comments/comments.component';
 import { SpinnerComponent } from '../../components/spinner/spinner.component';
 import { CardComponent } from '../../components/card/card.component';
@@ -19,7 +18,7 @@ declare const lang: any;
     selector: 'app-projets',
     templateUrl: './projets.component.html',
     standalone: true,
-    imports: [NgIf, NavActionsComponent, BtnComponent, ContentComponent, CardComponent, NgClass, SpinnerComponent, CommentsComponent, TableComponent_1, ModalComponent]
+    imports: [NgIf, NavActionsComponent, BtnComponent, ContentComponent, CardComponent, NgClass, SpinnerComponent, CommentsComponent, TableComponent, ModalComponent]
 })
 export class ProjetsComponent implements OnInit {
 

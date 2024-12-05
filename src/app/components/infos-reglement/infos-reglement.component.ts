@@ -1,30 +1,21 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
-import { StoreService } from 'src/app/services/store.service';
+import { StoreService } from '../../services/store.service';
 import { InfosBeneficiaireComponent } from '../infos-beneficiaire/infos-beneficiaire.component';
 import { TeleportComponent } from '../teleport/teleport.component';
-import { TableComponent } from 'src/app/components/table/table.component';
-import { InfosAvanceComponent } from 'src/app/components/infos-avance/infos-avance.component';
-import { InfosCoordonneBancaireComponent } from 'src/app/components/infos-coordonnee-bancaire/infos-coordonnee-bancaire.component';
-import { ActivatedRoute, Router } from '@angular/router';
-import { InfosConcoursComponent } from 'src/app/components/infos-concours/infos-concours.component';
-import { SelectBeneficiaireComponent } from 'src/app/components/select-beneficiaire/select-beneficiaire.component';
-import { RubriquesComponent } from 'src/app/components/rubriques/rubriques.component';
-import { DocumentContractuelComponent } from 'src/app/pages/documentContractuel/documentContractuel.component';
-import { AvanceComponent } from 'src/app/pages/avance/avance.component';
-import { InfosDcComponent } from 'src/app/components/infos-dc/infos-dc.component';
-import { ModalComponent } from 'src/app/components/modal/modal.component';
-import { InfosDcComponent as InfosDcComponent_1 } from '../infos-dc/infos-dc.component';
-import { RubriquesComponent as RubriquesComponent_1 } from '../rubriques/rubriques.component';
-import { InfosCoordonneBancaireComponent as InfosCoordonneBancaireComponent_1 } from '../infos-coordonnee-bancaire/infos-coordonnee-bancaire.component';
-import { InfosConcoursComponent as InfosConcoursComponent_1 } from '../infos-concours/infos-concours.component';
-import { TableComponent as TableComponent_1 } from '../table/table.component';
-import { InfosAvanceComponent as InfosAvanceComponent_1 } from '../infos-avance/infos-avance.component';
+import { InfosDcComponent } from '../infos-dc/infos-dc.component';
+import { RubriquesComponent  } from '../rubriques/rubriques.component';
+import { InfosCoordonneBancaireComponent  } from '../infos-coordonnee-bancaire/infos-coordonnee-bancaire.component';
+import { InfosConcoursComponent } from '../infos-concours/infos-concours.component';
+import { TableComponent } from '../table/table.component';
+import { InfosAvanceComponent } from '../infos-avance/infos-avance.component';
 import { FormsModule } from '@angular/forms';
-import { AvanceComponent as AvanceComponent_1 } from '../../pages/avance/avance.component';
-import { DocumentContractuelComponent as DocumentContractuelComponent_1 } from '../../pages/documentContractuel/documentContractuel.component';
+import { AvanceComponent } from '../../pages/avance/avance.component';
+import { DocumentContractuelComponent } from '../../pages/documentContractuel/documentContractuel.component';
 import { SpinnerComponent } from '../spinner/spinner.component';
-import { ModalComponent as ModalComponent_1 } from '../modal/modal.component';
+import { ModalComponent } from '../modal/modal.component';
 import { NgIf, NgClass, NgFor } from '@angular/common';
+import { SelectBeneficiaireComponent } from '../select-beneficiaire/select-beneficiaire.component';
+import { Router, ActivatedRoute } from '@angular/router';
 
 declare const app: any;
 declare const appFormio: any;
@@ -36,7 +27,8 @@ declare const lang: any;
     selector: 'app-infos-reglement',
     templateUrl: './infos-reglement.component.html',
     standalone: true,
-    imports: [NgIf, ModalComponent_1, NgClass, NgFor, SpinnerComponent, DocumentContractuelComponent_1, AvanceComponent_1, TeleportComponent, FormsModule, InfosBeneficiaireComponent, InfosAvanceComponent_1, TableComponent_1, InfosConcoursComponent_1, InfosCoordonneBancaireComponent_1, RubriquesComponent_1, InfosDcComponent_1]
+    imports: [NgIf, ModalComponent, NgClass, NgFor, SpinnerComponent, DocumentContractuelComponent, AvanceComponent, TeleportComponent, FormsModule, InfosBeneficiaireComponent,
+		 InfosAvanceComponent, TableComponent, InfosConcoursComponent, InfosCoordonneBancaireComponent, RubriquesComponent, InfosDcComponent]
 })
 export class InfosReglementComponent implements OnInit {
 

@@ -1,10 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { TableComponent } from 'src/app/components/table/table.component';
-import { StoreService } from 'src/app/services/store.service';
-import { ModalComponent } from 'src/app/components/modal/modal.component';
-import { ModalComponent as ModalComponent_1 } from '../../components/modal/modal.component';
-import { TableComponent as TableComponent_1 } from '../../components/table/table.component';
+import { StoreService } from '../../services/store.service';
+import { ModalComponent } from '../../components/modal/modal.component';
+import { TableComponent } from '../../components/table/table.component';
 import { ContentComponent } from '../../components/content/content.component';
 
 declare const app: any;
@@ -16,7 +14,7 @@ declare const crossVars: any;
     selector: 'app-admin-taches',
     templateUrl: './admin-taches.component.html',
     standalone: true,
-    imports: [ContentComponent, TableComponent_1, ModalComponent_1]
+    imports: [ContentComponent, TableComponent, ModalComponent]
 })
 export class AdminTachesComponent implements OnInit {
 

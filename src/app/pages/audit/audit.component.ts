@@ -1,8 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { BtnComponent } from 'src/app/components/btn/btn.component';
-import { ExportExcelComponent } from 'src/app/components/export-excel/export-excel.component';
-import { ExportExcelComponent as ExportExcelComponent_1 } from '../../components/export-excel/export-excel.component';
-import { BtnComponent as BtnComponent_1 } from '../../components/btn/btn.component';
+import { ExportExcelComponent } from '../../components/export-excel/export-excel.component';
+import { BtnComponent } from '../../components/btn/btn.component';
 import { SpinnerComponent } from '../../components/spinner/spinner.component';
 import { NgIf } from '@angular/common';
 import { ContentComponent } from '../../components/content/content.component';
@@ -16,7 +14,7 @@ declare const lang: any;
     selector: 'app-audit',
     templateUrl: './audit.component.html',
     standalone: true,
-    imports: [ContentComponent, NgIf, SpinnerComponent, BtnComponent_1, ExportExcelComponent_1]
+    imports: [ContentComponent, NgIf, SpinnerComponent, BtnComponent, ExportExcelComponent]
 })
 export class AuditComponent implements OnInit {
 

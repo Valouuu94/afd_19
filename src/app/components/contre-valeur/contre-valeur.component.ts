@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { NgIf } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 declare const app: any;
 declare const lang: any;

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { StoreService } from 'src/app/services/store.service';
+import { StoreService } from '../../services/store.service';
 import { NgFor, NgClass, NgIf } from '@angular/common';
 
 declare const app: any;

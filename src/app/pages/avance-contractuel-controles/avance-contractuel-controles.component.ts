@@ -1,21 +1,17 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BtnComponent } from 'src/app/components/btn/btn.component';
-import { ControlesComponent } from 'src/app/components/controles/controles.component';
-import { TableComponent } from 'src/app/components/table/table.component';
-import { StoreService } from 'src/app/services/store.service';
-import { NotificationComponent } from 'src/app/components/notification/notification.component';
-import { InfosDossierComponent } from 'src/app/components/infos-dossier/infos-dossier.component';
 import { Location, NgIf, NgFor } from '@angular/common';
-import { NotificationComponent as NotificationComponent_1 } from '../../components/notification/notification.component';
-import { TableComponent as TableComponent_1 } from '../../components/table/table.component';
-import { ControlesComponent as ControlesComponent_1 } from '../../components/controles/controles.component';
+import { NotificationComponent } from '../../components/notification/notification.component';
+import { TableComponent } from '../../components/table/table.component';
+import { ControlesComponent } from '../../components/controles/controles.component';
 import { SpinnerComponent } from '../../components/spinner/spinner.component';
 import { InfosContextComponent } from '../../components/infos-context/infos-context.component';
 import { CardComponent } from '../../components/card/card.component';
 import { ContentComponent } from '../../components/content/content.component';
-import { BtnComponent as BtnComponent_1 } from '../../components/btn/btn.component';
+import { BtnComponent } from '../../components/btn/btn.component';
 import { NavActionsComponent } from '../../components/nav-actions/nav-actions.component';
+import { InfosDossierComponent } from '../../components/infos-dossier/infos-dossier.component';
+import { StoreService } from '../../services/store.service';
 
 declare const app: any;
 declare const urls: any;
@@ -26,7 +22,7 @@ declare const $: any;
     selector: 'app-avance-contractuel-controles',
     templateUrl: './avance-contractuel-controles.component.html',
     standalone: true,
-    imports: [NavActionsComponent, NgIf, BtnComponent_1, ContentComponent, CardComponent, InfosContextComponent, SpinnerComponent, NgFor, ControlesComponent_1, TableComponent_1, NotificationComponent_1]
+    imports: [NavActionsComponent, NgIf, BtnComponent, ContentComponent, CardComponent, InfosContextComponent, SpinnerComponent, NgFor, ControlesComponent, TableComponent, NotificationComponent]
 })
 export class AvanceContractuelControlesComponent implements OnInit {
 

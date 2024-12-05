@@ -1,16 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { ModalComponent } from 'src/app/components/modal/modal.component';
-import { StoreService } from 'src/app/services/store.service';
-import { ExportExcelComponent } from 'src/app/components/export-excel/export-excel.component';
-import { TeleportComponent } from 'src/app/components/teleport/teleport.component';
-import { TableComponent } from 'src/app/components/table/table.component';
+import { StoreService } from '../../services/store.service';
 import { FormsModule } from '@angular/forms';
-import { TeleportComponent as TeleportComponent_1 } from '../../components/teleport/teleport.component';
-import { ExportExcelComponent as ExportExcelComponent_1 } from '../../components/export-excel/export-excel.component';
-import { TableComponent as TableComponent_1 } from '../../components/table/table.component';
+import { TeleportComponent  } from '../../components/teleport/teleport.component';
+import { ExportExcelComponent  } from '../../components/export-excel/export-excel.component';
+import { TableComponent  } from '../../components/table/table.component';
 import { SpinnerComponent } from '../../components/spinner/spinner.component';
-import { ModalComponent as ModalComponent_1 } from '../../components/modal/modal.component';
+import { ModalComponent } from '../../components/modal/modal.component';
 import { CardComponent } from '../../components/card/card.component';
 import { NgFor, NgIf } from '@angular/common';
 import { ContentComponent } from '../../components/content/content.component';
@@ -24,7 +20,7 @@ declare const lang: any;
     selector: 'app-reporting',
     templateUrl: './reporting.component.html',
     standalone: true,
-    imports: [ContentComponent, NgFor, CardComponent, ModalComponent_1, NgIf, SpinnerComponent, TableComponent_1, ExportExcelComponent_1, TeleportComponent_1, FormsModule]
+    imports: [ContentComponent, NgFor, CardComponent, ModalComponent, NgIf, SpinnerComponent, TableComponent, ExportExcelComponent, TeleportComponent, FormsModule]
 })
 export class ReportingComponent implements OnInit {
 

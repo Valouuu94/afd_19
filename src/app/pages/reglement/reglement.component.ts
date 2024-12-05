@@ -1,40 +1,26 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BtnComponent } from 'src/app/components/btn/btn.component';
-import { InfosAvanceComponent } from 'src/app/components/infos-avance/infos-avance.component';
-import { InfosBeneficiaireComponent } from 'src/app/components/infos-beneficiaire/infos-beneficiaire.component';
-import { InfosCoordonneBancaireComponent } from 'src/app/components/infos-coordonnee-bancaire/infos-coordonnee-bancaire.component';
-import { SelectBeneficiaireComponent } from 'src/app/components/select-beneficiaire/select-beneficiaire.component';
-import { InfosContextComponent } from 'src/app/components/infos-context/infos-context.component';
-import { InfosVersementComponent } from 'src/app/components/infos-versement/infos-versement.component';
-import { ModalComponent } from 'src/app/components/modal/modal.component';
-import { TableComponent } from 'src/app/components/table/table.component';
-import { TeleportComponent } from 'src/app/components/teleport/teleport.component';
-import { StoreService } from 'src/app/services/store.service';
-import { NotificationComponent } from 'src/app/components/notification/notification.component';
-import { InfosDossierComponent } from 'src/app/components/infos-dossier/infos-dossier.component';
-import { RubriquesComponent } from 'src/app/components/rubriques/rubriques.component';
-import { InfosDcComponent } from 'src/app/components/infos-dc/infos-dc.component';
-import { InfosCoordonneBancaireComponent as InfosCoordonneBancaireComponent_1 } from '../../components/infos-coordonnee-bancaire/infos-coordonnee-bancaire.component';
-import { InfosAvanceComponent as InfosAvanceComponent_1 } from '../../components/infos-avance/infos-avance.component';
-import { SelectBeneficiaireComponent as SelectBeneficiaireComponent_1 } from '../../components/select-beneficiaire/select-beneficiaire.component';
-import { InfosDcComponent as InfosDcComponent_1 } from '../../components/infos-dc/infos-dc.component';
-import { TableComponent as TableComponent_1 } from '../../components/table/table.component';
-import { InfosBeneficiaireComponent as InfosBeneficiaireComponent_1 } from '../../components/infos-beneficiaire/infos-beneficiaire.component';
-import { RubriquesComponent as RubriquesComponent_1 } from '../../components/rubriques/rubriques.component';
-import { TeleportComponent as TeleportComponent_1 } from '../../components/teleport/teleport.component';
+import { StoreService } from '../../services/store.service';
+import { InfosCoordonneBancaireComponent } from '../../components/infos-coordonnee-bancaire/infos-coordonnee-bancaire.component';
+import { InfosAvanceComponent } from '../../components/infos-avance/infos-avance.component';
+import { SelectBeneficiaireComponent } from '../../components/select-beneficiaire/select-beneficiaire.component';
+import { InfosDcComponent } from '../../components/infos-dc/infos-dc.component';
+import { TableComponent  } from '../../components/table/table.component';
+import { InfosBeneficiaireComponent } from '../../components/infos-beneficiaire/infos-beneficiaire.component';
+import { RubriquesComponent } from '../../components/rubriques/rubriques.component';
+import { TeleportComponent } from '../../components/teleport/teleport.component';
 import { FormsModule } from '@angular/forms';
-import { ModalComponent as ModalComponent_1 } from '../../components/modal/modal.component';
-import { NotificationComponent as NotificationComponent_1 } from '../../components/notification/notification.component';
-import { InfosVersementComponent as InfosVersementComponent_1 } from '../../components/infos-versement/infos-versement.component';
-import { InfosDossierComponent as InfosDossierComponent_1 } from '../../components/infos-dossier/infos-dossier.component';
-import { InfosContextComponent as InfosContextComponent_1 } from '../../components/infos-context/infos-context.component';
+import { ModalComponent } from '../../components/modal/modal.component';
+import { NotificationComponent } from '../../components/notification/notification.component';
+import { InfosVersementComponent  } from '../../components/infos-versement/infos-versement.component';
+import { InfosDossierComponent  } from '../../components/infos-dossier/infos-dossier.component';
+import { InfosContextComponent  } from '../../components/infos-context/infos-context.component';
 import { CardComponent } from '../../components/card/card.component';
 import { SpinnerComponent } from '../../components/spinner/spinner.component';
 import { ContentComponent } from '../../components/content/content.component';
 import { BtnMenuComponent } from '../../components/btnMenu/btnMenu.component';
 import { NgIf, NgClass, NgFor } from '@angular/common';
-import { BtnComponent as BtnComponent_1 } from '../../components/btn/btn.component';
+import { BtnComponent } from '../../components/btn/btn.component';
 import { NavActionsComponent } from '../../components/nav-actions/nav-actions.component';
 
 declare const $: any;
@@ -51,7 +37,9 @@ declare const refs: any;
     selector: 'app-reglement',
     templateUrl: './reglement.component.html',
     standalone: true,
-    imports: [NavActionsComponent, BtnComponent_1, NgIf, BtnMenuComponent, ContentComponent, SpinnerComponent, NgClass, CardComponent, InfosContextComponent_1, InfosDossierComponent_1, InfosVersementComponent_1, NotificationComponent_1, ModalComponent_1, FormsModule, TeleportComponent_1, RubriquesComponent_1, InfosBeneficiaireComponent_1, TableComponent_1, InfosDcComponent_1, SelectBeneficiaireComponent_1, InfosAvanceComponent_1, InfosCoordonneBancaireComponent_1, NgFor]
+    imports: [NavActionsComponent, BtnComponent, NgIf, BtnMenuComponent, ContentComponent, SpinnerComponent, NgClass, CardComponent, InfosContextComponent,
+		 InfosDossierComponent, InfosVersementComponent, NotificationComponent, ModalComponent, FormsModule, TeleportComponent, RubriquesComponent, InfosBeneficiaireComponent,
+		  TableComponent, InfosDcComponent, SelectBeneficiaireComponent, InfosAvanceComponent, InfosCoordonneBancaireComponent, NgFor]
 })
 export class ReglementComponent implements OnInit {
 

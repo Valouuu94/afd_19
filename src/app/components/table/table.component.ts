@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { StoreService } from 'src/app/services/store.service';
+import { StoreService } from '../../services/store.service';
 import { FormatNumberInput } from '../../directives/format-number/formatNumberInput';
 import { SpinnerComponent } from '../spinner/spinner.component';
 import { FormsModule } from '@angular/forms';

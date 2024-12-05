@@ -1,27 +1,21 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { StoreService } from 'src/app/services/store.service';
-import { BtnComponent } from 'src/app/components/btn/btn.component';
-import { TeleportComponent } from 'src/app/components/teleport/teleport.component';
-import { TableComponent } from 'src/app/components/table/table.component';
+import { StoreService } from '../../services/store.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ModalComponent } from 'src/app/components/modal/modal.component';
-import { AutreDeviseComponent } from 'src/app/components/autre-devise/autre-devise.component';
-import { ContreValeurComponent } from 'src/app/components/contre-valeur/contre-valeur.component';
-import { InfosBeneficiaireComponent } from 'src/app/components/infos-beneficiaire/infos-beneficiaire.component';
-import { RubriquesComponent } from 'src/app/components/rubriques/rubriques.component';
-import { SelectBeneficiaireComponent } from 'src/app/components/select-beneficiaire/select-beneficiaire.component';
-import { ContreValeurComponent as ContreValeurComponent_1 } from '../../components/contre-valeur/contre-valeur.component';
-import { AutreDeviseComponent as AutreDeviseComponent_1 } from '../../components/autre-devise/autre-devise.component';
-import { RubriquesComponent as RubriquesComponent_1 } from '../../components/rubriques/rubriques.component';
-import { SelectBeneficiaireComponent as SelectBeneficiaireComponent_1 } from '../../components/select-beneficiaire/select-beneficiaire.component';
-import { InfosBeneficiaireComponent as InfosBeneficiaireComponent_1 } from '../../components/infos-beneficiaire/infos-beneficiaire.component';
-import { TeleportComponent as TeleportComponent_1 } from '../../components/teleport/teleport.component';
+import { ContreValeurComponent  } from '../../components/contre-valeur/contre-valeur.component';
+import { AutreDeviseComponent } from '../../components/autre-devise/autre-devise.component';
+import { RubriquesComponent } from '../../components/rubriques/rubriques.component';
+import { SelectBeneficiaireComponent } from '../../components/select-beneficiaire/select-beneficiaire.component';
+import { InfosBeneficiaireComponent } from '../../components/infos-beneficiaire/infos-beneficiaire.component';
+import { TeleportComponent } from '../../components/teleport/teleport.component';
 import { InfosContextComponent } from '../../components/infos-context/infos-context.component';
 import { CardComponent } from '../../components/card/card.component';
 import { ContentComponent } from '../../components/content/content.component';
-import { BtnComponent as BtnComponent_1 } from '../../components/btn/btn.component';
+import { BtnComponent } from '../../components/btn/btn.component';
 import { NavActionsComponent } from '../../components/nav-actions/nav-actions.component';
 import { NgIf, NgClass } from '@angular/common';
+import { TableComponent } from '../../components/table/table.component';
+import { ModalComponent } from '../../components/modal/modal.component';
+
 
 declare const app: any;
 declare const appFormio: any;
@@ -33,7 +27,8 @@ declare const lang: any;
     selector: 'app-documentContractuel',
     templateUrl: './documentContractuel.component.html',
     standalone: true,
-    imports: [NgIf, NavActionsComponent, BtnComponent_1, ContentComponent, NgClass, CardComponent, InfosContextComponent, TeleportComponent_1, InfosBeneficiaireComponent_1, SelectBeneficiaireComponent_1, RubriquesComponent_1, AutreDeviseComponent_1, ContreValeurComponent_1]
+    imports: [NgIf, NavActionsComponent, BtnComponent, ContentComponent, NgClass, CardComponent, InfosContextComponent, TeleportComponent,
+		InfosBeneficiaireComponent, SelectBeneficiaireComponent, RubriquesComponent, AutreDeviseComponent, ContreValeurComponent]
 })
 export class DocumentContractuelComponent implements OnInit {
 

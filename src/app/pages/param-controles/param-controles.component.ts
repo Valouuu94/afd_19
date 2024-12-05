@@ -1,11 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { async } from '@angular/core/testing';
-import { ModalComponent } from 'src/app/components/modal/modal.component';
-import { TableComponent } from 'src/app/components/table/table.component';
-import { StoreService } from 'src/app/services/store.service';
+import { StoreService } from '../../services/store.service';
 import { FormsModule } from '@angular/forms';
-import { ModalComponent as ModalComponent_1 } from '../../components/modal/modal.component';
-import { TableComponent as TableComponent_1 } from '../../components/table/table.component';
+import { ModalComponent } from '../../components/modal/modal.component';
+import { TableComponent } from '../../components/table/table.component';
 import { NgIf, NgClass, NgFor } from '@angular/common';
 import { ContentComponent } from '../../components/content/content.component';
 
@@ -19,7 +16,7 @@ declare const $: any;
     selector: 'app-param-controles',
     templateUrl: './param-controles.component.html',
     standalone: true,
-    imports: [ContentComponent, NgIf, NgClass, TableComponent_1, ModalComponent_1, FormsModule, NgFor]
+    imports: [ContentComponent, NgIf, NgClass, TableComponent, ModalComponent, FormsModule, NgFor]
 })
 export class ParamControlesComponent implements OnInit {
 

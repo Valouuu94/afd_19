@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { TableComponent } from 'src/app/components/table/table.component';
-import { StoreService } from 'src/app/services/store.service';
-import { TableComponent as TableComponent_1 } from '../../components/table/table.component';
+import { StoreService } from '../../services/store.service';
+import { TableComponent } from '../../components/table/table.component';
 import { ContentComponent } from '../../components/content/content.component';
 
 declare const app: any;
@@ -11,7 +10,7 @@ declare const lang: any;
     selector: 'app-admin-habilitations',
     templateUrl: './admin-habilitations.component.html',
     standalone: true,
-    imports: [ContentComponent, TableComponent_1]
+    imports: [ContentComponent, TableComponent]
 })
 export class AdminHabilitationsComponent implements OnInit {
 

@@ -1,16 +1,14 @@
 import { ViewChild } from '@angular/core';
-import { StoreService } from 'src/app/services/store.service';
+import { StoreService } from '../../services/store.service';
 import { AutreDeviseComponent } from '../autre-devise/autre-devise.component';
 import { InfosBeneficiaireComponent } from '../infos-beneficiaire/infos-beneficiaire.component';
 import { ModalComponent } from '../modal/modal.component';
 import { TeleportComponent } from '../teleport/teleport.component';
-import { TableComponent } from 'src/app/components/table/table.component';
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SelectBeneficiaireComponent } from 'src/app/components/select-beneficiaire/select-beneficiaire.component';
-import { SelectBeneficiaireComponent as SelectBeneficiaireComponent_1 } from '../select-beneficiaire/select-beneficiaire.component';
+import { SelectBeneficiaireComponent } from '../select-beneficiaire/select-beneficiaire.component';
 import { SpinnerComponent } from '../spinner/spinner.component';
-import { TableComponent as TableComponent_1 } from '../table/table.component';
+import { TableComponent } from '../table/table.component';
 import { NgIf, NgClass } from '@angular/common';
 
 declare const app: any;
@@ -23,7 +21,7 @@ declare const formFields: any;
     selector: 'app-infos-versement',
     templateUrl: './infos-versement.component.html',
     standalone: true,
-    imports: [NgIf, TableComponent_1, ModalComponent, SpinnerComponent, NgClass, TeleportComponent, InfosBeneficiaireComponent, AutreDeviseComponent, SelectBeneficiaireComponent_1]
+    imports: [NgIf, TableComponent, ModalComponent, SpinnerComponent, NgClass, TeleportComponent, InfosBeneficiaireComponent, AutreDeviseComponent, SelectBeneficiaireComponent]
 })
 export class InfosVersementComponent implements OnInit {
 

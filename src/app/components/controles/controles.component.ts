@@ -1,11 +1,10 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, QueryList, ViewChildren } from '@angular/core';
-import { StoreService } from 'src/app/services/store.service';
+import { StoreService } from '../../services/store.service';
 import { CommentsComponent } from '../comments/comments.component';
-import { skip } from 'rxjs';
-import { FormsModule } from '@angular/forms';
 import { BtnComponent } from '../btn/btn.component';
 import { BtnMenuComponent } from '../btnMenu/btnMenu.component';
 import { NgIf, NgFor, NgClass } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 declare const app: any;
 declare const refs: any;

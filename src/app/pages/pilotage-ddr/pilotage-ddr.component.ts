@@ -1,13 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ModalComponent } from 'src/app/components/modal/modal.component';
-import { TableComponent } from 'src/app/components/table/table.component';
-import { StoreService } from 'src/app/services/store.service';
-import { BtnComponent } from 'src/app/components/btn/btn.component';
-import { ExportExcelComponent } from 'src/app/components/export-excel/export-excel.component';
-import { ModalComponent as ModalComponent_1 } from '../../components/modal/modal.component';
-import { ExportExcelComponent as ExportExcelComponent_1 } from '../../components/export-excel/export-excel.component';
-import { TableComponent as TableComponent_1 } from '../../components/table/table.component';
-import { BtnComponent as BtnComponent_1 } from '../../components/btn/btn.component';
+import { StoreService } from '../../services/store.service';
+import { ModalComponent } from '../../components/modal/modal.component';
+import { ExportExcelComponent } from '../../components/export-excel/export-excel.component';
+import { TableComponent } from '../../components/table/table.component';
+import { BtnComponent } from '../../components/btn/btn.component';
 import { NgIf } from '@angular/common';
 import { ContentComponent } from '../../components/content/content.component';
 
@@ -21,7 +17,7 @@ declare const crossVars: any;
     selector: 'app-pilotage-ddr',
     templateUrl: './pilotage-ddr.component.html',
     standalone: true,
-    imports: [ContentComponent, NgIf, BtnComponent_1, TableComponent_1, ExportExcelComponent_1, ModalComponent_1]
+    imports: [ContentComponent, NgIf, BtnComponent, TableComponent, ExportExcelComponent, ModalComponent]
 })
 export class PilotageDDRComponent implements OnInit {
 

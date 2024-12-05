@@ -1,16 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ExportExcelComponent } from 'src/app/components/export-excel/export-excel.component';
-import { ModalComponent } from 'src/app/components/modal/modal.component';
-import { TableComponent } from 'src/app/components/table/table.component';
-import { StoreService } from 'src/app/services/store.service';
-import { TeleportComponent } from 'src/app/components/teleport/teleport.component';
 import { UtilisateurAdhesionComponent } from './utilisateur-adhesion/utilisateur-adhesion.component';
 import { NgIf } from '@angular/common';
-import { TeleportComponent as TeleportComponent_1 } from '../../components/teleport/teleport.component';
-import { ModalComponent as ModalComponent_1 } from '../../components/modal/modal.component';
-import { ExportExcelComponent as ExportExcelComponent_1 } from '../../components/export-excel/export-excel.component';
-import { TableComponent as TableComponent_1 } from '../../components/table/table.component';
+import { TeleportComponent } from '../../components/teleport/teleport.component';
+import { ModalComponent } from '../../components/modal/modal.component';
+import { ExportExcelComponent } from '../../components/export-excel/export-excel.component';
+import { TableComponent } from '../../components/table/table.component';
 import { ContentComponent } from '../../components/content/content.component';
+import { StoreService } from '../../services/store.service';
+
 
 declare const app: any;
 declare const lang: any;
@@ -21,7 +18,7 @@ declare const appFormio: any;
     selector: 'app-admin-utilisateurs',
     templateUrl: './admin-utilisateurs.component.html',
     standalone: true,
-    imports: [ContentComponent, TableComponent_1, ExportExcelComponent_1, ModalComponent_1, UtilisateurAdhesionComponent, TeleportComponent_1, NgIf]
+    imports: [ContentComponent, TableComponent, ExportExcelComponent, ModalComponent, UtilisateurAdhesionComponent, TeleportComponent, NgIf]
 })
 export class AdminUtilisateursComponent implements OnInit {
 

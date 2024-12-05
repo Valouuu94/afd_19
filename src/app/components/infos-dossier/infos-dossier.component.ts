@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { StoreService } from 'src/app/services/store.service';
+import { StoreService } from '../../services/store.service';
 import { ModalComponent } from '../modal/modal.component';
 import { NgIf, NgFor } from '@angular/common';
 

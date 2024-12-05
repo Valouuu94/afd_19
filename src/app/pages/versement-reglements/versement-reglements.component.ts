@@ -1,22 +1,16 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BtnComponent } from 'src/app/components/btn/btn.component';
-import { InfosReglementComponent } from 'src/app/components/infos-reglement/infos-reglement.component';
-import { InfosVersementComponent } from 'src/app/components/infos-versement/infos-versement.component';
-import { TableComponent } from 'src/app/components/table/table.component';
-import { StoreService } from 'src/app/services/store.service';
-import { NotificationComponent } from 'src/app/components/notification/notification.component';
-import { InfosDossierComponent } from 'src/app/components/infos-dossier/infos-dossier.component';
-import { NotificationComponent as NotificationComponent_1 } from '../../components/notification/notification.component';
-import { InfosReglementComponent as InfosReglementComponent_1 } from '../../components/infos-reglement/infos-reglement.component';
-import { TableComponent as TableComponent_1 } from '../../components/table/table.component';
-import { InfosVersementComponent as InfosVersementComponent_1 } from '../../components/infos-versement/infos-versement.component';
-import { InfosDossierComponent as InfosDossierComponent_1 } from '../../components/infos-dossier/infos-dossier.component';
+import { StoreService } from '../../services/store.service';
+import { NotificationComponent } from '../../components/notification/notification.component';
+import { InfosReglementComponent } from '../../components/infos-reglement/infos-reglement.component';
+import { TableComponent } from '../../components/table/table.component';
+import { InfosVersementComponent  } from '../../components/infos-versement/infos-versement.component';
+import { InfosDossierComponent  } from '../../components/infos-dossier/infos-dossier.component';
 import { SpinnerComponent } from '../../components/spinner/spinner.component';
 import { InfosContextComponent } from '../../components/infos-context/infos-context.component';
 import { CardComponent } from '../../components/card/card.component';
 import { ContentComponent } from '../../components/content/content.component';
-import { BtnComponent as BtnComponent_1 } from '../../components/btn/btn.component';
+import { BtnComponent  } from '../../components/btn/btn.component';
 import { BtnMenuComponent } from '../../components/btnMenu/btnMenu.component';
 import { NgIf, NgClass } from '@angular/common';
 import { NavActionsComponent } from '../../components/nav-actions/nav-actions.component';
@@ -29,7 +23,8 @@ declare const lang: any;
     selector: 'app-versement-reglements',
     templateUrl: './versement-reglements.component.html',
     standalone: true,
-    imports: [NavActionsComponent, NgIf, BtnMenuComponent, BtnComponent_1, ContentComponent, NgClass, CardComponent, InfosContextComponent, SpinnerComponent, InfosDossierComponent_1, InfosVersementComponent_1, TableComponent_1, InfosReglementComponent_1, NotificationComponent_1]
+    imports: [NavActionsComponent, NgIf, BtnMenuComponent, BtnComponent, ContentComponent, NgClass, CardComponent, InfosContextComponent, SpinnerComponent, InfosDossierComponent,
+		 InfosVersementComponent, TableComponent, InfosReglementComponent, NotificationComponent]
 })
 export class VersementReglementsComponent implements OnInit {
 

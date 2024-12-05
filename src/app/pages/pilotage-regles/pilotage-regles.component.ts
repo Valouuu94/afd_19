@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { StoreService } from 'src/app/services/store.service';
+import { StoreService } from '../../services/store.service';
 import { NgFor } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CardComponent } from '../../components/card/card.component';

@@ -1,11 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ExportExcelComponent } from 'src/app/components/export-excel/export-excel.component';
-import { ModalComponent } from 'src/app/components/modal/modal.component';
-import { TableComponent } from 'src/app/components/table/table.component';
-import { StoreService } from 'src/app/services/store.service';
-import { ModalComponent as ModalComponent_1 } from '../../components/modal/modal.component';
-import { ExportExcelComponent as ExportExcelComponent_1 } from '../../components/export-excel/export-excel.component';
-import { TableComponent as TableComponent_1 } from '../../components/table/table.component';
+import { StoreService } from '../../services/store.service';
+import { ModalComponent } from '../../components/modal/modal.component';
+import { ExportExcelComponent } from '../../components/export-excel/export-excel.component';
+import { TableComponent } from '../../components/table/table.component';
 import { NgFor, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ContentComponent } from '../../components/content/content.component';
@@ -18,7 +15,7 @@ declare const refs: any;
     selector: 'app-param-criteres',
     templateUrl: './param-criteres.component.html',
     standalone: true,
-    imports: [ContentComponent, FormsModule, NgFor, NgIf, TableComponent_1, ExportExcelComponent_1, ModalComponent_1]
+    imports: [ContentComponent, FormsModule, NgFor, NgIf, TableComponent, ExportExcelComponent, ModalComponent]
 })
 export class ParamCriteresComponent implements OnInit {
 

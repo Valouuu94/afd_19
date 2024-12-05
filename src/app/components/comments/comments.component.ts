@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { StoreService } from 'src/app/services/store.service';
 import { NgFor, NgIf, NgClass } from '@angular/common';
+import { StoreService } from '../../services/store.service';
 
 declare const app: any;
 declare const lang: any;

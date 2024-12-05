@@ -1,19 +1,15 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
-import { BtnComponent } from 'src/app/components/btn/btn.component';
-import { TeleportComponent } from 'src/app/components/teleport/teleport.component';
-import { StoreService } from 'src/app/services/store.service';
+import { StoreService } from '../../services/store.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { RubriquesComponent } from 'src/app/components/rubriques/rubriques.component';
-import { TableComponent } from 'src/app/components/table/table.component';
-import { RubriquesComponent as RubriquesComponent_1 } from '../../components/rubriques/rubriques.component';
-import { TableComponent as TableComponent_1 } from '../../components/table/table.component';
-import { TeleportComponent as TeleportComponent_1 } from '../../components/teleport/teleport.component';
+import { RubriquesComponent   } from '../../components/rubriques/rubriques.component';
+import { TableComponent   } from '../../components/table/table.component';
+import { TeleportComponent   } from '../../components/teleport/teleport.component';
 import { SpinnerComponent } from '../../components/spinner/spinner.component';
 import { InfosContextComponent } from '../../components/infos-context/infos-context.component';
 import { CardComponent } from '../../components/card/card.component';
 import { ContentComponent } from '../../components/content/content.component';
 import { NgIf, NgClass } from '@angular/common';
-import { BtnComponent as BtnComponent_1 } from '../../components/btn/btn.component';
+import { BtnComponent } from '../../components/btn/btn.component';
 import { NavActionsComponent } from '../../components/nav-actions/nav-actions.component';
 
 declare const app: any;
@@ -25,7 +21,7 @@ declare const lang: any;
     selector: 'app-justificatif-remboursement',
     templateUrl: './justificatif-remboursement.component.html',
     standalone: true,
-    imports: [NavActionsComponent, BtnComponent_1, NgIf, ContentComponent, CardComponent, InfosContextComponent, SpinnerComponent, NgClass, TeleportComponent_1, TableComponent_1, RubriquesComponent_1]
+    imports: [NavActionsComponent, BtnComponent, NgIf, ContentComponent, CardComponent, InfosContextComponent, SpinnerComponent, NgClass, TeleportComponent, TableComponent, RubriquesComponent]
 })
 export class JustificatifRemboursementComponent implements OnInit {
 
