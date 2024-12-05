@@ -1,0 +1,34 @@
+<app-content>
+    <div class="row">
+        <div class="col page-title mb-4">
+            {{ lang.nav.paramCriteresTitle }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col"></div>
+        <div class="col-auto form-group mt-2">
+            <label>{{ lang.paramCriteres.selectCriteria }} :</label>
+        </div>
+        <div class="col-auto form-group">
+            <select class="form-control" [(ngModel)]="critere" (change)="changeCritere()">
+                <ng-container *ngFor="let refCritere of refs['refParamCritere']">
+                    <ng-container *ngFor="let refType of refs['refParamTypeCritere']">
+                        <option *ngIf="refType.code == refCritere.type" [value]="refCritere.code">{{ refCritere.label }}</option>
+                    </ng-container>
+                </ng-container>
+            </select>
+        </div>
+        <div class="col"></div>
+    </div>
+    <app-table #tableParamCriteres type="paramCriteres" [parentItems]="paramCriteres" [itemsByPage]="10" [manualLoading]=true [enableAdd]=true (edit)="updateCritere($event)" (delete)="showDeleteConfirm($event)" (add)="addCritere()" (refresh)="getParamCriteres()" [enableExport]=true (export)="exportExcel()"></app-table>
+</app-content>
+<app-export-excel #exportCritereRisque></app-export-excel>
+<!-- MODALS -->
+<app-modal modalId="modalAddCritere" icon="pen" size="xl" [modalTitle]="modalTitle" hideFooter="true">
+    <app-table *ngIf="paramCriteresRef != null" #tableParamCriteresRef [noRightBtn]="hasNoRight" [type]="refType" [parentItems]="paramCriteresRef" [manualLoading]=true [itemsByPage]="5" (select)="selectParentCritere($event)" forceAction="select"></app-table>
+</app-modal>
+<app-modal #modalDeleteCritere modalId="modalConfirmSuppressionCritere" [noRightBtn]="hasNoRight" [validateLabel]="lang.validate" (validate)="deleteCritere()">
+    {{lang.paramCriteres.validateDeleteCritere}}
+</app-modal>
+<!-- TOASTS -->
+<div class="toast error" id="toastParamCritereAlreadyExist">{{ lang.paramCriteres.errorAlreadyExist }}</div>

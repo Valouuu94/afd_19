@@ -1,0 +1,125 @@
+.card-title {
+    text-transform: uppercase;
+    font-size: calc(var(--fs) + 2px);
+    font-weight: 100;
+    letter-spacing: 0.5rem;
+    padding-left: 15px;
+    border-left: solid 2px var(--c2);
+}
+.card .title .form-control span, .card .title .form-control {
+    color: var(--c1);
+}
+.fieldset .card .title .form-control {
+    color: var(--c2);
+}
+.read .card-title {
+    padding-left: 15px;
+    border-left: solid 2px var(--c1);
+}
+.widget .card-title {
+    padding-left: 15px;
+    border-left: solid 2px var(--c1-light);
+}
+.read.noheader .card-header, .noheader .card-header {
+    display: none;
+}
+.widget.read.noheader .card {
+    background-color: var(--c1);
+    color: white !important;
+}
+.widget.read.noheader.myDocuments .card {
+    background-color: var(--c1-light);
+    color: white !important;
+}
+.widget.nobody .card {
+    background-color: var(--c-border);
+    color: var(--c1-light);
+    height: 40px;
+}
+.widget.nobody .card-header {
+    margin: 0 auto;
+}
+.widget.nobody .card-title {
+    border: 0px;
+}
+.widget.nobody .title {
+    margin-left: 50px;
+    margin-right: 50px;
+}
+.widget .content {
+    font-weight: 700;
+}
+.widget .content .fa {
+    margin-right: 10px;
+}
+.read .form-group {
+    margin-bottom: 5px;
+}
+.card-header {
+    background-color: unset;
+    border-bottom: unset;
+}
+.card {
+    box-shadow: 0 5px 7px rgb(0 0 0 / 6%);
+}
+.fieldset .card {
+    box-shadow: none;
+    background-color: var(--c-grey);
+    border: 1px solid var(--c-border) !important;
+}
+.fieldset .card-title {
+    font-size: calc(var(--fs) - 2px);
+    padding-left: 0px;
+    border-left: 0px;
+    letter-spacing: 0.3rem;
+}
+.fieldset .card-header {
+    text-align: center;
+}
+.fieldset .card {
+    margin-top: 10px;
+}
+.card-body {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+}
+.card-vertical {
+    flex-direction: row !important;
+}
+
+/* REPORTING */
+.report-card {
+    cursor: pointer;
+}
+.report-card:hover {
+    background-color: var(--c-grey-light);
+}
+.report-table, .report-table th, .report-table td {
+    border: 1px solid var(--c-border);
+    padding: 10px;
+}
+
+/* COLLAPSE */
+.card-collapse {
+    background-color: white;
+    border: 1px solid var(--c1-light);
+    padding-bottom: 5px;
+}
+.card-collapse-header {
+    background-color: var(--c-grey);
+    text-transform: uppercase;
+    color: var(--c-black);
+}
+.card-collapse-header i {
+    color: var(--c3-light);
+}
+.card-collapse-separator {
+    border-bottom: 1px solid var(--c-border);
+}
+.card-collapse-th {
+    color: var(--dark);
+    font-weight: bold;
+}
+.card-collapse-group {
+    background-color: var(--c-scrollbar);
+}

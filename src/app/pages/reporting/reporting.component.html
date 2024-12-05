@@ -1,0 +1,65 @@
+<app-content>
+    <div class="row">
+        <div class="col page-title">
+            Reporting
+        </div>
+    </div>
+    <div class="row mt-4">
+        <ng-container *ngFor="let report of reports">
+            <div class="col-4 mb-3">
+                <app-card>
+                    <div class="p-4 report-card" (click)="showModalFiltres(report.type)">
+                        {{ report.label }}
+                    </div>
+                </app-card>
+            </div>
+        </ng-container>
+    </div>
+</app-content>
+<!-- MODALS -->
+<app-modal #modalFiltres modalId="modalFiltres" size="lg" [modalTitle]="titleModal" (validate)="exportExcel(selectedType)">
+    <div *ngIf="loading" class="container">
+        <app-spinner></app-spinner>
+    </div>
+    <div>
+        <p *ngIf="!loading">{{ lang.reporting.reportingDDR.subTitleModal }}</p>
+    </div>
+    <div class="mt-6" id="formio_filtresDDR"></div>
+    <div class="mt-6" id="formio_filtresVolumetries"></div>
+    <div class="mt-6" id="formio_filtresAnomalies"></div>
+    <div class="mt-6" id="formio_filtresDC"></div>
+    <div class="mt-6" id="formio_filtresVolumetrieDossierControle"></div>
+    <div class="mt-6" id="formio_filtresVolumetrieAnomalie"></div>
+    <div class="mt-6" id="formio_filtresConcoursRaj"></div>
+    <div class="mt-6" id="formio_filtresListeAvance"></div>
+    <div class="mt-6" id="formio_filtresPaiementTiers"></div>
+    <div class="mt-6" id="formio_filtresPaiementDocContractuel"></div>
+    <div class="mt-6" id="formio_filtresDCTiers"></div>
+    <div class="mt-6" id="formio_filtresConcoursRAV"></div>
+    <div class="mt-6" id="formio_filtresRemboursements"></div>
+</app-modal>
+<app-modal modalId="modalReportingTiers" icon="plus" size="xl" [modalTitle]="lang.selectionTiers" hideFooter="true">
+    <app-table #tableTiers type="tiersReporting" [parentItems]="listTiers" (goto)="selectTiers($event)" [manualLoading]=true [itemsByPage]="5" [lineClickable]=true [hideSubfilters]=true></app-table>
+</app-modal>
+<!-- EXCEL -->
+<app-export-excel #reporting></app-export-excel>
+<!-- TOASTS -->
+<div class="toast info" id="toastReportingNoResult"><i class="fas fa-save mr-3"></i>{{ lang.reporting.audit.noResult }}</div>
+<!-- TIERS -->
+<app-teleport #teleportReportingTiers to=".teleport-reporting-tiers">
+    <div class="mt-2">
+        <label>{{ lang.reporting.dcByTiers.tiers }}</label>
+        <div class="row">
+            <div class="d-flex col">
+                <div class="input-group">
+                    <input type="text" class="form-control" disabled [(ngModel)]="tiersSelectedLabel" [placeholder]="lang.reporting.dcByTiers.tiersEmpty" />
+                    <div class="input-group-append">
+                        <button class="btn btn-filter" (click)="searchTiers()">
+                            <i class="fa fa-search" [title]="lang.reglement.tiers.searchTiers"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</app-teleport>

@@ -1,0 +1,37 @@
+<div class="mt-2">
+    <!-- label du tiers en fonction du type du parent -->
+    <label *ngIf="isDV">{{ lang.versement.tiers.labelSelectTiers }} <span class="text-danger">*</span></label>
+    <label *ngIf="isDC">{{ lang.documentContractuel.id_fournisseur }} <span class="text-danger">*</span></label>
+    <label *ngIf="!isDV && !isDC && !isJR && !isJA && !isJDC">{{ lang.reglement.tiers.labelSelectTiers }} <span class="text-danger">*</span></label>
+    <label *ngIf="(isJR || isJA || isJDC) && !isDV">{{ lang.justificatifReglement.emetteur }} <span class="text-danger">*</span></label>
+    <div class="row">
+        <div class="d-flex col">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <!-- liste deroulante des tiers -->
+                    <select *ngIf="listTiersUsed != null && listTiersUsed.length > 0" class="form-control w-auto" [class]="(app.isEmpty(tiersSelected) && checkedSelectedBeneficiaire) ? 'border border-danger' : ''" [(ngModel)]="tiersSelected" [disabled]="read" (change)="getBeneficiaire()">
+                        <option *ngFor="let tiers of listTiersUsed" [ngValue]="tiers">{{ tiers.idTiers }} - {{ tiers.libLong }}</option>
+                    </select>
+                    <!-- si pas de tiers on affiche un message dans une liste desactivée -->
+                    <select *ngIf="listTiersUsed == null || listTiersUsed.length == 0" class="form-control w-auto" disabled>
+                        <option *ngIf="!isJDC">{{ lang.tiers.aucunTiers }}</option>
+                        <option *ngIf="isJDC || (isDC && !isJDC)">{{ lang.tiers.aucunTiersDC }}</option>
+                    </select>
+                </div>
+                <div *ngIf="!read" class="input-group-append ml-2">
+                    <button class="btn btn-filter" data-toggle="collapse" data-target="#collapseFilter" (click)="searchTiers()">
+                        <i class="fa fa-search" [title]="lang.reglement.tiers.searchTiers"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- texte champ requis -->
+    <div *ngIf="app.isEmpty(tiersSelected) && checkedSelectedBeneficiaire" class="form-text error mt-2">
+        {{ lang.formFieldMandatory }}
+    </div>
+    <!-- modal pour afficher la liste des tiers et faire une recherche -->
+    <app-modal [modalId]="'modalAddTiers' + typeParentObject" icon="plus" size="xl" [modalTitle]="lang.selectionTiers" hideFooter="true">
+        <app-table *ngIf="listTiers != null" #tableTiers type="tiersReglement" [parentItems]="listTiers" [manualLoading]=true [itemsByPage]="5" (goto)="selectTiers($event)" [lineClickable]=true [hideSubfilters]=true (refresh)="getTiers()"></app-table>
+    </app-modal>
+</div>

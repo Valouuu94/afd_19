@@ -1,0 +1,25 @@
+<app-content>
+    <div class="row">
+        <div class="col page-title">
+            {{ lang.reporting.audit.title }}
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col">
+            <div *ngIf="loading" class="container">
+                <app-spinner></app-spinner>
+            </div>
+            <div class="mt-6" id="formio_reportingAudit"></div>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col text-center">
+            <app-btn #btnExportExcel [label]="lang.reporting.audit.validate" type="primary" ico="file-excel" (action)="exportExcel()"></app-btn>
+        </div>
+    </div>
+</app-content>
+<app-export-excel #exportExcelAudit></app-export-excel>
+<!-- TOAST -->
+<div class="toast info" id="toastAuditNoResult"><i class="fas fa-save mr-3"></i>{{ lang.reporting.audit.noResult }}</div>
+<div class="toast info" id="toastAuditNbResults">{{ lang.reporting.audit.nbResults }}<br><br><span *ngIf="items != null">{{ items.length }}</span> {{ lang.reporting.audit.nbResults2 }}</div>
+<div class="toast error" id="toastAuditOneFilterRequired">{{ lang.reporting.audit.oneFilterRequired }}</div>

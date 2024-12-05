@@ -1,0 +1,11 @@
+<app-content *ngIf="type != null && urlType != null">
+    <div class="row">
+        <div class="col page-title">
+            {{ lang.nav.ref }} {{ type }}
+        </div>
+    </div>
+    <app-table #tableRef [type]="type" [url]="urlType" [manualLoading]=true [itemsByPage]="10" (goto)="gotoDetail($event)"></app-table>
+</app-content>
+<app-modal #modalRef modalId="modalRef" size="lg" [modalTitle]="modalTitle" [hideFooter]=true>
+    <div [id]="'formio_' + type"></div>
+</app-modal>

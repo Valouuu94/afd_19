@@ -1,0 +1,181 @@
+<app-content>
+    <div class="row">
+        <div class="col page-title">
+            {{ lang.nav.paramControlesTitle }}
+        </div>
+    </div>
+    <div class="row mt-3 mb--4">
+        <div *ngIf="tableControles != null && tableControles.filters != null" class="col">
+            <button class="btn" [ngClass]="{ 'btn-filter-selected': filterControlesAllSelected() }" (click)="filterControlesReset()">
+                <i class="fas fa-filter"></i> {{ lang.all }}
+            </button>
+            <button class="btn" [ngClass]="{ 'btn-filter-selected': filterControlesSelected('niveau', '1') }" (click)="filterControlesBy('niveau', '1')">
+                <i class="fas fa-filter"></i>
+                <ng-container *ngIf="isDCV">&nbsp;{{ lang.controlesDCV.filterPC }}</ng-container>
+                <ng-container *ngIf="!isDCV">&nbsp;{{ lang.controles.controlesParent }}</ng-container>
+            </button>
+            <button class="btn" [ngClass]="{ 'btn-filter-selected': filterControlesSelected('niveau', '2') }" (click)="filterControlesBy('niveau', '2')">
+                <i class="fas fa-filter"></i>
+                <ng-container *ngIf="isDCV">&nbsp;{{ lang.controlesDCV.filterSPC }}</ng-container>
+                <ng-container *ngIf="!isDCV">&nbsp;{{ lang.controles.controlesEnfant }}</ng-container>
+            </button>
+            <button class="btn" [ngClass]="{ 'btn-filter-selected': filterControlesSelected('actif', 'oui') }" (click)="filterControlesBy('actif', 'oui')">
+                <i class="fas fa-filter"></i> {{ lang.controlesDCV.filterActif }}
+            </button>
+            <button class="btn" [ngClass]="{ 'btn-filter-selected': filterControlesSelected('actif', 'non') }" (click)="filterControlesBy('actif', 'non')">
+                <i class="fas fa-filter"></i> {{ lang.controlesDCV.filterInactif }}
+            </button>
+        </div>
+        <div *ngIf="isDCV" class="col-auto text-right">
+            <button class="btn btn-new" (click)="addControle(false)">
+                <i class="fa fa-plus-circle mr-1"></i> {{ lang.controlesDCV.titleAddPC }}
+            </button>
+            <button class="btn btn-new ml-3" (click)="addControle(true)">
+                <i class="fa fa-plus-circle mr-1"></i> {{ lang.controlesDCV.titleAddSPC }}
+            </button>
+        </div>
+    </div>
+    <div class="row mt-3 mb--4">
+        <div *ngIf="tableControles != null && tableControles.filters != null" class="col">
+            <button *ngIf="isDCV" class="btn" [ngClass]="{ 'btn-filter-selected': filterControlesSelected('etape', '22') }" (click)="filterControlesBy('etape', '22')">
+                <i class="fas fa-filter"></i> {{ lang.controlesDCV.filterUnitaire }}
+            </button>
+            <button *ngIf="isDCV" class="btn" [ngClass]="{ 'btn-filter-selected': filterControlesSelected('etape', '12') }" (click)="filterControlesBy('etape', '12')">
+                <i class="fas fa-filter"></i> {{ lang.controlesDCV.filterRAJdefault }}
+            </button>
+            <button *ngIf="isDCV" class="btn" [ngClass]="{ 'btn-filter-selected': filterControlesSelected('etape', '13') }" (click)="filterControlesBy('etape', '13')">
+                <i class="fas fa-filter"></i> {{ lang.controlesDCV.filterRAJzero }}
+            </button>
+        </div>
+    </div>
+    <app-table *ngIf="isDCV" #tableControles type="controlesDCV" [parentItems]="controles" [itemsByPage]="itemsByPage" [manualLoading]=true [hideFooter]=true [hideSubfilters]=true (update)="updateControle($event)" (edit)="saveControle($event)" (addSPC)="addSPC($event)" (incOrder)="changeOrder($event, 1)" (decOrder)="changeOrder($event, -1)" highlightIf="niveau" highlightIfValue="1"></app-table>
+    <app-table *ngIf="!isDCV" #tableControles type="controles" [parentItems]="controles" [itemsByPage]="10" [manualLoading]=true [hideSubfilters]=true [enableAdd]=true (edit)="updateControle($event)" (add)="addControle(null)"></app-table>
+</app-content>
+<!-- MODALS -->
+<app-modal #modalAddControle modalId="modalAddControle" [modalTitle]="modalTitle" [noRightBtn]="hasNoRight" [validateLabel]="lang.save" icon="pen" size="xl" (validate)="saveControle(null)">
+    <div [id]="'formio_' + controleId"></div>
+    <div *ngIf="!create && controleEtapes != null">
+        <div *ngIf="!isDCV" class="fieldset-title mb-3">{{ lang.controle.etapes }}</div>
+        <div *ngIf="isDCV" class="mb-3"></div>
+        <app-table *ngIf="isDCV" #tableControleEtapes type="controleEtapesDCV" [parentItems]="controleEtapes" [itemsByPage]="3" [hideFilters]=true [hideFooter]=true (edit)="updateControleEtape($event)" (add)="addControleEtape($event, false)"></app-table>
+        <app-table *ngIf="!isDCV" #tableControleEtapes type="controleEtapes" [parentItems]="controleEtapes" [itemsByPage]="3" [hideFilters]=true [enableAdd]=true (edit)="updateControleEtape($event)" (add)="addControleEtape($event, false)"></app-table>
+    </div>
+</app-modal>
+<app-modal #modalAddControleEtape modalId="modalAddControleEtape" [modalTitle]="modalSubtitle" [noRightBtn]="hasNoRight" [validateLabel]="lang.save" icon="pen" size="xxl" (validate)="saveControleEtape(false)">
+    <div class="container subform pb-1">
+        <div [id]="'formio_' + controleId + 'Etape'"></div>
+    </div>
+    <div *ngIf="app.isDCV(entite, perimetre) && isSPC" class="container subform pb-2 mt-2">
+        <div class="fieldset-title mb-3">{{ lang.controle.etape.anomalies }}</div>
+        <div class="row mb-2">
+            <div class="col form-group">
+                <label>{{ lang.paramAnomalies.selectAno }}</label>
+                <select class="form-control" [(ngModel)]="anomalie" (change)="addAnomalie()">
+                    <option *ngFor="let refAnomalie of refControleAnomaliesUnused" [ngValue]="refAnomalie">{{ refAnomalie.codeAnomalie }} - {{ refAnomalie.label }}</option>
+                </select>
+            </div>
+        </div>
+        <div *ngIf="anomalies != null && anomalies.length > 0">
+            <div class="row controle-filtre mt-0">
+                <div class="col align-self-center">
+                    <span *ngFor="let ano of anomalies; let idxAnomalie = index" class="critere">
+                        <div class="row">
+                            <div class="col align-self-center">
+                                {{ app.getRefLabel('refControleAnomaliesCode', ano.idTypeAnomalie) }} - {{ app.getRefLabel('refControleAnomalies', ano.idTypeAnomalie) }}
+                            </div>
+                            <div class="col-auto align-self-center">
+                                <button class="btn btn-save" (click)="deleteAnomalie(idxAnomalie)">
+                                    <i class="fa fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="anomalies == null || anomalies.length == 0">
+            <div class="row controle-filtre-empty mt-0">
+                <div class="col text-center align-self-center">
+                    {{ lang.controle.noAnomalies }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container subform pb-2 mt-2">
+        <div class="fieldset-title mb-3">{{ lang.controle.etape.filtres }}</div>
+        <div class="row">
+            <div class="col-5 form-group">
+                <label>{{ lang.paramCriteres.criteria }}</label>
+                <select class="form-control" [(ngModel)]="filtreKey" (change)="changeCritere()">
+                    <option *ngFor="let critere of refControleFiltre" [ngValue]="critere">{{ critere.typeObjet }}.{{ critere.codeCritere }}</option>
+                </select>
+            </div>
+            <div class="col-auto form-group">
+                <label>{{ lang.controle.operatorFilter }}</label>
+                <select class="form-control" [(ngModel)]="filtreOperator">
+                    <option *ngFor="let operator of refControleFiltreOperator" [value]="operator.code">{{ operator.label }}</option>
+                </select>
+            </div>
+            <div class="col form-group">
+                <label>{{ lang.controle.valueFilter }}</label>
+                <input readonly *ngIf="filtreKey == null" type="text" class="form-control">
+                <input *ngIf="filtreKey != null && (filtreKey.refCritere == null || filtreKey.refCritere == '')" type="text" [(ngModel)]="filtreValue" class="form-control">
+                <select *ngIf="filtreKey != null && filtreKey.refCritere != null && filtreKey.refCritere != ''" class="form-control" [(ngModel)]="filtreValueSelect">
+                    <option *ngFor="let critereValue of refControleFiltreValue" [value]="critereValue.code">{{ critereValue.label }}</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col align-self-center">
+                <button [disabled]="isDisabledFilterButtons()" class="btn btn-save btn-block mt-1" (click)="addCritereToNewFiltre()">
+                    <i class="fa fa-plus"></i> {{ lang.controle.addNewFilter }}
+                </button>
+            </div>
+            <div class="col align-self-center">
+                <button [disabled]="!(currentFiltre != null && filtres != null && filtres.length > 0) || isDisabledFilterButtons()" class="btn btn-save btn-block mt-1" (click)="addCritereToFiltre()">
+                    <i class="fa fa-plus"></i> {{ lang.controle.addSelectedFilter }}
+                </button>
+            </div>
+        </div>
+        <div *ngIf="filtres != null">
+            <div *ngFor="let filtre of filtres; let idxFiltre = index">
+                <div class="row controle-filtre" (click)="currentFiltre = filtre" [ngClass]="{ current: (filtre == currentFiltre) }">
+                    <div class="col-2 align-self-center">
+                        {{ lang.controle.filter }} {{ idxFiltre + 1 }}
+                    </div>
+                    <div class="col align-self-center">
+                        <span *ngFor="let critere of filtre; let idxCritere = index" class="critere">
+                            <div class="row">
+                                <div class="col align-self-center">
+                                    {{ critere.type }}.{{ critere.key }} {{ critere.operator }} {{ critere.value }}
+                                </div>
+                                <div *ngIf="currentFiltre == filtre" class="col-auto align-self-center">
+                                    <button class="btn btn-save" (click)="deleteCritere(idxCritere)">
+                                        <i class="fa fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </span>
+                    </div>
+                    <div class="col-auto align-self-center">
+                        <button class="btn btn-save btn-block" (click)="deleteFiltre(idxFiltre)">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                <div *ngIf="idxFiltre + 1 != filtres.length" class="controle-filtre-connector mt-1">{{ lang.or }}</div>
+            </div>
+        </div>
+        <div *ngIf="filtres == null || filtres.length == 0">
+            <div class="row controle-filtre-empty">
+                <div class="col text-center align-self-center">
+                    {{ lang.controle.noFilter }}
+                </div>
+            </div>
+        </div>
+    </div>
+</app-modal>
+<!-- TOASTS -->
+<div class="toast error" id="toastParamControlesAlreadyExist">{{ lang.errorAlreadyExist }}</div>
+<div class="toast error" id="toastParamControlesEtapesEmpty">{{ lang.controlesDCV.errorEtapeEmpty }}</div>
+<div class="toast" id="toastSaveSuccessParamControles">{{ lang.successSave}}</div>

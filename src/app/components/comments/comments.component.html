@@ -1,0 +1,91 @@
+<ng-container *ngFor="let commentaire of commentaires; trackBy: trackByComment">
+    <div *ngIf="!commentaire.annule" class="row mx-0 anomalie-comment">
+        <div class="col-auto">
+            <div class="anomalie-avatar d-flex justify-content-center text-center align-items-center">
+                {{ commentaire.userInitials }}
+            </div>
+        </div>
+        <div class="col">
+            <div class="row align-items-center">
+                <div class="col">
+                    <span class="font-weight-bold mr-3">{{ commentaire.userName }}</span>
+                    <span class="mr-3 anomalie-sublabel">{{ app.getRefLabel('refRoles', commentaire.userRole) }}</span>
+                    <span class="anomalie-sublabel">{{ app.formatDate(commentaire.date) + ' ' + app.formatHours(commentaire.date) }}</span>
+                </div>
+                <div *ngIf="!read && existMyComment && commentaire.userId == currentUserId && commentaire.editable" class="col-auto right">
+                    <button class="btn btn-help" (click)="editCommentaire(commentaire)" title="Modifier le commentaire/lien">
+                        <i class="fas fa-pen"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="row mt-3 align-items-center">
+                <div class="col">
+                    {{ commentaire.comment }}
+                </div>
+            </div>
+            <div *ngIf="commentaire.liens != null && commentaire.liens.length > 0 && commentaire.liens[0].value != ''" class="row mt-3 align-items-center">
+                <div class="col">
+                    <div *ngFor="let lien of commentaire.liens" class="mt-1">
+                        <i class="fas fa-link"></i>
+                        <a [href]="lien.value" class="ml-3 comment-link" target="_blank">{{ lien.value }}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-container>
+<div *ngIf="!read && !existMyComment" class="row mx-0 anomalie-comment">
+    <div class="col-auto">
+        <div class="anomalie-avatar d-flex justify-content-center text-center align-items-center">
+            {{ app.getUserInitiales(currentUserName) }}
+        </div>
+    </div>
+    <div class="col">
+        <div class="row align-items-center">
+            <div class="col">
+                <span class="font-weight-bold mr-3">{{ currentUserName }}</span>
+                <span class="mr-3 anomalie-sublabel">{{ app.getRefLabel('refRoles', currentUserRole) }}</span>
+            </div>
+        </div>
+        <div class="row mt-4 align-items-center">
+            <div class="col">
+                <label>{{ lang.comments.comment }}</label>
+                <!-- <textarea class="form-control" [(ngModel)]="commentaire" [placeholder]="lang.comments.commentPlaceholder" maxlength="4000"></textarea> -->
+                <textarea [id]="getCommentaireId()" class="form-control" [placeholder]="lang.comments.commentPlaceholder" maxlength="4000"></textarea>
+            </div>
+        </div>
+        <div *ngFor="let lien of liens; let idxLien = index" class="row mt-3 align-items-center">
+            <div class="col">
+                <label *ngIf="idxLien == 0">{{ lang.comments.links }}</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i class="fa fa-link"></i>
+                        </div>
+                    </div>
+                    <!-- <input type="text" class="form-control no-radius-left" [placeholder]="lang.comments.linkPlaceholder" [(ngModel)]="lien.value"> -->
+                    <input [id]="getCommentaireId() + '-lien-' + idxLien" type="text" class="form-control no-radius-left" [placeholder]="lang.comments.linkPlaceholder">
+                </div>
+            </div>
+            <div class="col-2" [ngClass]="{ 'mt-4': idxLien == 0 }">
+                <button *ngIf="idxLien > 0" class="btn btn-secondary" (click)="supprimerLien(lien)" [title]="lang.comments.linkDelete">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button *ngIf="liens.length - 1 == idxLien && liens.length < 5" class="btn btn-secondary ml-2" (click)="ajouterLien()" [title]="lang.comments.linkAdd">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col">
+                <button class="btn btn-new" (click)="saveCommentaire()" [disabled]="disableSave">
+                    {{ lang.comments.save }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--
+<div class="toast" id="toastSaveCommentSuccess">{{ lang.toastSaveCommentSuccess}}</div>
+<div class="toast error" id="toastSaveError">{{ lang.anomalie.toastSaveError }}</div> 
+-->

@@ -1,0 +1,158 @@
+<div *ngIf="controles != null" class="tab-content content">
+    <ng-container *ngFor="let type of typeControles; let index = index; trackBy trackByTypeControle">
+        <div *ngIf="(type.current && isAFD) || !isAFD" class="tab-pane fade active show">
+            <div *ngFor="let controle of controles; let indexControle = index; trackBy: trackByControle">
+                <!-- theme -->
+                <div *ngIf="showTheme(controle, type)" class="row row-controle pb-0 pt-0" [ngClass]="{ alterned: showAlterned(indexControle, controle) }">
+                    <div [id]="'ancre-' + app.removeSpaces(controle.theme)" class="col controle-theme mb-3">
+                        {{ controle.theme }}
+                    </div>
+                    <div *ngIf="!read && isDCV" class="col-auto controle-theme py-0 mb-3">
+                        <app-btnMenu icon="fas fa-ellipsis-h" side="right">
+                            <app-btn [label]="lang.controles.selectAllNA" [inMenu]=true [noLoading]=true (action)="selectAllNA(controle.codeTheme)"></app-btn>
+                        </app-btnMenu>
+                    </div>
+                </div>
+                <!-- colonnes etape -->
+                <div *ngIf="showTheme(controle, type) && !isDCV" class="row row-controle py-0" [ngClass]="{ alterned: showAlterned(indexControle, controle) }">
+                    <div class="col">
+                    </div>
+                    <div *ngFor="let typeCol of getTypeControles(type); trackBy trackByTypeControle" [class]="'col-auto controle-col-' + ((typeCol.current && !read) ? 'update' : 'read')">
+                        <span class="controle-etape" [title]="typeCol.longLabel">{{ typeCol.label }}</span>
+                    </div>
+                </div>
+                <!-- controle -->
+                <div *ngIf="showControle(controle, type)" class="row row-controle justify-content-end align-items-center" [ngClass]="{ 'controle-separator': !showTheme(controle, type), alterned: showAlterned(indexControle, controle), 'error-controle': controle.error }">
+                    <!-- bouton infobulle aide -->
+                    <div *ngIf="showHelp(controle, type)" class="col-12">
+                        <button class="btn btn-help-comment mb-2" [attr.onclick]="'app.toggleCollapse(\'collapseControleHelp-' + indexControle + '\')'">
+                            {{ lang.controles.help }}
+                            <i class="fas fa-chevron-down ml-2" [id]="'chevron-collapseControleHelp-' + indexControle"></i>
+                        </button>
+                    </div>
+                    <!-- infobulle aide (collapse) -->
+                    <div *ngIf="showHelp(controle, type)" [id]="'collapseControleHelp-' + indexControle" class="col-12 py-0 pb-3 collapse px-5">
+                        <div class="px-3 pb-2 controle-help" [innerHTML]="controle.infobulle"></div>
+                    </div>
+                    <!-- decallage pour les sous controles -->
+                    <div *ngIf="showSubControleZone(controle, type)" class="col-auto subcontrole">
+                        <i class="fas fa-level-up-alt"></i>
+                    </div>
+                    <!-- libelle du controle -->
+                    <div [class]="'col-12 d-flex align-self-center controle-label' + ((!controle.valorisable) ? ' fieldset-title mt-2 mb-1' : ' mb-3')" [innerHTML]="controle.libelle"></div>
+                    <!-- boutons commentaires -->
+                    <div *ngIf="showComment(controle, type)" class="col">
+                        <button class="btn btn-help" [attr.onclick]="'app.toggleCollapse(\'collapseControleComment-' + indexControle + '\')'">
+                            <i *ngIf="controle.commentCount == 0" class="fas fa-plus mr-2"></i>
+                            <span *ngIf="controle.commentCount > 0" class="comment-counter">{{ controle.commentCount }}</span>
+                            {{ lang.comments.commentAndLink }}
+                            <i class="fas fa-chevron-down ml-2" [id]="'chevron-collapseControleComment-' + indexControle"></i>
+                        </button>
+                    </div>
+                    <!-- valeur du controle -->
+                    <ng-container *ngIf="controle.valorisable">
+                        <div *ngFor="let typeVal of getTypeControles(type); trackBy trackByTypeControle" [class]="'align-self-center col-auto ' + ((isDCV && !read) ? 'controle-col-dcv' : '' ) + ' controle-col-' + ((typeVal.current && !read) ? 'update' : 'read')">
+                            <!-- valeur en modification -->
+                            <div *ngIf="!controle.isAuto && typeVal.current && !read" class="btn-group btn-group-toggle" data-toggle="buttons">
+                                <label class="btn btn-controle btn-yes" [ngClass]="{ active: (controle.value == 1) }">
+                                    <input type="radio" [name]="'controle-' + controle.id" (click)="setControleValue(controle, 1, false)">
+                                    <ng-container *ngIf="!isDCV">{{ lang.yes }}</ng-container>
+                                    <ng-container *ngIf="isDCV">{{ lang.ok }}</ng-container>
+                                </label>
+                                <label class="btn btn-controle btn-no" [ngClass]="{ active: (controle.value == 0) }">
+                                    <input type="radio" [name]="'controle-' + controle.id" (click)="setControleValue(controle, 0, false)">
+                                    <ng-container *ngIf="!isDCV">{{ lang.no }}</ng-container>
+                                    <ng-container *ngIf="isDCV">{{ lang.ko }}</ng-container>
+                                </label>
+                                <label *ngIf="controle.isNA" class="btn btn-controle btn-na" [ngClass]="{ active: (controle.value == -1) }">
+                                    <input type="radio" [name]="'controle-' + controle.id" (click)="setControleValue(controle, -1, false)">N/A
+                                </label>
+                            </div>
+                            <!-- valeur en lecture -->
+                            <div *ngIf="controle.isAuto || !typeVal.current || read">
+                                <ng-container *ngIf="getControleEtapeValue(controle, typeVal) as controleEtapeValue">
+                                    <div *ngIf="controleEtapeValue.value == 1; else ngElseIfControleValue1" class="btn btn-controle btn-yes active read">
+                                        <ng-container *ngIf="!isDCV">{{ lang.yes }}</ng-container>
+                                        <ng-container *ngIf="isDCV">{{ lang.ok }}</ng-container>
+                                    </div>
+                                    <ng-template #ngElseIfControleValue1>
+                                        <div *ngIf="controleEtapeValue.value == 0; else ngElseIfControleValue2" class="btn btn-controle btn-no active read">
+                                            <ng-container *ngIf="!isDCV">{{ lang.no }}</ng-container>
+                                            <ng-container *ngIf="isDCV">{{ lang.ko }}</ng-container>
+                                        </div>
+                                    </ng-template>
+                                    <ng-template #ngElseIfControleValue2>
+                                        <div *ngIf="controleEtapeValue.value == -1; else ngElseControleValue" class="btn btn-controle btn-na active read">{{ lang.na }}</div>
+                                    </ng-template>
+                                    <ng-template #ngElseControleValue>
+                                        <div class="btn btn-controle btn-empty active read"><i class="fas fa-minus"></i></div>
+                                    </ng-template>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <!-- criticité -->
+                    <div *ngIf="controle.isCriticite && type.current && controle.value == 0" class="col-auto align-self-center">
+                        <select class="form-control" [(ngModel)]="controle.criticiteValue">
+                            <option *ngFor="let criticite of refCriticite" [value]="criticite.code">{{ criticite.label }}</option>
+                        </select>
+                    </div>
+                    <div *ngIf="controle.isCriticite && !type.current && controle.value != null && controle.criticiteValue != ''" class="col-auto align-self-center">
+                        <span class="font-weight-bold text-center">
+                            {{ lang.controles.criticite }}<br>
+                            {{ app.getRefLabel('refCriticite', controle.criticiteValue) }}
+                        </span>
+                    </div>
+                </div>
+                <!-- zone commentaires et lien -->
+                <div *ngIf="showControle(controle, type)" [id]="'collapseControleComment-' + indexControle" class="row-controle py-0 pb-1 collapse px-4" [ngClass]="{ alterned: showAlterned(indexControle, controle) }">
+                    <div class="col">
+                        <app-comments [attr.ref]="'controle-comments-' + controle.id" [DO]="controle" type="controle" [read]="((isAFD) ? read : (read || !type.current))" [currentUserRole]="role" (save)="showToastSaveComment($event)" (detectChanges)="cdr.detectChanges()"></app-comments>
+                    </div>
+                </div>
+                <!-- anomalies -->
+                <div *ngIf="showAnomalies(controle, type)" class="row row-controle py-0" [ngClass]="{ alterned: showAlterned(indexControle, controle) }">
+                    <div class="col">
+                        <div *ngIf="type.current" class="px-3">
+                            <div *ngFor="let anomalie of controle.anomalies; trackBy trackByAnomalie" class="row controle-anomalie">
+                                <div class="col">
+                                    <div class="row align-items-center">
+                                        <div class="col-auto">
+                                            <button [disabled]="read" *ngIf="controle.anomalies.length > 1" class="btn btn-checkbox" (click)="toggleControleAnomalie(anomalie, controle)">
+                                                <i *ngIf="!anomalie.valeur" class="far fa-square bg-white"></i>
+                                                <i *ngIf="anomalie.valeur" class="fas fa-check-square"></i>
+                                            </button>
+                                            <button *ngIf="controle.anomalies.length == 1" class="btn btn-checkbox">
+                                                <i class="fas fa-check-square"></i>
+                                            </button>
+                                        </div>
+                                        <div class="col-auto" *ngIf="app.isNotEmpty(anomalie.gravite_anomalie)">
+                                            <span class="anomalie-tags">{{ lang.controles.anomalie }} {{ anomalie.gravite_anomalie }}</span>
+                                        </div>
+                                        <div class="col" [innerHTML]="anomalie.libelle_anomalie">
+                                        </div>
+                                    </div>
+                                    <div *ngIf="anomalie.valeur || controle.anomalies.length == 1" class="row mt-3">
+                                        <div class="col">
+                                            <textarea class="form-control" [disabled]="read" [(ngModel)]="anomalie.commentaire" [placeholder]="lang.comments.commentAdd" maxLength=4000></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- affichage des erreurs -->
+                <div *ngIf="showError(controle, type)" class="row-controle py-0 pb-3" [ngClass]="{ alterned: showAlterned(indexControle, controle) }">
+                    <div class="px-3 pb-2 controle-error">
+                        {{ controle.errorLabel }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</div>
+<!-- TOAST -->
+<div class="toast error" id="toastVerifControles">{{ errorMessage }}</div>
+<div class="toast" id="toastSaveCommentSuccessControles">{{ lang.toastSaveCommentSuccess }}</div>
+<div class="toast error" id="toastSaveErrorControles">{{ lang.anomalie.toastSaveError }}</div>

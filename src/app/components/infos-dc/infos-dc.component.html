@@ -1,0 +1,43 @@
+<div *ngIf="documentContractuel != null" class="accordion container float-left p-1">
+	<div class="card infos card-collapse mt-3">
+		<div *ngIf="showLinkDc"class="card-header card-collapse-header mb-2" data-target="#collapseReglementDC">
+			<i class="fas fa-window-restore mr-3"></i>
+			{{ documentContractuel.code_fonctionnel }} - {{ documentContractuel.libelle }}
+			<button type="button" class="btn btn-collapse-goto w-auto float-right py-0 bg-transparent" (click)="gotoDC()">{{ lang.documentContractuel.open }}</button>
+		</div>
+		<div id="collapseReglementDC" class="collapse show">
+			<div class="card-body">
+				<div class="container px-2">
+					<div class="row mt-0 pb-2 card-collapse-separator">
+						<div class="col text-right">
+							<div class="card-collapse-th"> {{ lang.montantPartAfd }} </div>
+						</div>
+						<div class="col text-right">
+							<div class="card-collapse-th"> {{ lang.ravReel }} </div>
+						</div>
+						<div class="col text-right">
+							<div class="card-collapse-th"> {{ lang.ravPrevisionnel }} </div>
+						</div>
+						<div class="col text-right">
+							<div class="card-collapse-th"> {{ lang.devise }} </div>
+						</div>
+					</div>
+					<div class="row mt-2" *ngFor="let montantDevise of documentContractuel.montantsDevises; let idxMontantDevise = index">
+						<div class="col text-right">
+							<div> {{ app.formatNumberWithDecimals(montantDevise.montant) }} </div>
+						</div>
+						<div class="col text-right">
+							<div> {{ app.formatNumberWithDecimals(montantDevise.rav_actuel) }} </div>
+						</div>
+						<div class="col text-right">
+							<div> {{ app.formatNumberWithDecimals(montantDevise.rav_previsionnel) }} </div>
+						</div>
+						<div class="col text-right">
+							<div> {{ montantDevise.devise }} </div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

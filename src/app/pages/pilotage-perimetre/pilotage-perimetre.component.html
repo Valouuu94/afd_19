@@ -1,0 +1,187 @@
+<app-content>
+    <div class="row">
+        <div class="col page-title">
+            {{ lang.pilotagePerimetres.title }}
+        </div>
+    </div>
+    <div class="row mb--4">
+        <div class="col text-right font-italic">
+            {{ nbMoisEcoules }} {{ lang.pilotagePerimetres.moisEcoules }}
+        </div>
+    </div>
+    <app-table #tablePerimetres type="pilotagePerimetres" [parentItems]="perimetres" [itemsByPage]="itemsByPage" [manualLoading]=true [hideFooter]=false [hideSubfilters]=true (update)="updatePerimetre($event)" highlightIf="renderActif" highlightIfValue="0"></app-table>
+</app-content>
+<app-modal #modalPerimetre modalId="modalPerimetre" [modalTitle]="lang.pilotagePerimetres.perimetreUser + ((perimetre != null) ? perimetre.user : '')" [noRightBtn]="hasNoRight" [validateLabel]="lang.save" icon="pen" size="xl" (validate)="savePerimetre()">
+    <ng-container *ngIf="perimetre != null">
+        <div class="container subform pb-2 mt-2">
+            <div class="row mt-3">
+                <div class="col-3 form-group">
+                    <label> {{ lang.pilotagePerimetres.capaciteAnnuelle }} </label>
+                    <input type="number" class="form-control" [(ngModel)]="perimetre.capaciteAnnuelle">
+                </div>
+                <div class="col-3 form-group">
+                    <label> {{ lang.pilotagePerimetres.capaciteMensuelle }} </label>
+                    <input type="number" class="form-control" disabled [(ngModel)]="perimetre.capaciteMensuelle">
+                </div>
+                <div class="col-3 form-group">
+                    <label> {{ lang.pilotagePerimetres.dossiersControles }} </label>
+                    <input type="number" class="form-control" disabled [(ngModel)]="perimetre.nbDossiersControles">
+                </div>
+                <div class="col-3 form-group">
+                    <label> {{ lang.pilotagePerimetres.capaciteActualisee }} </label>
+                    <input type="number" class="form-control" disabled [(ngModel)]="perimetre.capaciteMensuelleActualisee">
+                </div>
+            </div>
+        </div>
+        <!-- Agences -->
+        <div class="container subform pb-2 mt-2">
+            <div class="fieldset-title mb-3 mt-3"> {{ lang.pilotagePerimetres.agenceGestion }} </div>
+            <div class="row mb-2">
+                <div class="col form-group">
+                    <label> {{ lang.pilotagePerimetres.selectAgence }} </label>
+                    <select class="form-control" [(ngModel)]="agence" (change)="addAgence()">
+                        <option *ngFor="let refAgence of refAgencesUnused" [ngValue]="refAgence"> {{ app.getRefLabel('refAgencesGestionsLibLong', refAgence) }} </option>
+                    </select>
+                </div>
+            </div>
+            <div *ngIf="perimetre.agences != null && perimetre.agences.length > 0">
+                <div class="row controle-filtre mt-0">
+                    <div class="col align-self-center">
+                        <span *ngFor="let itemAgence of perimetre.agences; let idxAgence = index" class="critere">
+                            <div class="row">
+                                <div class="col align-self-center">
+                                    {{ app.getRefLabel('refAgencesGestions', itemAgence) }}
+                                </div>
+                                <div class="col-auto align-self-center">
+                                    <button class="btn btn-save" (click)="deleteAgence(idxAgence)">
+                                        <i class="fa fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="perimetre.agences == null || perimetre.agences.length == 0">
+                <div class="row controle-filtre-empty mt-0">
+                    <div class="col text-center align-self-center">
+                        {{ lang.pilotagePerimetres.noAgenceSelected }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Divisions techniques -->
+        <div class="container subform pb-2 mt-2">
+            <div class="fieldset-title mb-3 mt-3"> {{ lang.pilotagePerimetres.division }} </div>
+            <div class="row mb-2">
+                <div class="col form-group">
+                    <label> {{ lang.pilotagePerimetres.selectDivision }} </label>
+                    <select class="form-control" [(ngModel)]="division" (change)="addDivision()">
+                        <option *ngFor="let refDivision of refDivisionsUnused" [ngValue]="refDivision">{{ app.getRefLabel('refDivisionsLibLong', refDivision) }}</option>
+                    </select>
+                </div>
+            </div>
+            <div *ngIf="perimetre.divisions != null && perimetre.divisions.length > 0">
+                <div class="row controle-filtre mt-0">
+                    <div class="col align-self-center">
+                        <span *ngFor="let itemDivision of perimetre.divisions; let idxDivision = index" class="critere">
+                            <div class="row">
+                                <div class="col align-self-center">
+                                    {{ app.getRefLabel('refDivisions', itemDivision) }}
+                                </div>
+                                <div class="col-auto align-self-center">
+                                    <button class="btn btn-save" (click)="deleteDivision(idxDivision)">
+                                        <i class="fa fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="perimetre.divisions == null || perimetre.divisions.length == 0">
+                <div class="row controle-filtre-empty mt-0">
+                    <div class="col text-center align-self-center">
+                        {{ lang.pilotagePerimetres.noDivisionSelected }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Operations -->
+        <div class="container subform pb-2 mt-2">
+            <div class="fieldset-title mb-3 mt-3">{{ lang.pilotagePerimetres.operations }}</div>
+            <div class="row mb-2">
+                <div class="col form-group">
+                    <label> {{ lang.pilotagePerimetres.selectOperation }} </label>
+                    <select class="form-control" [(ngModel)]="operation" (change)="addOperation()">
+                        <option *ngFor="let refOperation of refOperationsUnused" [ngValue]="refOperation">{{ app.getRefLabel('refOperationsLibLong', refOperation) }}</option>
+                    </select>
+                </div>
+            </div>
+            <div *ngIf="perimetre.operations != null && perimetre.operations.length > 0">
+                <div class="row controle-filtre mt-0">
+                    <div class="col align-self-center">
+                        <span *ngFor="let itemOperation of perimetre.operations; let idxOperation = index" class="critere">
+                            <div class="row">
+                                <div class="col align-self-center">
+                                    {{ app.getObjectLabelByKey(refOperations, "idOperation", "libelleCourtOperation", itemOperation) }}
+                                </div>
+                                <div class="col-auto align-self-center">
+                                    <button class="btn btn-save" (click)="deleteOperation(idxOperation)">
+                                        <i class="fa fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="perimetre.operations == null || perimetre.operations.length == 0">
+                <div class="row controle-filtre-empty mt-0">
+                    <div class="col text-center align-self-center">
+                        {{ lang.pilotagePerimetres.noOperationSelected }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modalites -->
+        <div class="container subform pb-2 mt-2">
+            <div class="fieldset-title mb-3 mt-3"> {{ lang.pilotagePerimetres.modalitesDecaissement }} </div>
+            <div class="row mb-2">
+                <div class="col form-group">
+                    <label> {{ lang.pilotagePerimetres.selectModalite }} </label>
+                    <select class="form-control" [(ngModel)]="modalite" (change)="addModalite()">
+                        <option *ngFor="let refModalite of refModalitesUnused" [ngValue]="refModalite">{{ app.getRefLabel('refModalitesPaiement', refModalite) }}</option>
+                    </select>
+                </div>
+            </div>
+            <div *ngIf="perimetre.modalites != null && perimetre.modalites.length > 0">
+                <div class="row controle-filtre mt-0">
+                    <div class="col align-self-center">
+                        <span *ngFor="let itemModalite of perimetre.modalites; let idxModalite = index" class="critere">
+                            <div class="row">
+                                <div class="col align-self-center">
+                                    {{ app.getRefLabel('refModalitesPaiement', itemModalite) }}
+                                </div>
+                                <div class="col-auto align-self-center">
+                                    <button class="btn btn-save" (click)="deleteModalite(idxModalite)">
+                                        <i class="fa fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="perimetre.modalites == null || perimetre.modalites.length == 0">
+                <div class="row controle-filtre-empty mt-0">
+                    <div class="col text-center align-self-center">
+                        {{ lang.pilotagePerimetres.noModaliteSelected }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</app-modal>
+
+<div class="toast" id="toastSaveSuccessPerimetre">{{ lang.successSave}}</div>

@@ -1,0 +1,21 @@
+<app-content>
+    <div class="row">
+        <div class="col page-title">
+            {{ lang.pilotageDDR.title }}
+        </div>
+    </div>
+    <div *ngIf="!hasNoRight" class="row mb--3 mt--5">
+        <div class="col text-right">
+            <app-btn #btnExportDDR type="secondary" [label]="lang.reporting.ddrEligibles.labelBtn" ico="download" (action)="exportExcel()"></app-btn>
+        </div>
+    </div>
+    <app-table *ngIf="dossiers != null" #tableDDR type="pilotageDDR" [parentItems]="dossiers" [itemsByPage]="50" [manualLoading]=true [hideSort]=true (affect)="confirmUpdateControleur($event)"></app-table>
+</app-content>
+<app-export-excel #exportDdrEligibles></app-export-excel>
+<!-- MODALS -->
+<app-modal #modalConfirmUpdateControleur [modalTitle]="lang.pilotageDDR.affectFolder" modalId="modalConfirmUpdateControleur" [noRightBtn]="hasNoRight" [validateLabel]="lang.validate" (validate)="updateControleur()">
+    <div class="mt-6" id="formio_managersDCV"></div>
+</app-modal>
+<!-- TOASTS -->
+<div class="toast" id="toastUpdateControleurSuccess">{{ lang.pilotageDDR.updateControleurSuccess }}</div>
+<div class="toast error" id="toastErreurTechnique">{{ lang.erreurTechnique }}</div>

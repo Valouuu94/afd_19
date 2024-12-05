@@ -1,0 +1,44 @@
+#dashboard .progress-bar {
+    background-color: var(--c3-light);
+}
+#dashboard .progress {
+    height: 10px;
+}
+#dashboard .bg-anomalie {
+    background-color: var(--c2);
+}
+#dashboard .bg-controle {
+    background-color: var(--c1);
+}
+#dashboard .bg-2nd {
+    background-color: var(--c1-light);
+}
+#dashboard .dash1 {
+    background-image: url('../img/dash1.png');
+    height: 120px;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+#dashboard .dash1 .montant {
+    color: white;
+    font-weight: bold;
+    font-size: 24px;
+}
+#dashboard .dash1 .percent {
+    color: white;
+    margin-top: 40px;
+}
+#dashboard .dash1 .title {
+    color: var(--c-grey);
+    font-size: 14px;
+    font-weight: normal;
+    letter-spacing: 5px;
+    margin-top: 8px;
+    text-transform: uppercase;
+    font-weight: 100;
+    margin-right: 30px;
+    float: right;
+}
+#dashboard .newDemande {
+    font-size: 30px;
+}

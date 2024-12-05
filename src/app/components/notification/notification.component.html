@@ -1,0 +1,78 @@
+<app-modal #sendNotification modalId="modalNotification" [modalTitle]="titleModal" (validate)="validerNotification()" size="lg" [validateLabel]="validateLabelBtn" [iconValidate]="iconValidateBtn" [typeBtn]="typeBtn" [labelBtnClose]="labelBtnClose" (cancel)="cancelAction()">
+    <p slot="subtitle" class="blockSubTitle mb-4">
+        <span *ngIf="isDCV && typeAction == '-1'; else isValideDCV">{{ lang.fieldsRequired }} </span>
+        <ng-template #isValideDCV>{{ lang.infoRequired }}</ng-template>
+        <span class="text-danger">*</span>
+        <span *ngIf="!isDCV">{{ lang.mandatory }}</span>
+    </p>
+    <h6 *ngIf="!isDCV" class="text-dark">{{ messageHeaderModal }} <span *ngIf="typeAction == '-1'">?</span></h6>
+    <div *ngIf="app.isMODAF(role) && typeAction == '1' && !app.isAFD(entite)">
+        <p> {{ lang.resendFolderRequest }} </p>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="retourAgent" id="radioRetourAgent1" value="0" [(ngModel)]="typeDestinataire" (change)="filterDestinataires('CHGAFF')">
+            <label class="form-check-label" for="radioRetourAgent1">{{ lang.versementControles.managementOfficer }}</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="retourAgent" id="radioRetourAgent2" value="1" [(ngModel)]="typeDestinataire" (change)="filterDestinataires('CHGAPPUI')">
+            <label class="form-check-label" for="radioRetourAgent2">{{ lang.versementControles.businessAgent }}</label>
+        </div>
+    </div>
+    <div *ngIf="app.isDirecteur(role) && typeAction == '1' && app.isAFD(entite)">
+        <p> {{ lang.resendFolderRequest }} </p>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="retourAgent" value="0" [(ngModel)]="typeDestinataire" (change)="filterDestinataires('AGENTVERSEMENT')">
+            <label class="form-check-label">{{ lang.roles.agv }}</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="retourAgent" value="1" [(ngModel)]="typeDestinataire" (change)="filterDestinataires('CHGPROJET')">
+            <label class="form-check-label">{{ lang.roles.chp }}</label>
+        </div>
+    </div>
+    <div *ngIf="isDCV && typeAction == '-1'" class="bg-light rounded p-3">
+        <div class="row">
+            <div class="col-auto p-2">
+                <i class="fa fa-exclamation-circle text-warning"></i>
+            </div>
+            <div class="col">
+                {{ lang.reglement.controleDCV.messageAnnulerDossierDCV }}
+            </div>
+        </div>
+    </div>
+    <div *ngIf="!isDCV && typeAction == '0'" class="bg-light rounded p-3 mt-4">
+        <div class="row">
+            <div class="col-auto p-2">
+                <i class="fa fa-exclamation-circle text-warning"></i>
+            </div>
+            <div class="col p-1">
+                {{ lang.warningDLCS }}
+            </div>
+        </div>
+    </div>
+    <div class="mt-2" id="formio_notification"></div>
+</app-modal>
+<app-modal #modalDCV modalId="modalValidControlesDCV" [modalTitle]="titleModal" (validate)="validerDossier()">
+    <div>
+        <p *ngIf="isDCV">{{ lang.reglement.controleDCV.subTitleModal }}</p>
+        <p *ngIf="!isAFD && !isDCV && isControlesOk">{{ lang.versement.messageValideVersementDir }}</p>
+        <p *ngIf="isAFD && !isDCV && isControlesOk">
+            {{ lang.reglement.messageValideReglementDirOk }}
+            <br><br>
+            {{ lang.reglement.messageValidationInwebo }}
+        </p>
+    </div>
+    <div *ngIf="isDCV || (isAFD && !isControlesOk)" class="bg-light rounded p-3">
+        <i class="fa fa-exclamation-circle text-warning"></i>
+        <!-- TODO à ravoir lidia lundi 27/10/2023 : enlever le style et optimiser cette partie-->
+        <span *ngIf="isDCV && isAvance" class="ml-4" style="margin-top:-20px">{{ lang.avanceContractuel.controleDCV.messageValidationDCV }}</span>
+        <span *ngIf="isDCV && !isAvance" class="ml-4" style="margin-top:-20px">{{ lang.reglement.controleDCV.messageValidationDCV }}</span>
+        <span *ngIf="isAFD && !isDCV && !isControlesOk" class="ml-4" style="margin-top:-20px">
+            {{ lang.reglement.warningValideReglementDir }}
+            <br><br>
+            {{ lang.reglement.messageValidationInwebo }}
+        </span>
+    </div>
+</app-modal>
+<!-- TOAST -->
+<div class="toast error" id="toastSendNotificationError">{{ lang.failedFormSave }}</div>
+<div class="toast long error" id="toastAuthentificationInweboError">{{ lang.failedAuthentificationInwebo }}</div>
+<div class="toast warning" id="toastMemberNotExist">{{ toastMemberNotExist }}</div>

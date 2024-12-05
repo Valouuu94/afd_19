@@ -1,0 +1,13 @@
+<app-table *ngIf="showRubriques" #tableRubriques type="rubriquesTemplate" [parentItems]="rubriques" [manualLoading]=true [maxContentColumn]=true [hideFilters]=true [hideSort]=true [enableAdd]="enableAdd" [enablePagination]="false" [enableRefresh]="false" [itemsByPage]="100" (add)="addRubriquesSousRubrique()" (edit)="rubriqueIsSelected($event)" (delete)="showDeleteConfirmRubrique($event)" highlightIf="deleted" [highlightIfValue]=true [isScrollable]=true [fixSecChild]="!isVentilation" [isInsideModal]="isInsideModal" [disabledEditAndDelete]="isInsideModal"></app-table>
+<app-table *ngIf="showRubriquesAR" #tableRubriquesAR type="rubriquesTemplateAR" [parentItems]="rubriquesAR" [manualLoading]=true [maxContentColumn]=true [hideFilters]=true [hideSort]=true [enableAdd]="enableAdd" [itemsByPage]="100" [enablePagination]="false" [enableRefresh]="false" (add)="addRubriquesSousRubrique()" (edit)="rubriqueIsSelected($event)" (delete)="showDeleteConfirmRubrique($event)" highlightIf="deleted" [highlightIfValue]=true [isScrollable]=true [fixSecChild]="!isVentilation" [isInsideModal]="isInsideModal" [disabledEditAndDelete]="isInsideModal"></app-table>
+<!-- TOASTS -->
+<div class="toast error" id="toastLibelleRubriqueRequiredError">{{ lang.documentContractuel.errorLibelleRubriqueRequired }}</div>
+<div class="toast error" id="toastLibelleDcRequiredError">{{ lang.documentContractuel.errorLibelleDcRequired }}</div>
+<div class="toast error" id="toastLibelleRubriqueDoublingError">{{ lang.documentContractuel.errorLibelleRubriqueDoubling }}</div>
+<div class="toast error" id="toastDeviseDoublingError">{{ lang.documentContractuel.errorLibelleDeviseDoubling }}</div>
+<div class="toast error" id="toastDeleteRubriqueError">{{ lang.documentContractuel.errorDeleteRubrique }}</div>
+<div class="toast error" id="toastDeleteRubriqueVentilatedError">{{ lang.documentContractuel.errorDeleteRubriqueVentilated }}</div>
+<!-- MODALS -->
+<app-modal #modalDeleteRubrique modalId="modalConfirmSuppressionRubrique" [validateLabel]="lang.validate" (validate)="deleteRubrique()" (cancel)="cancelDeleteRubrique()">
+    {{ lang.documentContractuel.deleteRubrique }}
+</app-modal>

@@ -1,0 +1,239 @@
+<div *ngIf="!hideFilters" class="row" [ngClass]="{ 'mt-4': !noMT }">
+    <div class="d-flex col">
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <div class="input-group-text">
+                    <i class="fa fa-search"></i>
+                </div>
+            </div>
+            <input type="text" class="form-control no-radius-left" autocomplete="off" id="search" [(ngModel)]="filter" (keyup)="filterItems()" [placeholder]="placeholder">
+            <div *ngIf="columnsWithFilter.length > 0 && !hideSubfilters" class="input-group-append">
+                <button class="btn btn-filter" data-toggle="collapse" data-target="#collapseFilter" (click)="toggleFilters()">
+                    <i class="fas fa-sliders-h ico-filter" [title]="lang.table.filters"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="filtersButtons != null && filtersButtons.length > 0" class="col-auto pt-2px">
+        <ng-container *ngFor="let filtersButton of filtersButtons">
+            <button class="btn" [ngClass]="{ 'btn-filter-selected': filterItemsSelected(filtersButton.key, filtersButton.value) }" (click)="filterItemsBy(filtersButton.key, filtersButton.value)">
+                <i class="fas fa-filter mr-2"></i>{{ filtersButton.label }}
+            </button>
+        </ng-container>
+    </div>
+</div>
+<div class="row">
+    <div *ngIf="columnsWithFilter.length > 0" class="col-12 collapse" [ngClass]="{ show: advancedFiltersUnfolded }" id="collapseFilter">
+        <div class="card mt-1">
+            <div class="card-body">
+                <div class="form-row">
+                    <ng-container *ngFor="let column of columnsWithFilter">
+                        <div *ngIf="column.hidden == null || !column.hidden" class="col">
+                            <label>{{ getColumnLabel(column) }}</label>
+                            <input *ngIf="filters != null" type="text" class="form-control" autocomplete="off" [(ngModel)]="filters[column.key]" (keyup)="filterItems()">
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div [ngClass]="{ 'overflow-auto tableFixHead': isScrollable, 'tableFixSecChild': fixSecChild, 'rubrique-table-width': isInsideModal }">
+    <table [class]="'table grid mt-2 ' + (maxContentColumn ? 'max-content' : '')">
+        <thead>
+            <tr>
+                <ng-container *ngFor="let column of columns; let indexColumn = index">
+                    <th *ngIf="!column.action || (column.action && !disabledEditAndDelete && (column.role == null || app.existStringInarray(userRole, column.role)))" [title]="((column.tooltip != null) ? column.tooltip : '')" [ngClass]="{ 'text-right th-amount': (column.amount), 'th-amount-no-sort': (column.amount && isHideSort), 'd-none': column.hidden }" scope="col" [style]="(column.width != null  && (column.role == null || app.existStringInarray(userRole, column.role))) ? 'width: ' + column.width : ((column.action) ? 'width: 0' : '')" (click)="sortItems(column)" [class]="((column.applyBorderRight && indexColumn < columns.length - 2) ? 'border-right' : '')">
+                        <span>
+                            <button *ngIf="column.isCheckAll" class="btn btn-checkbox" (click)="toggleBoolean(items, column.key, $event, column.uniqueChoice)">
+                                <i *ngIf="!app.isTrueAll(items, column.key)" class="far fa-square bg-white"></i>
+                                <i *ngIf="app.isTrueAll(items, column.key)" class="fas fa-check-square"></i>
+                            </button>
+                        </span>
+                        <span *ngIf="column.action == null">{{ getColumnLabel(column) }}</span>
+                        <i *ngIf="showColumnSort(column)" [ngClass]="getColumnSort(column)"></i>
+                    </th>
+                </ng-container>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngIf="loading">
+                <td [attr.colspan]="columns.length">
+                    <app-spinner [error]="errorLoading"></app-spinner>
+                </td>
+            </tr>
+            <ng-container *ngFor="let item of itemsInPage; let indexItem = index">
+                <tr *ngIf="!loading && items != null && items.length > 0" [class]="'body-tr border' + ((isHighlightRow(item)) ? ' body-tr-highlight-' + highlightMode : '') + ((!lineClickable) ? ' cursor-default' : '')" (click)="getClick($event, item)">
+                    <ng-container *ngFor="let column of columns; let indexColumn = index">
+                        <td *ngIf="!column.action || (column.action && !disabledEditAndDelete && (column.role == null || app.existStringInarray(userRole, column.role)))" [ngClass]="{ 'text-right td-amount': (column.amount), 'd-none': column.hidden, 'td-truncate': survolActif(column, item) }" [class]="((column.applyBorderRight && indexColumn < columns.length - 2) ? 'border-right' : '')">
+                            <span *ngIf="column.action == null" class="w-100 span-truncate">
+                                <span *ngIf="column.type == 'addSPC'">
+                                    <button *ngIf="item.niveau == '1'" class="btn btn-secondary" (click)="emit(column.type, item)" [title]="lang.controlesDCV.titleAddSPC"><i class="fa fa-plus-circle"></i></button>
+                                </span>
+                                <span *ngIf="column.type == 'order'">
+                                    <button class="btn btn-secondary" (click)="decrementOrder(item)"><i class="fas fa-chevron-up ml-0"></i></button>
+                                    <button class="btn btn-secondary" (click)="incrementOrder(item)"><i class="fas fa-chevron-down ml-0"></i></button>
+                                </span>
+                                <span *ngIf="column.type == 'payback'">
+                                    <span [class]="'d-inline-block ' +(!app.isRefundable(item) ? 'cursor-default' : '')" tabindex="0" [title]="lang.ddrDefinitif.payback">
+                                        <button [class]="'btn event-catcher btn-secondary mr-2' + (!app.isRefundable(item) ? 'event-pointer-none' : '')" type="button" [disabled]="!app.isRefundable(item)" (click)="emit(column.type, item)"><i class="event-catcher fas fa-coins"></i></button>
+                                    </span>
+                                </span>
+                                <span *ngIf="column.type == 'file'; else ngElseIfColumnType1">
+                                    <span [class]="'d-inline-block ' +(!app.isNotDownloadable(item) ? 'cursor-default' : '')" tabindex="0" [title]="lang.reglement.tooltipDdr">
+                                        <button [class]="'btn event-catcher btn-secondary mr-2' + (!app.isNotDownloadable(item) ? 'event-pointer-none' : '')" type="button" [disabled]="!app.isNotDownloadable(item)" (click)="emit(column.type, item)"><i class="event-catcher fas fa-file-pdf"></i></button>
+                                    </span>
+                                </span>
+                                <ng-template #ngElseIfColumnType1>
+                                    <!-- colonne de type number -->
+                                    <span *ngIf="column.type == 'number' && column.editable == null; else ngElseIfColumnType2" [class]="(column.compareWith != null && !app.isEgaux(item[column.key], item[column.compareWith.key])) ? 'element-underline-danger' : 'text-decoration-none'">
+                                        {{ renderItem(item, column) }}
+                                        <span *ngIf="column.secKey != null && column.secKey.ref != null">
+                                            {{ app.capitalize(app.getRefLabel(column.secKey.ref, item[column.secKey.key])) }}
+                                        </span>
+                                        <span *ngIf="column.secKey != null && column.secKey.ref == null">
+                                            {{ item[column.secKey.key] }}
+                                        </span>
+                                    </span>
+                                </ng-template>
+                                <ng-template #ngElseIfColumnType2>
+                                    <span *ngIf="column.secKey != null && column.secKey.type == 'parentId'; else ngElseIfColumnType3">
+                                        <span *ngIf="item[column.key] != null && item[column.key] != ''">{{ renderItem(item, column) }} -&nbsp;</span>{{ item[column.secKey.key] }}
+                                    </span>
+                                </ng-template>
+                                <ng-template #ngElseIfColumnType3>
+                                    <!-- <column editable> -->
+                                    <span *ngIf="column.editable; else ngElseColumnType" [class]="column.changeCss ? item.classCss: ''">
+                                        <ng-container *ngIf="(column.hideIfValue != null && item[column.hideIfValue.key] == column.hideIfValue.value); else ngElseColumnTypeEditableDisplay">
+                                            -
+                                        </ng-container>
+                                        <ng-template #ngElseColumnTypeEditableDisplay>
+                                            <!-- <column boolean> -->
+                                            <button *ngIf="column.type == 'boolean'; else ngElseColumnTypeEditable" class="btn btn-checkbox" (click)="toggleBoolean(item, column.key, null, column.uniqueChoice)" [disabled]="item.disabledCheckBox">
+                                                <i *ngIf="!app.isTrue(item[column.key])" class="far fa-square bg-white"></i>
+                                                <i *ngIf="app.isTrue(item[column.key])" class="fas fa-check-square"></i>
+                                            </button>
+                                            <!-- <column autre que boolean> -->
+                                            <ng-template #ngElseColumnTypeEditable>
+                                                <!-- <column autre que boolean avec pas separator> -->
+                                                <ng-container *ngIf="!column.ref">
+                                                    <input *ngIf="!column.separator; else ngElseColumnTypeSeparator" [disabled]="item.disabled || column.read || (item.collumnsDisabled != null && item.collumnsDisabled[column.key])" [type]="((column.type == 'date') ? 'date' : 'text')" class='form-control' [class]="(column.applyBorderDanger != null && item.applyBorderDanger != null && applyBorderDanger(item, column.key)) ? 'border border-danger' : ''" [(ngModel)]="item[column.key]" (blur)="changeInputItem(item, column.key, indexItem)" onclick="this.showPicker()">
+                                                </ng-container>
+                                                <ng-container *ngIf="column.ref">
+                                                    <select class="form-control checkbox-Column" [(ngModel)]="item[column.key]" [disabled]="(item.collumnsDisabled != null && item.collumnsDisabled[column.key])">
+                                                        <option *ngFor="let refEl of app.getRef(column.ref)" [value]="refEl.code">{{ refEl.code }}</option>
+                                                    </select>
+                                                </ng-container>
+                                                <ng-template #ngElseColumnTypeSeparator>
+                                                    <div [class]="item.clumnsIcons != null && item.clumnsIcons[column.key] != null ? 'input-group' : ''">
+                                                        <input type="text" class="form-control formio-amount" [disabled]="item.disabled || column.read || (item.collumnsDisabled != null && item.collumnsDisabled[column.key])" [class]="(column.applyBorderDanger != null && item.applyBorderDanger != null && applyBorderDanger(item, column.key)) ? 'border border-danger' : ''" [(ngModel)]="item[column.key]" (ngModelChange)="changeInputItem(item, column.key, indexItem)" separator autofocus>
+                                                        <div *ngIf="item.clumnsIcons != null" class="input-group-append">
+                                                            <div *ngIf="item.clumnsIcons[column.key] != null" class="input-group-text">
+                                                                <i class="fa fa-percent"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </ng-template>
+                                            </ng-template>
+                                        </ng-template>
+                                    </span>
+                                </ng-template>
+                                <ng-template #ngElseColumnType>
+                                    <span [class]="'span-truncate ' + (column.applyHighlight && isHighlightColCanceled(item) ? 'text-danger' : ((item.customClass != null && column.applyCostumClass) ? item.customClass : ''))">
+                                        <div [innerHTML]="renderItem(item, column)" class="w-100 text-truncate" [title]="(survolActif(column, item) ? renderItem(item, column) : '')"></div>
+                                    </span>
+                                </ng-template>
+                            </span>
+                            <div *ngIf="column.action == null && column.subKeys != null" class="w-100">
+                                <div *ngFor="let subKey of column.subKeys" [class]="'subitem ' + (survolActif(column, item) ? 'span-truncate' : '')">
+                                    <span *ngIf="subKey != null && subKey.entite != null && subKey.entite == entite; else ngElseIfSubitem" [innerHTML]="renderItem(item, subKey)"></span>
+                                    <ng-template #ngElseIfSubitem>
+                                        <span *ngIf="item[subKey.key] != null && (subKey.type == null || subKey.type != 'lien_rome')" [innerHTML]="renderItem(item, subKey)" class="w-100 text-truncate" [title]="renderItem(item, subKey)"></span>
+                                        <span *ngIf="item[subKey.key] != null && subKey.type != null && subKey.type == 'lien_rome'" class="w-100 text-truncate comment-link event-catcher" [title]="renderItem(item, subKey)" (click)="app.gotoLink(item[subKey.key])">Lien Rome</span>
+                                    </ng-template>
+                                </div>
+                            </div>
+                            <span *ngIf="isHighlightRowDeleted(item) && column.action && isEnableAction(item, column) && !disabledEditAndDelete && (column.role == null || app.existStringInarray(userRole, column.role))" class="body-tr-highlight-deleted" title="Cet élément est supprimé">
+                                <i class="fas fa-times"></i>
+                            </span>
+                            <button *ngIf="!isHighlightRowDeleted(item) && column.action && isEnableAction(item, column) && !disabledEditAndDelete && (column.role == null || column.role == userRole) && !noRightBtn && (item.showRightIcon == null || (item.showRightIcon != null && item.showRightIcon))" class="btn event-catcher" [ngClass]="{ action: (column.type == 'validate') }" [title]="getColumnTooltip(column)" (click)="emit(column.type, item)" [disabled]="item.disabled">
+                                <i *ngIf="getColumnType(column.type) == 'goto'" class="fas fa-folder event-catcher"></i>
+                                <i *ngIf="getColumnType(column.type) == 'edit'" class="fa fa-pen event-catcher"></i>
+                                <i *ngIf="getColumnType(column.type) == 'update'" class="fa fa-pen event-catcher"></i>
+                                <i *ngIf="getColumnType(column.type) == 'delete'" class="fa fa-trash event-catcher"></i>
+                                <i *ngIf="getColumnType(column.type) == 'treat'" class="fa fa-user-cog event-catcher"></i>
+                                <i *ngIf="getColumnType(column.type) == 'affect'" class="fa fa-user-cog event-catcher"></i>
+                                <i *ngIf="getColumnType(column.type) == 'select'" class="fa fa-plus event-catcher"></i>
+                                <i *ngIf="getColumnType(column.type).startsWith('add')" class="fa fa-plus-circle event-catcher"></i>
+                            </button>
+                        </td>
+                    </ng-container>
+                </tr>
+            </ng-container>
+            <tr *ngIf="!hideFooter" class="footer">
+                <td [attr.colspan]="(!enableRefresh && !enablePagination) ? '3' : columns.length">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div *ngIf="!enableRefresh" class="d-flex align-items-center">
+                        </div>
+                        <div *ngIf="enableRefresh" class="d-flex align-items-center">
+                            <ng-container *ngIf="idRefresh != null">
+                                <button [id]="idRefresh" class="btn btn-alter mr-3" [ngClass]="{ 'd-none': read }" (click)="doRefresh()" [title]="lang.table.refresh">
+                                    <i class="fa fa-refresh"></i>
+                                </button>
+                            </ng-container>
+                            <ng-container *ngIf="idRefresh == null">
+                                <button class="btn btn-alter mr-3" [ngClass]="{ 'd-none': read }" (click)="doRefresh()" [title]="lang.table.refresh">
+                                    <i class="fa fa-refresh"></i>
+                                </button>
+                            </ng-container>
+                            <button *ngIf="enableExport" class="btn btn-alter btn-spinner mr-3" (click)="exportTable()" [title]="lang.table.export">
+                                <span *ngIf="loadingExport" class="spinner-border spinner-border-sm mr-1"></span>
+                                <i *ngIf="!loadingExport" class="fa fa-download"></i>
+                            </button>
+                            <div *ngIf="items != null && items.length > 0">
+                                {{ lang.table.results }} <b>{{ itemsByPage * (currentPage - 1) + 1 }}</b> {{ lang.table.pagingTo }} <b>{{ pageMax }}</b> {{ lang.table.pagingOf }} <b>{{ itemsCount }}</b>
+                            </div>
+                            <div *ngIf="items == null || items.length == 0">
+                                {{ lang.table.noResult }}
+                            </div>
+                        </div>
+                        <button *ngIf="enableAdd" #btnAdd class="btn" (click)="emit('add')" [title]="tooltipAdd" [class]="(!enablePagination && !enableRefresh) ? 'd-flex align-items-center td-fixed' : ''">
+                            <span *ngIf="isLoadingBtnAdd" class="spinner-border spinner-border-sm mr-1"></span>
+                            <i *ngIf="!isLoadingBtnAdd"  class="fa fa-plus-circle"></i>
+                        </button>
+                        <ul *ngIf="enablePagination" class="pagination">
+                            <li class="page-item" [ngClass]="{ disabled: (currentPage == 1) }" (click)="changePage(currentPage - 1)">
+                                <a class="page-link">{{ lang.table.previous }}</a>
+                            </li>
+                            <ng-container *ngIf="pagesCount <= maxPages">
+                                <li *ngFor="let n of pagesCountArray" class="page-item" [ngClass]="{ active: (currentPage == n) }" (click)="changePage(n)">
+                                    <a class="page-link">{{ n }}</a>
+                                </li>
+                            </ng-container>
+                            <ng-container *ngIf="pagesCount > maxPages">
+                                <li class="page-item" [ngClass]="{ active: (currentPage == 1) }" (click)="changePage(1)">
+                                    <a class="page-link">1</a>
+                                </li>
+                                <li *ngIf="showPaginationFirstDots" class="page-item">
+                                    <a class="page-link">...</a>
+                                </li>
+                                <li *ngFor="let n of pagesCountArray" class="page-item" [ngClass]="{ active: (currentPage == n) }" (click)="changePage(n)">
+                                    <a class="page-link">{{ n }}</a>
+                                </li>
+                                <li *ngIf="showPaginationLastDots" class="page-item">
+                                    <a class="page-link">...</a>
+                                </li>
+                                <li class="page-item" [ngClass]="{ active: (currentPage == pagesCount) }" (click)="changePage(pagesCount)">
+                                    <a class="page-link">{{ pagesCount }}</a>
+                                </li>
+                            </ng-container>
+                            <li class="page-item" [ngClass]="{ disabled: (currentPage == pagesCount || items == null || items.length == 0) }" (click)="changePage(currentPage + 1)">
+                                <a class="page-link">{{ lang.table.next }}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,50 @@
+<div class="container subform mt-4 pb-2">
+    <div class="fieldset-title mb-3 mt-3">{{ lang.users.roleEntite }}</div>
+    <div class="row mt-0">
+        <div class="col align-self-center">
+            <div class="row">
+                <div class="col-7 form-group">
+                    <label>{{ lang.users.entite }}</label>
+                    <select class="form-control" [(ngModel)]="filtreEntite" (change)="changeEntite()">
+                        <option *ngFor="let entite of entites" [ngValue]="entite">{{ entite.code }} - {{ entite.label }}</option>
+                    </select>
+                </div>
+                <div class="col form-group">
+                    <label>{{ lang.users.role }}</label>
+                    <select class="form-control" [(ngModel)]="filtreRole" (change)="changeRole()">
+                        <option *ngFor="let r of roles" [ngValue]="r">{{ r.libelle }}</option>
+                    </select>
+                </div>
+                <div class="col-auto form-group">
+                    <button [disabled]="isDisabledAddAdhesionButtons()" class="btn btn-save w-100 mt-4" (click)="addAdhesion()">
+                        <i class="fa fa-plus"></i> {{ lang.users.addRoleEntite }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="userRoles != null && userRoles.length > 0">
+        <div class="row controle-filtre mt-3 mb-2">
+            <div class="col align-self-center">
+                <span *ngFor="let r of userRoles; let idxRole = index" class="critere role">
+                    <div class="row">
+                        <div class="col align-self-center">
+                            {{ r.entiteOrga.typeEntiteOrga }} - {{ r.entiteOrga.libCourt }} - {{ app.getRefLabel('refRoles', r.id.roleUtilisateur) }}
+                        </div>
+                        <div class="col-auto align-self-center">
+                            <button class="btn btn-save w-100" (click)="deleteRole(r)">
+                                <i class="fa fa-times"></i> 
+                            </button>
+                        </div>
+                    </div>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="filtreEntite != null && filtreRole != null" class="toast error" id="toastUtilisateurAdhesionExist">
+    {{ lang.users.toastExist }} {{ this.utilisateurAdhesionExist }} {{ lang.users.toastExist2 }}
+</div>
+<div *ngIf="filtreEntite != null && filtreRole != null" class="toast error" id="toastUtilisateurOneAdhesionByEntite">
+    {{ lang.users.toastOneAdhesion }} {{ this.userCurrentEntite }}
+</div>

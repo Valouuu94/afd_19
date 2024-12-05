@@ -1,0 +1,91 @@
+<div *ngIf="listCoordonneesBancaires != null">
+    <label class="mt-4">{{ lang.reglement.tiers.labelSelectCoordonneeBancaire }} <span class="text-danger">*</span></label>
+    <div *ngIf="listCoordonneesBancaires.length > 0" class="row">
+        <div class="d-flex col-4">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <select class="form-control w-auto" [class]="(checkSelectCoordonneeBancaire && app.isEmpty(coordonneeBancaireSelected)) ? 'border border-danger' : ''" [(ngModel)]="coordonneeBancaireSelected" [disabled]="read || listCoordonneesBancaires.length == 1" (change)="getDetailCoordonneBancaire()">
+                        <option *ngFor="let coordonnesB of listCoordonneesBancaires" [ngValue]="coordonnesB">{{ coordonnesB.idNumCpt }} - {{coordonnesB.libCpte }}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="checkSelectCoordonneeBancaire && app.isEmpty(coordonneeBancaireSelected)" class="form-text error mt-2">
+        {{ lang.formFieldMandatory }}
+    </div>
+</div>
+<div *ngIf="coordonneeBancaire != null" class="accordion container float-left p-1">
+    <div [class]="'card infos card-collapse mt-3' + (!isAFD ? ' mb-3' : '')">
+        <div class="card-header card-collapse-header mb-2" data-target="#collapseInfoCB">
+            <i class="fas fa-window-restore mr-3"></i>
+            {{ coordonneeBancaire.libCpte }}
+        </div>
+        <div id="collapseInfoCB" class="collapse show">
+            <div class="card-body">
+                <div class="container px-2">
+                    <div class="row mt-0 pb-2 card-collapse-separator">
+                        <div class="col-2">
+                            <div class="card-collapse-th"> {{ lang.reglement.tiers.coordonneBancaire.typeBanque }} </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="card-collapse-th"> {{ lang.reglement.tiers.coordonneBancaire.libelleCompte }} </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="card-collapse-th"> {{ lang.reglement.tiers.coordonneBancaire.banque }} </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="card-collapse-th"> {{ lang.reglement.tiers.coordonneBancaire.pays }} </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="card-collapse-th"> {{ lang.reglement.tiers.coordonneBancaire.numCompte }} </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="card-collapse-th"> {{ lang.reglement.tiers.coordonneBancaire.bicSwift }} </div>
+                        </div>
+                    </div>
+                    <div class="row mt-2 pb-2 card-collapse-separator">
+                        <div class="col-2">
+                            <div> {{ lang.reglement.tiers.coordonneBancaire.banqueClient }}</div>
+                        </div>
+                        <div class="col-2">
+                            <div> {{ coordonneeBancaire.libCpte }} </div>
+                        </div>
+                        <div class="col-2">
+                            <div> {{ coordonneeBancaire.banque }} </div>
+                        </div>
+                        <div class="col-2">
+                            <div> {{ coordonneeBancaire.libCourtPays }} </div>
+                        </div>
+                        <div class="col-2">
+                            <div> {{ coordonneeBancaire.idNumCpt }} </div>
+                        </div>
+                        <div class="col-2">
+                            <div> {{ coordonneeBancaire.bic11 }} </div>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-2">
+                            <div> {{ lang.reglement.tiers.coordonneBancaire.banqueIntermidiaire }} </div>
+                        </div>
+                        <div class="col-2">
+                            <div> - </div>
+                        </div>
+                        <div class="col-2">
+                            <div> {{ app.renderEmpty(coordonneeBancaire.bankIntermed) }} </div>
+                        </div>
+                        <div class="col-2">
+                            <div> - </div>
+                        </div>
+                        <div class="col-2">
+                            <div> - </div>
+                        </div>
+                        <div class="col-2">
+                            <div> {{ app.renderEmpty(coordonneeBancaire.bic11Bankintermed) }} </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

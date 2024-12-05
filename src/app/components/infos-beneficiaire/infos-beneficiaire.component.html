@@ -1,0 +1,96 @@
+<div *ngIf="!app.isEmpty(beneficiaire)" class="accordion container float-left p-1">
+    <div class="card infos card-collapse mt-3">
+        <div class="card-header card-collapse-header mb-2">
+            <i class="fas fa-window-restore mr-3"></i>
+            {{ beneficiaire.idTiers }} - {{ beneficiaire.libLong }}
+        </div>
+        <div class="collapse show">
+            <div class="card-body">
+                <div class="container px-2">
+                    <div class="row mt-0 pb-2 card-collapse-separator">
+                        <div class="col">
+                            <div class="card-collapse-th">{{ lang.id }}</div>
+                        </div>
+                        <div class="col">
+                            <div class="card-collapse-th">{{ lang.libelle }}</div>
+                        </div>
+                        <div class="col">
+                            <div class="card-collapse-th">{{ lang.adresse }}</div>
+                        </div>
+                        <div class="col">
+                            <div class="card-collapse-th">{{ lang.CodePostalVille }}</div>
+                        </div>
+                        <div class="col">
+                            <div class="card-collapse-th">{{ lang.paYs }}</div>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col">
+                            <div>{{ beneficiaire.idTiers }}</div>
+                        </div>
+                        <div class="col">
+                            <div>{{ beneficiaire.libLong }}</div>
+                        </div>
+                        <div class="col">
+                            <div>{{ app.renderEmpty(beneficiaire?.adresse?.adresse) }}</div>
+                        </div>
+                        <div class="col">
+                            <div>{{ app.renderEmpty(beneficiaire?.adresse?.ville) }}</div>
+                        </div>
+                        <div class="col">
+                            <div>{{ app.renderEmpty(beneficiaire?.adresse?.paysAdresse?.libelleLongPays) }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="objectParentRepris && app.isEmpty(beneficiaire) && !app.isEmpty(idBeneficiaireInput)" class="accordion container float-left p-1">
+    <div class="card infos card-collapse mt-3">
+        <div class="card-header card-collapse-header mb-2">
+            <i class="fas fa-window-restore mr-3"></i>
+            <span class="text-danger">{{ idBeneficiaireInput }} - {{ lang.infosTierNonDisponibles }}</span>
+        </div>
+        <div class="collapse show">
+            <div class="card-body">
+                <div class="container px-2">
+                    <div class="row mt-0 pb-2 card-collapse-separator">
+                        <div class="col">
+                            <div class="card-collapse-th">{{ lang.id }}</div>
+                        </div>
+                        <div class="col">
+                            <div class="card-collapse-th">{{ lang.libelle }}</div>
+                        </div>
+                        <div class="col">
+                            <div class="card-collapse-th">{{ lang.adresse }}</div>
+                        </div>
+                        <div class="col">
+                            <div class="card-collapse-th">{{ lang.CodePostalVille }}</div>
+                        </div>
+                        <div class="col">
+                            <div class="card-collapse-th">{{ lang.paYs }}</div>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                       
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="showTiersUsedByConcours && !objectParentRepris" class="container ml--3">
+    <div *ngIf="(concoursTiers == null || concoursTiers.length == 0) && beneficiaire != null" class="row">
+        <div class="bg-light rounded p-3 mt-3 w-100 mr-4">
+            <div class="row">
+                <div class="col-auto p-2 d-flex">
+                    <i class="fa fa-exclamation-circle text-warning"></i>
+                </div>
+                <div class="mt-2 mr-2">
+                    {{ lang.reglement.tiers.tiersUsedByConcours }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

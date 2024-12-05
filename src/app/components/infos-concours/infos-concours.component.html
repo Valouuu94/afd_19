@@ -1,0 +1,151 @@
+<div *ngIf="concours != null" class="accordion container float-left p-1">
+    <div class="card infos card-collapse mt-3 mb-2">
+        <!-- <div class="card-header card-collapse-header mb-2" data-target="#collapseInfoConcours">
+            <i class="fas fa-window-restore mr-3"></i>
+            {{ lang.infosConcours.donneesSI }}
+        </div> -->
+        <div id="collapseInfoConcours" class="collapse show">
+            <div class="card-body">
+                <div class="container px-2">
+                    <!-- AFD -->
+                    <div *ngIf="isAFD" class="row mt-2 pb-2 card-collapse-separator">
+                        <div class="col-3">
+                            <span class="card-collapse-th">{{ lang.infosConcours.signatureConvention }}</span>
+                        </div>
+                        <div class="col-2">
+                            <span class="card-collapse-th">{{ lang.infosConcours.dlvf }}</span>
+                        </div>
+                        <div class="col-4">
+                            <span class="card-collapse-th">{{ lang.infosConcours.dao }}</span>
+                        </div>
+                        <div class="col">
+                            <span class="card-collapse-th">{{ lang.infosConcours.produit }}</span>
+                        </div>
+                        <div class="col">
+                            <span class="card-collapse-th">{{ lang.infosConcours.operation }}</span>
+                        </div>
+                    </div>
+                    <div *ngIf="isAFD" class="row mt-2 pb-2">
+                        <div class="col-3">
+                            {{ app.renderEmpty(app.formatDate(concours.dateSignatureConvention)) }}
+                        </div>
+                        <div class="col-2">
+                            {{ app.renderEmpty(app.formatDate(concours.dlvf)) }}
+                        </div>
+                        <div class="col-4">
+                            {{ app.renderEmpty(app.formatDate(concours.dateAchevementOperationnel)) }}
+                        </div>
+                        <div class="col">
+                            {{ concours.idProduitFinancier }}
+                        </div>
+                        <div class="col">
+                            {{ concours.idOperation }}
+                        </div>
+                    </div>
+                    <div *ngIf="isAFD" class="row mt-4 pb-2 card-collapse-separator">
+                        <div class="col-3">
+                            <span class="card-collapse-th">{{ lang.infosConcours.engagementNet }}</span>
+                        </div>
+                        <div class="col-2">
+                            <span class="card-collapse-th">{{ lang.infosConcours.montantVerse }}</span>
+                        </div>
+                        <div class="col-4">
+                            <span class="card-collapse-th">{{ lang.infosConcours.rav }}</span>
+                        </div>
+                        <div class="col">
+                            <span class="card-collapse-th">{{ lang.infosConcours.impayes }}</span>
+                        </div>
+                        <div class="col">
+                            <span class="card-collapse-th"></span>
+                        </div>
+                    </div>
+                    <div *ngIf="isAFD" class="row mt-2 pb-2">
+                        <div class="col-3">
+                            {{ app.renderEmpty(app.formatNumberWithDecimals(concours.montantEngagementsNets)) }} {{ concours.idDevise }}
+                        </div>
+                        <div class="col-2">
+                            {{ app.renderEmpty(app.formatNumberWithDecimals(concours.montantVersementsEffectues)) }} {{ concours.idDevise }}
+                        </div>
+                        <div class="col-4">
+                            {{ app.renderEmpty(app.formatNumberWithDecimals(concours.resteAVerser)) }} {{ concours.idDevise }}
+                        </div>
+                        <div class="col">
+                            {{ concours.impayes }}
+                        </div>
+                        <div class="col">
+                        </div>
+                    </div>
+                    <!-- PROPARCO -->
+                    <div *ngIf="!isAFD" class="row mt-0 pb-2 card-collapse-separator">
+                        <div class="col-3">
+                            <span class="card-collapse-th">{{ lang.infosConcours.signatureConvention }}</span>
+                        </div>
+                        <div class="col">
+                            <span class="card-collapse-th">{{ lang.infosConcours.dlvf }}</span>
+                        </div>
+                        <div class="col">
+                            <span class="card-collapse-th">{{ lang.infosConcours.dat }}</span>
+                        </div>
+                        <div class="col">
+                            <span class="card-collapse-th">{{ lang.infosConcours.produit }}</span>
+                        </div>
+                        <div class="col">
+                            <span class="card-collapse-th">{{ lang.infosConcours.operation }}</span>
+                        </div>
+                    </div>
+                    <div *ngIf="!isAFD" class="row mt-2 pb-2">
+                        <div class="col-3">
+                            {{ app.renderEmpty(app.formatDate(concours.dateSignatureConvention)) }}
+                        </div>
+                        <div class="col">
+                            {{ app.renderEmpty(app.formatDate(concours.dlvf)) }}
+                        </div>
+                        <div class="col">
+                            {{ app.renderEmpty(app.formatDate(concours.dateAchevementOperationnel)) }}
+                        </div>
+                        <div class="col">
+                            {{ concours.idProduitFinancier }}
+                        </div>
+                        <div class="col">
+                            {{ concours.idOperation }}
+                        </div>
+                    </div>
+                    <div *ngIf="!isAFD" class="row mt-4 pb-2 card-collapse-separator">
+                        <div class="col-3">
+                            <span class="card-collapse-th">{{ lang.infosConcours.engagementNet }}</span>
+                        </div>
+                        <div class="col">
+                            <span class="card-collapse-th">{{ lang.infosConcours.sousParticipationAfd }}</span>
+                        </div>
+                        <div class="col">
+                            <span class="card-collapse-th">{{ lang.infosConcours.versementsAffectues }}</span>
+                        </div>
+                        <div class="col">
+                            <span class="card-collapse-th">{{ lang.infosConcours.rav }}</span>
+                        </div>
+                        <div class="col">
+                            <span class="card-collapse-th">{{ lang.infosConcours.impayesSirp }}</span>
+                        </div>
+                    </div>
+                    <div *ngIf="!isAFD" class="row mt-2 pb-2">
+                        <div class="col-3">
+                            {{ app.renderEmpty(app.formatNumberWithDecimals(concours.montantEngagementsNets)) }} {{ concours.idDevise }}
+                        </div>
+                        <div class="col">
+                            {{ app.renderEmpty(app.formatNumberWithDecimals(concours.montantSousParticipationAfd)) }} {{ concours.idDevise }}
+                        </div>
+                        <div class="col">
+                            {{ app.renderEmpty(app.formatNumberWithDecimals(concours.montantVersementsEffectues)) }} {{ concours.idDevise }}
+                        </div>
+                        <div class="col">
+                            {{ app.renderEmpty(app.formatNumberWithDecimals(concours.resteAVerser)) }} {{ concours.idDevise }}
+                        </div>
+                        <div class="col">
+                            {{ concours.impayes }} {{ concours.idDevise }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

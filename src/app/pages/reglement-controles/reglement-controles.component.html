@@ -1,0 +1,375 @@
+<!-- NAVIGATION -->
+<app-nav-actions>
+    <div *ngIf="!newTab" class="col">
+        <button class="btn btn-secondary" (click)="annulerTache()">
+            {{ lang.return }}
+        </button>
+    </div>
+    <div *ngIf="!isDCV" class="col d-flex align-items-center">
+        <label class="switch">
+            <input type="checkbox" [(ngModel)]="switchToggleComments" (change)="toggleComments()">
+            <span class="slider round"></span>
+        </label>
+        <span class="ml-3 switch-label">{{ lang.deployComments }}</span>
+    </div>
+    <div class="col-md-auto d-flex">
+        <app-btnMenu *ngIf="showBtnMenu()" icon="fas fa-ellipsis-h" side="right">
+            <app-btn *ngIf="tache != null && !app.taskIsMisePaiement(tache)" #btnAnnulerDossier [inMenu]=true colorLabel="text-danger" [label]="isDCV ? lang.reglement.annulerDossier2ndNivBtn : lang.reglement.annulerDossierbtn" (action)="notification.showModalNotification(-1)"></app-btn>
+            <app-btn *ngIf="app.enableShowBtnRemboursement(reglement) && !disableRemboursement" #btnRemboursement [inMenu]=true [label]="lang.versement.remb" [disabled]="reglement.code_statut_dossier =='DDR12' || reglement.code_statut_dossier =='DDR11'" (action)="confirmAddJustifRemboursement()"></app-btn>
+            <app-btn *ngIf="ddrIsValide()" #btnExportFicheBan [inMenu]=true [label]="lang.reglement.extractBAN" (action)="exportBanToPDF()"></app-btn>
+            <app-btn *ngIf="verifExportDdrNiv2()" #btnExportPDFBan [inMenu]=true [label]="lang.reglement.extractControles" (action)="exportControleToPDF()"></app-btn>
+            <app-btn *ngIf="showNotifAbandonDossierNiv2()" #btnHistoriqueDossierAbandonne [inMenu]=true [label]="lang.commentaireNotification.titleBtnHistoriqueDossierAbandonne" (action)="historiqueDossierAbandonne()"></app-btn>
+        </app-btnMenu>
+        <app-btn #btnSaveControles *ngIf="!read && !app.isEmpty(reglement) && !app.isDossierAnnule(reglement.code_statut_dossier) && !app.isMiseEnPaiementTask(tache)" [label]="lang.save" type="secondary" ico="save" (action)="validerTache(false, false)"></app-btn>
+        <app-btn #btnSaveDdrDefinif *ngIf="tache != null && app.isMiseEnPaiementTask(tache) && isDefinitifDDR && !readDdrDefinitif" [label]="lang.validate" type="secondary" ico="check" (action)="verifDDRDefinitif()"></app-btn>
+        <button *ngIf="tache != null && !app.isAgentVersement(role) && !app.isChargeAppui(role) && !isDCV" class="btn btn-secondary ml-2 float-right" (click)="notification.showModalNotification(1)">
+            <i class="fas fa-reply"></i> {{ lang.resend }}
+        </button>
+        <button *ngIf="tache != null && !app.isDirecteur(role) && !isDCV && !app.isMiseEnPaiementTask(tache)" class="btn btn-new ml-2 float-right" (click)="notification.showModalNotification(0)">
+            <i class="fas fa-arrow-right"></i> {{ lang.reglementControles.validateControls }}
+        </button>
+        <button *ngIf="tache != null && (app.isDirecteur(role) || isDCV)" class="btn btn-new ml-2 float-right" (click)="validerTacheDir()">
+            <i class="fas fa-arrow-right"></i> {{ lang.reglementControles.validateControls }}
+        </button>
+    </div>
+</app-nav-actions>
+<!-- CONTENT -->
+<app-content>
+    <!-- NIVEAU 1 -->
+    <div *ngIf="!isDCV" class="row d-flex mt-2" [ngClass]="{ 'invisible': loading }">
+        <div id="sidebar-col" class="col-12 col-md-4 col-xl-3">
+            <app-card [autoHeight]=false>
+                <div id="sidebar-container" class="container infos-dossier">
+                    <span *ngIf="showSidebar" class="mb-3 mt-4 info-header text-uppercase">{{ lang.reglementControles.contexteDossier }}</span>
+                    <button class="btn btn-collapse-sidebar float-right" (click)="app.toggleSidebar(this)" [title]="titleSidebarToggle">
+                        <i id="ico-sidebar-context" class="fas fa-compress-alt"></i>
+                    </button>
+                    <app-infos-context #infosContext *ngIf="showSidebar && !loading" [reglement]="reglement" [versement]="versement" [entite]="entite" [isDCV]="isDCV"></app-infos-context>
+                </div>
+            </app-card>
+        </div>
+        <div id="sidebar-col-content" class="col-12 col-md-8 col-xl-9">
+            <div class="row d-flex">
+                <div class="col">
+                    <app-card [autoHeight]=false className="mt-0">
+                        <div class="m-4">
+                            <div>
+                                <div *ngIf="reglement == null" class="container">
+                                    <app-spinner></app-spinner>
+                                </div>
+                                <app-infos-dossier #infosDossier *ngIf="reglement != null && !loading" [dossier]="reglement" type="DDR" [versement]="versement"></app-infos-dossier>
+                            </div>
+                            <h4 *ngIf="tache != null" class="titre">
+                                {{ tache.name }}
+                                <i class="fas fa-question-circle info-bulle" [title]="lang.reglement.titleTacheTooltip"></i>
+                            </h4>
+                            <div class="row d-flex mt-4">
+                                <div class="col" *ngIf="versement != null && reglement != null">
+                                    <app-infos-versement [versement]="versement" [caseId]="reglement.case_id" [tache]="tache" [role]="role"></app-infos-versement>
+                                </div>
+                            </div>
+                            <div class="row d-flex mt-4 mb-4">
+                                <div class="col-12">
+                                    <h6>{{ lang.reglementControles.reglementRequest }}</h6>
+                                </div>
+                                <div *ngIf="reglement != null" class="col-12">
+                                    <app-table #tableReglements [type]="'reglements' + entite" [parentItems]="reglements" [manualLoading]=true [hideFilters]=true [hideFooter]=true (goto)="gotoReglement($event)" (file)="downloadFile($event)" [itemsByPage]="1" [lineClickable]=true (refresh)="getReglements()"></app-table>
+                                </div>
+                            </div>
+                            <!-- DDR Definif -->
+                            <div *ngIf="isDefinitifDDR" class="row d-flex mt-4 mb-4">
+                                <div class="col-12">
+                                    <h6>{{ lang.reglementControles.reglementDefinitif }}</h6>
+                                </div>
+                                <div class="col-12" id="formio_reglementDefinitifAFD"></div>
+                                <div *ngIf="reglement.montant_definitif_reglement != null" class="col-12 mt-0">
+                                    <div class="col form-text text-muted">
+                                        {{ lang.reglement.dateDefinitifSaisie }} {{ app.formatDate(reglement.date_modification) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="reglement != null && themesControles != null" class="row hide-2xl mb-2 justify-content-end">
+                                <div class="col-auto d-flex">
+                                    <span class="badge-controles-counter mt-0" [title]="lang.controlesCount">
+                                        <i class="fas fa-tasks mr-3"></i>
+                                        {{ countControlesChecked }} / {{ countControlesTotal }}
+                                    </span>
+                                    <div class="dropdown h-100 ml-4">
+                                        <button class="btn btn-secondary badge-controles-counter" type="button" data-toggle="dropdown">
+                                            {{ lang.quickAccess }}
+                                        </button>
+                                        <div *ngIf="themesControles != null" class="dropdown-menu dropdown-menu-right">
+                                            <a *ngFor="let theme of themesControles" href="" class="dropdown-item" (click)="app.scrollTo('ancre-' + app.removeSpaces(theme))">{{ theme }}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div *ngIf="reglement != null" class="row d-flex">
+                                        <div class="col">
+                                            <app-controles #reglementControles [role]="role"></app-controles>
+                                        </div>
+                                        <div class="col-auto col-controles-right-sidebar show-2xl">
+                                            <div *ngIf="themesControles != null" class="controles-right-sidebar">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        {{ lang.controlesCount }}
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-2">
+                                                    <div class="col">
+                                                        <span class="badge-controles-counter">
+                                                            <i class="fas fa-tasks mr-3"></i>
+                                                            {{ countControlesChecked }} / {{ countControlesTotal }}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-4 pt-2 mb-2">
+                                                    <div class="col">
+                                                        {{ lang.quickAccess }}
+                                                    </div>
+                                                </div>
+                                                <div *ngFor="let theme of themesControles" class="row mb-1">
+                                                    <div class="col">
+                                                        <button class="btn btn-controles-shortcut" (click)="app.scrollTo('ancre-' + app.removeSpaces(theme))">
+                                                            {{ theme }}
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </app-card>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- NIVEAU 2 -->
+    <div *ngIf="isDCV" class="row d-flex mt-2" [ngClass]="{ 'invisible': loading }">
+        <!-- SIDEBAR -->
+        <div id="sidebar-col" class="col-12 col-md-4 col-xl-3">
+            <app-card [autoHeight]=false>
+                <div id="sidebar-container" class="container infos-dossier">
+                    <span *ngIf="showSidebar" class="mb-3 mt-4 info-header text-uppercase">{{ lang.reglementControles.dossierReglement }}</span>
+                    <button class="btn btn-collapse-sidebar float-right" (click)="app.toggleSidebar(this)" [title]="titleSidebarToggle">
+                        <i id="ico-sidebar-context" class="fas fa-compress-alt"></i>
+                    </button>
+                    <app-infos-context *ngIf="reglement != null && showSidebar" [reglement]="reglement" [entite]="entite" [isDCV]="isDCV"></app-infos-context>
+                </div>
+            </app-card>
+        </div>
+        <!-- CONTROLES / ANOMALIES -->
+        <div id="sidebar-col-content" class="col-12 col-md-8 col-xl-9">
+            <div class="row d-flex">
+                <div class="col">
+                    <app-card [autoHeight]=false>
+                        <div *ngIf="reglement != null" class="m-4">
+                            <!-- TITRE -->
+                            <div class="row infos-dossier">
+                                <div class="col">
+                                    <span class="mb-4 mt-0 info-header text-uppercase">
+                                        {{ lang.anomalie.dossierControle }}
+                                        <span class="c-highlight ml-3">{{ reglement.code_fonctionnel }}</span>
+                                    </span>
+                                </div>
+                                <div class="col-auto">
+                                    <div class="info-border">
+                                        <span>{{ reglement.lib_statut_dossier_2nd }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-2 mb-3">
+                                <div class="col">
+                                    <div class="controles-cr-container">
+                                        <div class="row">
+                                            <div class="col">{{ lang.reglementControles.risksCriterias }}</div>
+                                        </div>
+                                        <div *ngIf="criteres != null" class="row mt-2">
+                                            <div class="col d-flex">
+                                                <ng-container *ngFor="let critere of criteres">
+                                                    <span *ngIf="!app.isEmpty(critere.libelle_controle_fr)" class="controles-cr-badge">{{ critere.libelle_controle_fr }}</span>
+                                                </ng-container>
+                                            </div>
+                                        </div>
+                                        <div *ngIf="criteres?.length == 0" class="row mt-2">
+                                            <div class="col d-flex">
+                                                <span class="controles-cr-badge">{{ lang.reglementControles.noCriteria}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- TABS -->
+                            <div class="row">
+                                <div class="col">
+                                    <ul class="nav nav-tabs">
+                                        <li class="nav-item">
+                                            <button class="nav-link active" data-toggle="tab" data-target="#tab-reglement-controles" type="button">{{ lang.reglementControles.planControle }}</button>
+                                        </li>
+                                        <li class="nav-item">
+                                            <button class="nav-link" data-toggle="tab" data-target="#tab-reglement-anomalies" type="button">{{ lang.reglementControles.anomaliesList }}</button>
+                                        </li>
+                                    </ul>
+                                    <div class="tab-content border-0">
+                                        <!-- CONTROLES -->
+                                        <div class="tab-pane fade show active pt-3" id="tab-reglement-controles">
+                                            <div *ngIf="themesControles == null" class="container mt-4 mb-4">
+                                                <app-spinner></app-spinner>
+                                            </div>
+                                            <!-- CONCOURS DEJA UTILISE -->
+                                            <div *ngIf="concoursUsed" class="bg-light rounded p-3 mt-2 mb-3">
+                                                <div class="row">
+                                                    <div class="col-auto p-2 d-flex">
+                                                        <i class="fa fa-exclamation-circle text-warning"></i>
+                                                    </div>
+                                                    <div class="mt-2 mr-2">
+                                                        {{ lang.reglement.controleDCV.concoursUsed }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div *ngIf="themesControles != null" class="row hide-2xl mb-2 justify-content-end">
+                                                <div class="col-auto d-flex">
+                                                    <span class="badge-controles-counter mt-0" [title]="lang.controlesCount">
+                                                        <i class="fas fa-tasks mr-3"></i>
+                                                        {{ countControlesChecked }} / {{ countControlesTotal }}
+                                                    </span>
+                                                    <div class="dropdown h-100 ml-4">
+                                                        <button class="btn btn-secondary badge-controles-counter" type="button" data-toggle="dropdown">
+                                                            {{ lang.quickAccess }}
+                                                        </button>
+                                                        <div *ngIf="themesControles != null" class="dropdown-menu dropdown-menu-right">
+                                                            <a *ngFor="let theme of themesControles" href="" class="dropdown-item" (click)="app.scrollTo('ancre-' + app.removeSpaces(theme))">{{ theme }}</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row d-flex">
+                                                <div class="col">
+                                                    <app-controles #reglementControles [role]="role"></app-controles>
+                                                </div>
+                                                <div class="col-auto col-controles-right-sidebar show-2xl">
+                                                    <div *ngIf="themesControles != null" class="controles-right-sidebar">
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                {{ lang.controlesCount }}
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mt-2">
+                                                            <div class="col">
+                                                                <span class="badge-controles-counter">
+                                                                    <i class="fas fa-tasks mr-3"></i>
+                                                                    {{ countControlesChecked }} / {{ countControlesTotal }}
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mt-4 pt-2 mb-2">
+                                                            <div class="col">
+                                                                {{ lang.quickAccess }}
+                                                            </div>
+                                                        </div>
+                                                        <div *ngFor="let theme of themesControles" class="row mb-1">
+                                                            <div class="col">
+                                                                <button class="btn btn-controles-shortcut" (click)="app.scrollTo('ancre-' + app.removeSpaces(theme))">
+                                                                    {{ theme }}
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- ANOMALIES -->
+                                        <div class="tab-pane fade" id="tab-reglement-anomalies">
+                                            <div class="row d-flex mt-4">
+                                                <div class="col">
+                                                    <app-table #tableAnomalies type="anomaliesHistoriquesDC" [parentItems]="anomalies" [manualLoading]=true [hideFilters]=true [itemsByPage]="10" [lineClickable]=true (goto)="gotoAnomalie($event)" (refresh)="getAnomalies()"></app-table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </app-card>
+                </div>
+            </div>
+        </div>
+    </div>
+</app-content>
+<div class="d-none">
+    <app-infos-avance #infosAvance></app-infos-avance>
+</div>
+<app-infos-reglement *ngIf="showReglement" [role]="role" #detailsReglement></app-infos-reglement>
+<app-notification *ngIf="tache != null" #notification typeDossier="DR" [dossier]="reglement" [tache]="tache" [persistenceIdParent]="versement.persistenceId" (annulerDossier)="annulerDossier($event)" (annulerAction)="annulerAction($event)"></app-notification>
+<app-export-pdf-ban #exportBan> </app-export-pdf-ban>
+<app-export-pdf-controle #exportControleSecondNiveau></app-export-pdf-controle>
+<!-- TOAST -->
+<div class="toast" id="toastControlesSave">{{ lang.successSave }}</div>
+<div class="toast" id="toastReglementAnnulerOk">{{ lang.reglement.toastDossierAnnulerOk }}</div>
+<div class="toast error" id="toastReglementAnnulerKo">{{ lang.toastDossierAnnulerKo }}</div>
+<div class="toast error" id="toastControlesNotActiveTaskError">{{ lang.toastNotActiveTaskError }}</div>
+<div class="toast" id="toastReglementValideAgentVersement">{{ lang.reglement.toastReglementValideAgentVersement }}</div>
+<div class="toast" id="toastReglementValideDir">{{ lang.reglement.toastReglementValideDir }}</div>
+<div class="toast" id="toastReglementValideDCV">{{ lang.reglement.toastReglementValideDCV }}</div>
+<div class="toast" id="toastReglementRenvoiChargeProjet">{{ lang.reglement.toastReglementRenvoiChargeProjet }}</div>
+<div class="toast" id="toastReglementRenvoiAgent">{{ lang.reglement.toastReglementRenvoiAgent }}</div>
+<div class="toast" id="toastReglementValideChargeProjet">{{ lang.reglement.toastReglementValideChargeProjet }}</div>
+<div class="toast" id="toastReglementDCVAnnulerOk">{{ lang.reglement.controleDCV.toastDossierAnnulerOk }}</div>
+<div class="toast info" id="toastControlesAutoSave"><i class="fas fa-save mr-3"></i>{{ lang.autoSave }}</div>
+<!-- MODALS -->
+<div *ngIf="showModal">
+    <app-modal modalId="modalValiderReglement" [modalTitle]="lang.versement.validateReglement" icon="check" (validate)="validerReglement()">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <p class="text-dark">{{ lang.reglement.reglementGenerateType }} </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <input type="radio" id="choixBrouillon" value="B" [(ngModel)]="statut">
+                    <label class="text-dark ml-3" for="choixBrouillon">{{ lang.reglement.draftType }}</label>
+                </div>
+                <div class="col">
+                    <input type="radio" id="choixNonBrouillon" value="" [(ngModel)]="statut">
+                    <label class="text-dark ml-3" for="choixNonBrouillon">{{ lang.reglement.decisiveType }}</label>
+                </div>
+            </div>
+        </div>
+    </app-modal>
+</div>
+<app-modal *ngIf="isDCV && reglement != null" [modalId]="'modalHistoriqueDossierAbandonne' + reglement.persistenceId" [modalTitle]="lang.commentaireNotification.titleModalHistoriqueDossierAbandonne" size="lg" hideFooter="true">
+    <div *ngIf="notifications?.length > 0">
+        <div *ngIf="notifications?.length > 0">
+            <div *ngFor="let notification of notifications">
+                <div class="mt-2">
+                    {{ lang.commentaireNotification.labelSenderNotificationComment }}
+                    {{ notification.expediteur }}
+                    {{ lang.commentaireNotification.labelDateNotificationComment }}
+                    {{ app.formatDate(notification.dateEnvoi) }}
+                    {{ lang.commentaireNotification.labelHoursNotificationComment }}
+                    {{ app.formatHours(notification.dateEnvoi )}}</div>
+                <p *ngIf="!app.isEmpty(notification.corpNotification)" class="text-dark font-weight-bold"> <br>
+                    <span>{{ app.getCorpNotifFormat(notification.corpNotification) }}</span>
+                </p>
+                <div class="border-top my-3"></div>
+            </div>
+        </div>
+    </div>
+</app-modal>
+<app-modal *ngIf="reglement != null" #modalConfirmDdrDefinitif modalId="modalConfirmDdrDefinitif" [validateLabel]="lang.validate" (validate)="validateDdrDefinitif()" (cancel)="cancelValidateDdrDefinitif()">
+    {{ lang.reglement.validateDefinitifReglement }}
+</app-modal>
+<app-modal #modalConfirmationAddJustificatifRemboursement modalId="modalConfirmationAddJustificatifRemboursement" size="s" (validate)="addJustificatifRemboursement()">
+    <div class="container">
+        <p class="title-form">{{ lang.justificatifRemboursement.confirmationAddRemboursment }}</p>
+        <div class="bg-light rounded p-3">
+            <i class=" fas fa-exclamation-triangle text-danger"></i>
+            <span class="ml-4" style="margin-top:-20px">{{ lang.justificatifRemboursement.alerteAddRemboursement1 }}<a href="#" class="alert-link">{{ lang.justificatifRemboursement.definitive }}</a>{{ lang.justificatifRemboursement.alerteAddRemboursement2 }}</span>
+        </div>
+    </div>
+</app-modal>

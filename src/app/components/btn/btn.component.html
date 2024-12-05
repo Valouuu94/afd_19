@@ -1,0 +1,5 @@
+<button [class]="'btn btn-' + type" (click)="emitAction()" [disabled]="disabled" [ngClass]="{ 'dropdown-item': inMenu, 'ml-2': !inMenu, 'py-2': inMenu }">
+    <span *ngIf="loading" class="spinner-border spinner-disabled spinner-border-sm mr-1"></span>
+    <i *ngIf="!loading && ico != null" [class]="'mr-1 fas fa-' + ico"></i>
+    <span [class]="colorLabel != null ? colorLabel : ''">{{ label }}</span>
+</button>

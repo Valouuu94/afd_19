@@ -1,0 +1,486 @@
+<div *ngIf="loading" class="container p-3">
+	<app-spinner></app-spinner>
+</div>
+<ng-container *ngIf="!loading">
+	<!-- PROJET -->
+	<div class="row">
+		<div *ngIf="projet != null" class="col">
+			<button class="btn btn-collapse first" (click)="app.toggleCollapse('collapseContextProjet')">
+				<i class="fas fa-info-circle mr-3 collapse-point"></i> {{ lang.context.projet }} <span class="collapse-label-sidebar"> {{ projet.numeroProjet }} </span>
+				<i class="fas fa-chevron-up ml-2 float-right" [id]="'chevron-collapseContextProjet'"></i>
+			</button>
+		</div>
+	</div>
+	<div *ngIf="projet != null" id="collapseContextProjet" class="mb-3 mt-1 collapse show">
+		<div *ngIf="!isDCV" class="row mb-3">
+			<div class="col">
+				<span class="collapse-label">{{ lang.nomProjet }}</span><br>
+				{{ app.renderEmpty(projet.nomProjet) }}
+			</div>
+		</div>
+		<ng-container *ngIf="!app.isAFD(entite)">
+			<div *ngIf="!isDCV" class="row mb-3">
+				<div class="col-6">
+					<span class="collapse-label">{{ lang.ravProjet }}</span>
+					<i class="fas fa-question-circle info-bulle" [title]="lang.ravTooltipPRO"></i>
+				</div>
+				<div class="col-6 text-right" [innerHTML]="ravProjet"></div>
+			</div>
+			<div *ngIf="!isDCV" class="row mb-3">
+				<div class="col-6">
+					<span class="collapse-label">{{ lang.impayesSIRP }}</span>
+					<i class="fas fa-question-circle info-bulle" [title]="lang.impayesSIRPTooltip"></i>
+				</div>
+				<div class="col-6 text-right" [innerHTML]="impaye">
+				</div>
+			</div>
+			<div *ngIf="!isDCV" class="row mb-3">
+				<div class="col-6">
+					<span class="collapse-label">{{ lang.dlvf }}</span>
+					<i class="fas fa-question-circle info-bulle" [title]="lang.dlvfTooltip"></i>
+					<br>
+					{{ app.renderEmpty(app.formatDate(DLVF)) }}
+				</div>
+				<div class="col-6">
+					<span *ngIf="projet.projetPaysRealisation != null" class="collapse-label">{{ lang.context.projetPays }}</span><br>
+					{{ app.getRefLabel('refPays', app.getPaysRealisationProjet(projet.projetPaysRealisation)) }}
+				</div>
+			</div>
+		</ng-container>
+		<ng-container *ngIf="app.isAFD(entite) || isDCV">
+			<div class="row mb-3">
+				<div class="col-6">
+					<span class="collapse-label">{{ lang.context.projetAgence }}</span><br>
+					{{ app.renderEmpty(app.getRefLabel('refAgencesGestions', projet.idAgenceGestion)) }}
+				</div>
+				<div class="col-6">
+					<span *ngIf="projet.projetPaysRealisation != null" class="collapse-label">{{ lang.context.projetPays }}</span><br>
+					{{ app.getRefLabel('refPays', app.getPaysRealisationProjet(projet.projetPaysRealisation)) }}
+				</div>
+			</div>
+		</ng-container>
+		<div class="row mb-3">
+			<div class="col-6">
+				<span class="collapse-label">{{ lang.context.projetCoFi }}</span><br>
+				{{ app.renderEmpty(app.getRefLabel('refBooleanNA', projet.flgCofinancement)) }}
+			</div>
+			<div class="col-6">
+				<span class="collapse-label">{{ lang.division }}</span><br>
+				<!-- {{ app.renderEmpty(app.getRefLabel('refDivisions', projet.idDivisionProparco)) }} #demande Camille 26/03-->
+				{{ app.renderEmpty(projet.idDivisionProparco) }}
+			</div>
+		</div>
+		<ng-container *ngIf="!isDCV && app.isAFD(entite)">
+			<div class="row mb-3">
+				<div class="col-4">
+					<span class="collapse-label">{{ lang.montantTotalProjet }}</span>
+					<i class="fas fa-question-circle info-bulle" [title]="lang.montantTotalProjetTooltip"></i>
+				</div>
+				<div class="col-8 text-right" [innerHTML]="montantTotalProjet">
+				</div>
+			</div>
+			<div class="row mb-3">
+				<div class="col-4">
+					<span class="collapse-label">{{ lang.rav }}</span>
+					<i class="fas fa-question-circle info-bulle" [title]="lang.ravTooltipAFD"></i>
+				</div>
+				<div class="col-8 text-right" [innerHTML]="ravProjet"></div>
+			</div>
+		</ng-container>
+		<button class="btn btn-collapse-goto" (click)="gotoProjet()" [title]="lang.gotoProject">
+			{{ lang.context.projetGoto }}
+			<i class="fas fa-external-link-alt ml-2 float-right"></i>
+		</button>
+	</div>
+	<!-- CONCOURS -->
+	<ng-container *ngFor="let cr of finalConcours; let indexContext = index">
+		<div *ngIf="cr != null && showConcoursPROPARCO" class="row">
+			<div class="col">
+				<button class="btn btn-collapse" (click)="app.toggleCollapse('collapseContextConcours-' + indexContext)">
+					<i class="fas fa-info-circle mr-3 collapse-point"></i>{{ lang.context.concours }} <span class="collapse-label-sidebar"> {{ cr.numeroConcours }} </span>
+					<i class="fas fa-chevron-up ml-2 float-right" [id]="'chevron-collapseContextConcours-' + indexContext"></i>
+				</button>
+			</div>
+		</div>
+		<div *ngIf="cr != null && showConcoursPROPARCO" [id]="'collapseContextConcours-' + indexContext" class="mb-3 mt-1 collapse show">
+			<div *ngIf="reglement != null && !!isDCV" class="row mb-3">
+				<div class="col-6">
+					<span class="collapse-label">{{ lang.context.concoursTypo }}</span><br>
+					{{ app.renderEmpty(app.getRefLabel('refTypesVersementAFD', reglement.type_versement)) }}
+				</div>
+			</div>
+			<div *ngIf="avance != null && avance.dossiersReglement.length > 0 && isDCV && isDcRAJ" class="row mb-3">
+				<div class="col-6">
+					<span class="collapse-label">{{ lang.context.concoursTypo }}</span><br>
+					{{ app.getRefLabel('refTypesVersementAFD', avance.dossiersReglement[0].type_versement) }}
+				</div>
+			</div>
+			<div *ngIf="!!isDCV" class="row mb-3">
+				<div class="col-6">
+					<span class="collapse-label">{{ lang.context.concoursDLVFActu }}</span><br>
+					{{ app.renderEmpty(app.formatDate(cr.dlvf)) }}
+				</div>
+				<div class="col-6">
+					<span class="collapse-label">{{ lang.context.concoursSignature }}</span><br>
+					{{ app.renderEmpty(app.formatDate(cr.dateSignatureConvention)) }}
+				</div>
+			</div>
+			<div *ngIf="!isDCV" class="row mb-3">
+				<div class="col-6">
+					<span class="collapse-label">{{ lang.context.concoursSignature }}</span><br>
+					{{ app.renderEmpty(app.formatDate(cr.dateSignatureConvention)) }}
+				</div>
+				<div class="col-6">
+					<span class="collapse-label">{{ lang.context.concoursDLVF }}</span>
+					<i class="fas fa-question-circle info-bulle" [title]="lang.dlvfConcoursTooltip"></i>
+					<br>
+					{{ app.renderEmpty(app.formatDate(cr.dlvf)) }}
+				</div>
+			</div>
+			<div *ngIf="!isDCV && app.isAFD(entite)" class="row mb-3">
+				<div class="col-6">
+					<span class="collapse-label">{{ lang.dateAchevementOperationnel }}</span><br>
+					{{ app.renderEmpty(app.formatDate(cr.dateAchevementOperationnel)) }}
+				</div>
+				<div class="col-6">
+					<span class="collapse-label">{{ lang.impayesSIRP }}</span><br>
+					<span class="text-right" [innerHTML]="impaye"></span>
+				</div>
+			</div>
+			<div *ngIf="!isDCV && (!app.isAFD(entite))" class="row mb-3">
+				<div class="col-6">
+					<span class="collapse-label">{{ lang.dateAchevement }}</span><br>
+					{{ app.renderEmpty(app.formatDate(cr.dateAchevementOperationnel)) }}
+				</div>
+				<div class="col-6">
+					<span *ngIf="projet != null" class="collapse-label">{{ lang.context.projetFonds }}</span><br>
+					<span>{{ app.renderEmpty(app.getRefLabel('refBooleanNA', projet.flgFinancementsDelegues)) }}</span>
+				</div>
+			</div>
+			<div class="row mb-3">
+				<div class="col-6">
+					<span class="collapse-label">{{ lang.context.concoursPF }}</span><br>
+					<span *ngIf="app.isAFD(entite)">{{ app.renderEmpty(cr.idProduitFinancier) }} </span>
+					<span *ngIf="!app.isAFD(entite)">{{ app.renderEmpty(cr.produit?.familleProduit?.libelleCourtFamilleProduit) }}</span>
+				</div>
+				<div class="col-6">
+					<span class="collapse-label">{{ lang.operation }}</span><br>
+					{{ app.renderEmpty(cr.idOperation) }}
+				</div>
+			</div>
+			<div *ngIf="!!isDCV" class="row mb-3">
+				<div class="col-6">
+					<span *ngIf="projet != null" class="collapse-label">{{ lang.context.projetFonds }}</span><br>
+					<span>{{ app.renderEmpty(app.getRefLabel('refBooleanNA', projet.flgFinancementsDelegues)) }}</span>
+				</div>
+			</div>
+			<div *ngIf="!isDCV && app.isAFD(entite)" class="row mb-3">
+				<div class="col-6">
+					<span *ngIf="projet != null" class="collapse-label">{{ lang.context.projetFonds }}</span><br>
+					<span>{{ app.renderEmpty(app.getRefLabel('refBooleanNA', projet.flgFinancementsDelegues)) }}</span>
+				</div>
+			</div>
+			<ng-container *ngIf="!isDCV && app.isAFD(entite)">
+				<div class="row mb-3">
+					<div class="col-6">
+						<span class="collapse-label">{{ lang.montantInitial }}</span>
+						<i class="fas fa-question-circle info-bulle" [title]="lang.montantInitialTooltip"></i>
+					</div>
+					<div class="col-6 text-right">
+						{{ app.renderEmpty(app.formatNumberWithDecimals(cr.montantInitial)) }} <span class="trigramme-devise"> {{ cr.idDevise }} </span>
+					</div>
+				</div>
+				<div class="row mb-3">
+					<div class="col-6">
+						<span class="collapse-label">{{ lang.montantFinal }}</span>
+						<i class="fas fa-question-circle info-bulle" [title]="lang.montantFinalTooltip"></i>
+					</div>
+					<div class="col-6 text-right">
+						{{ app.renderEmpty(app.formatNumberWithDecimals(cr.montantEngagementsNets)) }} <span class="trigramme-devise"> {{ cr.idDevise }} </span>
+					</div>
+				</div>
+				<div class="row mb-3">
+					<div class="col-6">
+						<span class="collapse-label">{{ lang.ravReel }}</span>
+						<i class="fas fa-question-circle info-bulle" [title]="lang.ravReelTooltipAFD"></i>
+					</div>
+					<div class="col-6 text-right">
+						{{ app.renderEmpty(app.formatNumberWithDecimals(cr.resteAVerser)) }} <span class="trigramme-devise"> {{ cr.idDevise }} </span>
+					</div>
+				</div>
+				<div class="row mb-3">
+					<div class="col-6">
+						<span class="collapse-label">{{ lang.ravPrevisionnel }}</span>
+						<i class="fas fa-question-circle info-bulle" [title]="lang.ravPrevisionnelTooltip"></i>
+					</div>
+					<div class="col-6 text-right">
+						{{ app.renderEmpty(app.formatNumberWithDecimals(cr.ravPrevisionnel)) }} <span class="trigramme-devise"> {{ cr.idDevise }} </span>
+					</div>
+				</div>
+			</ng-container>
+			<ng-container *ngIf="!isDCV && (!app.isAFD(entite))">
+				<div *ngIf="!isDCV && !app.isAFD(entite)" class="row mb-3">
+					<div class="col-6">
+						<span class="collapse-label">{{ lang.impayesSIRP }}</span>
+					</div>
+					<div class="col-6 text-right" [innerHTML]="impaye">
+					</div>
+				</div>
+				<div class="row mb-3">
+					<div class="col-6">
+						<span class="collapse-label">{{ lang.engagementNets }}</span>
+					</div>
+					<div class="col-6 text-right">
+						{{ app.renderEmpty(app.formatNumberWithDecimals(cr.montantEngagementsNets)) }} <span class="trigramme-devise"> {{ cr.idDevise }} </span>
+					</div>
+				</div>
+				<div class="row mb-3">
+					<div class="col-6">
+						<span class="collapse-label">{{ lang.sousParticipationAFD }}</span>
+					</div>
+					<div class="col-6 text-right">
+						{{ app.renderEmpty(app.formatNumberWithDecimals(cr.montantSousParticipationAfd)) }} <span class="trigramme-devise"> {{ cr.idDevise }} </span>
+					</div>
+				</div>
+				<div class="row mb-3">
+					<div class="col-6">
+						<span class="collapse-label">{{ lang.versementsEffectuees }}</span>
+					</div>
+					<div class="col-6 text-right">
+						{{ app.renderEmpty(app.formatNumberWithDecimals(cr.montantVersementsEffectues)) }} <span class="trigramme-devise"> {{ cr.idDevise }} </span>
+					</div>
+				</div>
+				<div class="row mb-3">
+					<div class="col-6">
+						<span class="collapse-label">{{ lang.rav }}</span>
+						<i class="fas fa-question-circle info-bulle" [title]="lang.ravReelTooltipPRO"></i>
+					</div>
+					<div class="col-6 text-right">
+						{{ app.renderEmpty(app.formatNumberWithDecimals(cr.resteAVerser)) }} <span class="trigramme-devise"> {{ cr.idDevise }} </span>
+					</div>
+				</div>
+			</ng-container>
+			<button class="btn btn-collapse-goto" (click)="gotoConcours(cr.numeroConcours)" [title]="lang.gotoConcours">
+				{{ lang.context.concoursGoto }}
+				<i class="fas fa-external-link-alt ml-2 float-right"></i>
+			</button>
+		</div>
+	</ng-container>
+	<!-- SUIVI DOSSIER - AFD  -->
+	<div *ngIf="!isDCV && (app.isAFD(entite)) && reglement !=null" class="row">
+		<div class="col">
+			<button class="btn btn-collapse" (click)="app.toggleCollapse('collapseContextSuiviDossier')">
+				<i class="fas fa-info-circle mr-3 collapse-point"></i> {{ lang.context.suiviDossier }}
+				<i class="fas fa-question-circle info-bulle" [title]="lang.context.suiviDossierTooltip"></i>
+				<i class="fas fa-chevron-up ml-2 float-right" [id]="'chevron-collapseContextSuiviDossier'"></i>
+			</button>
+		</div>
+	</div>
+	<div *ngIf="!isDCV && app.isAFD(entite) && reglement != null" id="collapseContextSuiviDossier" class="mb-3 mt-1 collapse show">
+		<div class="row mb-3">
+			<div class="col-6">
+				<span class="collapse-label">{{ lang.roles.agv }}</span>
+			</div>
+			<div *ngIf="acteursAV.length > 0" class="col-6 text-right">
+				<span *ngFor="let acteur of acteursAV; let indexActeur = index"><span>{{ acteur.nom_acteur }} {{ acteur.prenom_acteur }} <span *ngIf="indexActeur < acteursAV.length-1">,</span></span></span>
+			</div>
+		</div>
+		<div class="row mb-3">
+			<div class="col-6">
+				<span class="collapse-label">{{ lang.roles.chp }}</span>
+			</div>
+			<div *ngIf="acteursCP.length > 0" class="col-6 text-right">
+				<span *ngFor="let acteurCP of acteursCP; let indexActeur = index"><span>{{ acteurCP.nom_acteur }} {{ acteurCP.prenom_acteur }} <span *ngIf="indexActeur < acteursCP.length-1">,</span></span></span>
+			</div>
+		</div>
+		<div class="row mb-3">
+			<div class="col-6">
+				<span class="collapse-label">{{ lang.roles.dir }}</span>
+			</div>
+			<div *ngIf="acteursDIR.length > 0" class="col-6 text-right">
+				<span *ngFor="let acteurDIR of acteursDIR; let indexActeur = index"><span>{{ acteurDIR.nom_acteur }} {{ acteurDIR.prenom_acteur }} <span *ngIf="indexActeur < acteursDIR.length-1">,</span></span></span>
+			</div>
+		</div>
+	</div>
+	<!-- AUTRES INFOS  - PROPARCO -->
+	<div *ngIf="!isDCV && (!app.isAFD(entite))" class="row">
+		<div class="col">
+			<button class="btn btn-collapse" (click)="app.toggleCollapse('collapseContextInofsProjet')">
+				<i class="fas fa-info-circle mr-3 collapse-point"></i> {{ lang.context.infosProjet }}
+				<i class="fas fa-chevron-up ml-2 float-right" [id]="'chevron-collapseContextInofsProjet'"></i>
+			</button>
+		</div>
+	</div>
+	<div *ngIf="!isDCV && !app.isAFD(entite)" id="collapseContextInofsProjet" class="mb-3 mt-1 collapse show">
+		<div *ngIf="projet != null" class="row mb-3">
+			<div class="col-6">
+				<span class="collapse-label">{{ lang.syndication }}</span>
+			</div>
+			<div class="col-6 text-right">
+				{{ app.getRefLabel('refBooleanNA', projet.flgSyndication) }}<span *ngIf="projet.flgSyndication == 1">{{ projet.leadFollow }}</span>
+			</div>
+		</div>
+		<div *ngIf="projet != null" class="row mb-3">
+			<div class="col-6">
+				<span class="collapse-label">{{ lang.financementDelegues }}</span>
+			</div>
+			<div class="col-6 text-right">
+				{{ app.renderEmpty(app.getRefLabel('refBooleanNA', projet.flgFinancementsDelegues)) }} </div>
+		</div>
+		<div class="row mb-3">
+			<div class="col-6">
+				<span class="collapse-label">{{ lang.roles.chapp }}</span>
+			</div>
+			<div class="col-6 text-right">
+				{{ app.renderEmpty(chargeGestionInstruction) }} </div>
+		</div>
+		<div class="row mb-3">
+			<div class="col-6">
+				<span class="collapse-label">{{ lang.roles.chaffInstruction }}</span>
+			</div>
+			<div class="col-6 text-right">
+				{{ app.renderEmpty(chargeAffairesInstruction) }} </div>
+		</div>
+		<div class="row mb-3">
+			<div class="col-6">
+				<span class="collapse-label">{{ lang.roles.chaffSupp }}</span>
+			</div>
+			<div class="col-6 text-right">
+				{{ app.renderEmpty(chargeAffairesInstructionSuppleant) }} </div>
+		</div>
+		<div class="row mb-3">
+			<div class="col-6">
+				<span class="collapse-label">{{ lang.roles.chaffDAF }}</span>
+			</div>
+			<div class="col-6 text-right">
+				{{ app.renderEmpty(chargeAffairesDaf) }} </div>
+		</div>
+	</div>
+	<!-- AVANCE DOSSIER RAJ  -->
+	<div *ngIf="isDCV && isDcRAJ" class="row">
+		<div *ngIf="avance != null" class="col">
+			<button class="btn btn-collapse" (click)="app.toggleCollapse('collapseContextAvance')">
+				<i class="fas fa-info-circle mr-3 collapse-point"></i> {{ lang.context.avance }} <span class="collapse-label-sidebar"> {{ avance.code_fonctionnel }} - {{ app.getRefLabel('refTypeAvance', avance.choix_type_avance) }} </span>
+				<i class="fas fa-chevron-up ml-2 float-right" [id]="'chevron-collapseContextAvance'"></i>
+			</button>
+		</div>
+	</div>
+	<div *ngIf="avance != null" id="collapseContextAvance" class="mb-3 mt-1 collapse show">
+		<div class="row mb-3">
+			<div class="col-6">
+				<span class="collapse-label">{{ lang.montantVerseTotal }}</span>
+			</div>
+			<div class="col-6 text-right">
+				{{ app.renderEmpty(app.formatNumberWithDecimals(avance.montant_verse_total)) }} <span class="trigramme-devise"> {{ avance.devise_avance }} </span>
+			</div>
+		</div>
+		<div class="row mb-3">
+			<div class="col-6">
+				<span class="collapse-label">{{ lang.montantJustifieTotal }}</span>
+			</div>
+			<div class="col-6 text-right">
+				{{ app.renderEmpty(app.formatNumberWithDecimals(avance.montant_justifie_total)) }} <span class="trigramme-devise"> {{ avance.devise_avance }} </span>
+			</div>
+		</div>
+		<div class="row mb-3">
+			<div class="col-6">
+				<span class="collapse-label">{{ lang.rajTotal }}</span>
+			</div>
+			<div class="col-6 text-right">
+				{{ app.renderEmpty(app.formatNumberWithDecimals(resteAJustifier)) }} <span class="trigramme-devise"> {{ avance.devise_avance }} </span>
+			</div>
+		</div>
+		<button class="btn btn-collapse-goto" (click)="gotoAvance()">
+			{{ lang.context.avanceGoto }}
+			<i class="fas fa-external-link-alt ml-2 float-right"></i>
+		</button>
+	</div>
+	<!-- REGLEMENT -->
+	<div *ngIf="isDCV && !isDcRAJ" class="row">
+		<div class="col">
+			<button class="btn btn-collapse" (click)="app.toggleCollapse('collapseContextReglement')">
+				<i class="fas fa-info-circle mr-3 collapse-point"></i>{{ lang.context.reglement }}
+				<i class="fas fa-chevron-up ml-2 float-right" [id]="'chevron-collapseContextReglement'"></i>
+			</button>
+		</div>
+	</div>
+	<div *ngIf="isDCV && !isDcRAJ && reglement != null" id="collapseContextReglement" class="mb-3 mt-1 collapse show">
+		<div class="row mb-3">
+			<div class="col-6">
+				<span class="collapse-label-ref">{{ reglement.code_fonctionnel }}</span><br>
+				{{ app.getRefLabel('refModalitesPaiement', reglement.modalite_paiement) }}
+			</div>
+			<div class="col-6">
+				<span class="collapse-label">{{ lang.context.reglementDate }}</span><br>
+				{{ app.renderEmpty(app.formatDate(reglement.date_paiement)) }}
+			</div>
+		</div>
+		<div class="row mb-2">
+			<div class="col-6">
+				<span class="collapse-label">{{ lang.context.reglementMontant }}</span>
+			</div>
+			<div class="col-6 text-right font-weight-bold" [innerHTML]="montantDdr">
+			</div>
+		</div>
+		<div class="row mb-3">
+			<div class="col-6">
+				<span class="collapse-label mb-0">{{ lang.context.reglementDCV }}</span>
+			</div>
+			<div class="col-6 text-right font-weight-bold">
+				{{ app.renderEmpty(app.formatNumberWithDecimals(reglement.montant_definitif_reglement) + ' ' +
+				((reglement.devise_paiement != null) ? reglement.devise_paiement : '')) }}
+			</div>
+		</div>
+		<button class="btn btn-collapse-goto" (click)="gotoReglement(reglement.persistenceId)">
+			{{ lang.context.reglementGoto }}
+			<i class="fas fa-external-link-alt ml-2 float-right"></i>
+		</button>
+	</div>
+	<!-- REGLEMENTS - Dossier RAJ -->
+	<ng-container *ngIf="isDCV && isDcRAJ">
+		<ng-container *ngFor="let reg of reglementsAvance; let indexContext = index">
+			<div *ngIf="reg != null" class="row">
+				<div class="col">
+					<button class="btn btn-collapse" (click)="app.toggleCollapse('collapseContextDcRAJ-' + indexContext)">
+						<i class="fas fa-info-circle mr-3 collapse-point"></i>{{ lang.context.reglement }} {{ lang.context.numReglement }} <span class="collapse-label-sidebar"> {{ indexContext+1 }} </span>
+						<i class="fas fa-chevron-up ml-2 float-right" [id]="'chevron-collapseContextDcRAJ-' + indexContext"></i>
+					</button>
+				</div>
+			</div>
+			<div *ngIf="isDCV && reg != null" [id]="'collapseContextDcRAJ-' + indexContext" class="mb-3 mt-1 collapse show">
+				<div class="row mb-3">
+					<div class="col-6">
+						<span class="collapse-label-ref">{{ reg.code_fonctionnel }}</span><br>
+						{{ app.getRefLabel('refModalitesPaiement', reg.modalite_paiement) }}
+					</div>
+					<div class="col-6">
+						<span class="collapse-label">{{ lang.context.reglementDate }}</span><br>
+						{{ app.renderEmpty(app.formatDate(reg.date_paiement)) }}
+					</div>
+				</div>
+				<div class="row mb-2">
+					<div class="col-6">
+						<span class="collapse-label">{{ lang.context.reglementMontant }}</span>
+					</div>
+					<div class="col-6 text-right font-weight-bold">
+						<span class="collapse-montant">{{ app.formatNumberWithDecimals(reg.montant_reglement) + ' ' +
+							reg.devise_reglement }}</span>
+					</div>
+				</div>
+				<div class="row mb-3">
+					<div class="col-6">
+						<span class="collapse-label mb-0">{{ lang.context.reglementDCV }}</span>
+					</div>
+					<div class="col-6 text-right font-weight-bold">
+						{{ app.renderEmpty(app.formatNumberWithDecimals(reg.montant_contrevaleur) + ' ' +
+						((reg.devise_contrevaleur != null) ? reg.devise_contrevaleur : '')) }}
+					</div>
+				</div>
+				<button class="btn btn-collapse-goto" (click)="gotoReglement(reg.persistenceId)">
+					{{ lang.context.reglementGoto }}
+					<i class="fas fa-external-link-alt ml-2 float-right"></i>
+				</button>
+			</div>
+		</ng-container>
+	</ng-container>
+</ng-container>

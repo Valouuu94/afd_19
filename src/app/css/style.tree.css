@@ -1,0 +1,43 @@
+.tree {
+    background: white;
+    color: var(--c3);
+    transition: all 0.3s;
+}
+.tree ul ul a {
+    padding-left: 20px !important;
+}
+.tree ul ul a {
+    padding-left: 40px !important;
+}
+.tree ul ul ul a {
+    padding-left: 60px !important;
+}
+.tree ul li a {
+    padding: 10px;
+    font-size: 14px;
+    display: block;
+    text-align: left;
+}
+.tree a i {
+    margin-right: 10px;
+}
+.tree ul li a:hover {
+    color: white;
+    background: var(--c3-ulight);
+}
+.tree a {
+    color: var(--c3);
+    background: white;
+}
+.tree .badge {
+    float: right;
+    margin-right: 25px;
+    margin-top: 3px;
+    background-color: var(--c3-light);
+    color: white;
+}
+.tree .card-footer {
+    border-bottom: 1px solid var(--c-border);
+    text-align: center;
+    color: #bfbfbf;
+}

@@ -1,0 +1,193 @@
+.row-controle {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin-left: 0px;
+    margin-right: 0px;
+    background-color: var(--c-grey-ulight);
+}
+.controle-label {
+    font-size: 16px;
+}
+.row-controle.alterned {
+    background-color: var(--c-grey);
+}
+.error-controle {
+    background-color: var(--c-error) !important;
+}
+.subcontrole {
+    width: 55px;
+}
+.subcontrole i {
+    transform: rotate(90deg);
+    font-size: 20px;
+    margin-left: 15px;
+    color: var(--c-border);
+}
+.btn-controle {
+    background-color: white;
+    border: 1px solid var(--c-border);
+    color: var(--c-black);
+    padding-top: 13px;
+    width: 70px;
+    height: 45px;
+}
+.btn-controle:hover {
+    background-color: var(--c-border);
+}
+.btn-yes.active {
+    background-color: var(--c-yes-light);
+    color: var(--c-black);
+    border-color: var(--c-yes);
+}
+.btn-no.active {
+    background-color: var(--c-no-light);
+    color: var(--c-black);
+    border-color: var(--c-no);
+}
+.btn-na.active {
+    background-color: var(--c-na-light);
+    color: var(--c-black);
+    border-color: var(--c-na);
+}
+.btn-empty.active {
+    background-color: var(--c-border);
+    color: var(--c-black);
+    border-color: var(--c-border);
+}
+.btn-yes.read, .btn-no.read, .btn-na.read, .btn-empty.read {
+    cursor: default !important;
+}
+.btn-help {
+    background-color: white;
+    color: var(--c1-light);
+    border-color: var(--c-border);
+}
+.btn-help:hover, .btn-help:focus, .btn-help:active {
+    background-color: var(--c-grey-light) !important;
+    color: var(--c1-light) !important;
+    border-color: var(--c-border) !important;
+}
+.comment-error .btn-help {
+    color: var(--c-no);
+}
+.btn-help small {
+    margin-top: 1px;
+}
+.btn-help-comment {
+    color: var(--c3-ulight);
+    padding-left: 0;
+    padding-top: 0;
+}
+.btn-help-comment:hover, .btn-help-comment:focus, .btn-help-comment:active {
+    color: var(--c1-light) !important;
+    outline: 0;
+    box-shadow: unset;
+}
+.btn-notifications {
+    font-size: 18px;
+    padding: 0px;
+    color: var(--c3);
+}
+.btn-notifications small {
+    margin-top: 1px;
+}
+.controle-error {
+    color: var(--c-no);
+}
+.add-link {
+    color: var(--c3-light);
+}
+.controle-filtre {
+    border: 1px solid var(--c-black);
+    border-radius: 5px;
+    margin-top: 20px;
+    padding: 10px;
+    background-color: white;
+    color: var(--c1);
+    cursor: pointer;
+}
+.controle-filtre.current {
+    background-color: var(--c3-hover);
+}
+.controle-filtre-empty {
+    border: 1px solid var(--c-border);
+    border-radius: 5px;
+    margin-top: 20px;
+    padding: 10px;
+    background-color: white;
+}
+.controle-filtre .critere {
+    border: 1px solid var(--c-black);
+    border-radius: 5px;
+    padding: 10px;
+    background-color: var(--c-grey);
+    color: var(--c3);
+    margin-right: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.controle-filtre .critere .row {
+    margin-bottom: 0px !important;
+}
+.controle-filtre-connector {
+    border: 1px solid var(--c-black);
+    border-radius: 5px;
+    padding: 5px;
+    background-color: var(--c-border);
+    color: var(--c-black);
+    font-weight: bold;
+    width: 50px;
+    text-align: center;
+    margin: 0 auto;
+    margin-bottom: -15px;
+}
+.controle-anomalie {
+    background-color: var(--c-grey);
+    border: 1px solid var(--c-border);
+    border-left: 2px solid var(--c3-light);
+    padding: 10px;
+    margin-bottom: 15px;
+}
+.controle-help {
+    font-size: 12px;
+    background-color: white;
+    border: 1px solid var(--c-border);
+    padding: 10px;
+    margin-left: 15px;
+    margin-right: 15px;
+}
+.controle-theme {
+    font-size: 20px;
+    color: var(--c3-light);
+    text-transform: uppercase;
+    background-color: var(--c3-hover);
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.controle-theme .input-group {
+    margin-top: 6px;
+}
+.controle-separator {
+    border-top: 1px solid var(--c3-ulight);
+}
+.controle-etape {
+    border: 1px solid var(--c3-ulight);
+    border-radius: 8px;
+    padding: 0.35em;
+    padding-left: 12px;
+    padding-right: 12px;
+    background-color: white;
+    color: var(--c3-ulight);
+}
+.controle-col-read {
+    width: 125px;
+}
+.controle-col-update {
+    width: 240px;
+}
+.controle-col-dcv {
+    width: 235px !important;
+}
+.text-warning-darker {
+    color: #f6663e !important
+}

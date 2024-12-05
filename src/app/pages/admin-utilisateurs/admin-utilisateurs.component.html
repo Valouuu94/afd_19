@@ -1,0 +1,26 @@
+<app-content>
+    <div class="row">
+        <div class="col page-title">
+            {{ lang.nav.adminUtilisateursTitle }}
+        </div>
+    </div>
+    <app-table #tableUtilisateurs type="utilisateurs" [parentItems]="utilisateurs" [itemsByPage]="10" [manualLoading]=true [enableAdd]=false (edit)="updateUtilisateur($event)" (refresh)="getUtilisateurs()" [enableExport]=true (export)="exportExcelUser()"></app-table>
+</app-content>
+<app-export-excel #exportUser></app-export-excel>
+<!-- MODALS -->
+<app-modal #modalUser modalId="modalUser" icon="pen" size="xl" [modalTitle]="modalTitle" [noRightBtn]="hasNoRight" [validateLabel]="lang.save" (validate)="confirmSaveUtilisateur()">
+    <div id="formio_typeUser"></div>
+    <app-utilisateur-adhesion #utilisateurAdhesion [userRoles]="setRoles" [DO]="utilisateur" (addUtilisateurEntites)="addUtilisateurEntites($event)" (removeUtilisaterEntite)="removeUtilisateurEntites($event)"></app-utilisateur-adhesion>
+</app-modal>
+<app-modal #modalConfirmationUser modalId="modalConfirmationUser" [validateLabel]="lang.validate" (validate)="saveUtilisateur()"></app-modal>
+<!-- TOASTS -->
+<div class="toast error" id="toastTypeUserSaveError">{{ lang.failedFormSave }}</div>
+<div class="toast" id="toastSaveSuccessAdminUser">{{ lang.successSave }}</div>
+<!-- TELEPORTS -->
+<app-teleport #teleportCheckBox to=".teleportCheckBox">
+    <button *ngIf="!itemIsDCV" class="btn btn-checkbox mt-5" (click)="checkAdmin()" [disabled]="btnAdminIsDisabled">
+        <i *ngIf="!isAdminChecked" class="far fa-square bg-white"></i>
+        <i *ngIf="isAdminChecked" class="fas fa-check-square"></i>
+        <span class="text-dark ml-2" style="font-size: 17px!important">{{ lang.users.adminFctAfdPro }}</span>
+    </button>
+</app-teleport>

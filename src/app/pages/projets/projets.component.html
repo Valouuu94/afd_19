@@ -1,0 +1,670 @@
+<app-nav-actions *ngIf="sidebarSelected == 'CONCOURS_DETAIL'">
+    <div class="col"></div>
+    <div class="col-md-auto d-flex">
+        <app-btn [label]="lang.return" type="secondary" (action)="showConcours()" [noLoading]=true></app-btn>
+    </div>
+</app-nav-actions>
+<app-content>
+    <div class="row d-flex mt-1">
+        <!-- SIDEBAR -->
+        <div class="col-3">
+            <app-card [autoHeight]=false>
+                <div class="container sidebar-projets">
+                    <div class="row mt-2 mb-4">
+                        <div class="col text-center">
+                            <button class="btn btn-primary" (click)="searchProjets()">
+                                <i class="fas fa-search mr-2"></i>{{ lang.projets.sidebar.search }}
+                            </button>
+                        </div>
+                    </div>
+                    <!-- INFOS -->
+                    <span class="sidebar-projets-group">{{ lang.projets.sidebar.infos }}</span>
+                    <div class="row">
+                        <div class="col">
+                            <button class="btn btn-sidebar mt-1 py-2" [ngClass]="{ 'sidebar-selected': (sidebarSelected == 'PROJET') }" (click)="showProjet()">
+                                <i class="fas fa-file-alt mx-3 collapse-point"></i>
+                                <span class="sidebar-modal-collapse">
+                                    {{ lang.projets.sidebar.projet }}
+                                    <span *ngIf="!app.isEmpty(numProjet)"><i class="fas fa-angle-right mx-2"></i><span class="font-weight-bold">{{ numProjet }}</span></span>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <button class="btn btn-sidebar py-2" [ngClass]="{ 'sidebar-selected': (sidebarSelected == 'CONCOURS' || sidebarSelected == 'CONCOURS_DETAIL') }" (click)="showConcours()">
+                                <i class="fas fa-poll-h mx-3 collapse-point"></i>
+                                <span class="sidebar-modal-collapse">
+                                    {{ lang.projets.sidebar.concours }}
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- MODALITES -->
+                    <span class="sidebar-projets-group mt-3">{{ lang.projets.sidebar.modalites }}</span>
+                    <div class="row">
+                        <div class="col">
+                            <button class="btn btn-sidebar mt-1 py-2" [ngClass]="{ 'sidebar-selected': (sidebarSelected == 'AVANCE') }" (click)="showAvance()">
+                                <i class="fas fa-folder-plus mx-3 collapse-point"></i><span class="sidebar-modal-collapse">{{ lang.projets.sidebar.avance }}</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div *ngIf="isAFD" class="row">
+                        <div class="col">
+                            <button class="btn btn-sidebar py-2" [ngClass]="{ 'sidebar-selected': (sidebarSelected == 'DC') }" (click)="showDC()">
+                                <i class="fas fa-file-signature mx-3 collapse-point"></i><span class="sidebar-modal-collapse">{{ lang.projets.sidebar.DC }}</span>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- VERSEMENTS -->
+                    <span class="sidebar-projets-group mt-3">{{ lang.projets.sidebar.versements }}</span>
+                    <!-- DOSSIERS VERSEMENTS -->
+                    <div class="row">
+                        <div class="col">
+                            <button class="btn btn-sidebar mt-1 py-2" [ngClass]="{ 'sidebar-selected': (sidebarSelected == 'DDV') }" (click)="showDdv()">
+                                <i class="fas fa-envelope-open-text mx-3 collapse-point"></i><span class="sidebar-modal-collapse">{{ lang.projets.sidebar.DDV }}</span>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- DOSSIERS REGLEMENTS -->
+                    <div class="row">
+                        <div class="col">
+                            <button class="btn btn-sidebar py-2" [ngClass]="{ 'sidebar-selected': (sidebarSelected == 'DDR') }" (click)="showDdr()">
+                                <i class="fas fa-file-invoice-dollar mx-3 collapse-point"></i><span class="sidebar-modal-collapse">{{ lang.projets.sidebar.DDR }}</span>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- CONTROLES -->
+                    <ng-container *ngIf="isAFD">
+                        <span class="sidebar-projets-group mt-3">{{ lang.projets.sidebar.controles }}</span>
+                        <div class="row" *ngIf="isDCV">
+                            <div class="col">
+                                <button class="btn btn-sidebar mt-1 py-2" [ngClass]="{ 'sidebar-selected': (sidebarSelected == 'DDC') }" (click)="showDDC()">
+                                    <i class="fas fa-tasks mx-3 collapse-point"></i><span class="sidebar-modal-collapse">{{ lang.projets.sidebar.DDC }}</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="isDCV">
+                            <div class="col">
+                                <button class="btn btn-sidebar mt-1 py-2" [ngClass]="{ 'sidebar-selected': (sidebarSelected == 'DDCRaj') }" (click)="showDDCRaj()">
+                                    <i class="fas fa-tasks mx-3 collapse-point"></i><span class="sidebar-modal-collapse">{{ lang.projets.sidebar.DDCRaj }}</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <button class="btn btn-sidebar mt-1 py-2" [ngClass]="{ 'sidebar-selected': (sidebarSelected == 'ANO') }" (click)="showAnomalies()">
+                                    <i class="fas fa-exclamation-circle mx-3 collapse-point"></i><span class="sidebar-modal-collapse">{{ lang.projets.sidebar.ANO }}</span>
+                                </button>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+            </app-card>
+        </div>
+        <!-- CONTENT -->
+        <div class="col">
+            <div class="row d-flex">
+                <div class="col">
+                    <app-card [autoHeight]=false className="mt-0">
+                        <div class="m-4 info-dossiers">
+                            <div *ngIf="loading" class="container">
+                                <app-spinner></app-spinner>
+                            </div>
+                            <ng-container *ngIf="!loading && projet != null">
+                                <!-- TITLE -->
+                                <div class="row">
+                                    <div class="col">
+                                        <h4 class="mb-4 text-dark">{{ lang.projets.sidebar.projet }} <span class="collapse-label-sidebar">{{ projet.numeroProjet }} : {{ projet.nomProjet }}</span></h4>
+                                    </div>
+                                </div>
+                                <!-- INFOS PROJET BANDEAU COMMUN -->
+                                <ng-container *ngIf="sidebarSelected != 'PROJET'">
+                                    <div class="row infos-projet">
+                                        <div class="col">
+                                            <span class="infos-fieldset">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <span class="collapse-label">{{ lang.context.projetMontantTotal }}</span><br>
+                                                        <span [innerHTML]="montantFinal"></span>
+                                                    </div>
+                                                    <div class="col">
+                                                        <span class="collapse-label">{{ lang.context.projetMontantRAV }}</span><br>
+                                                        <span [innerHTML]="montantRAVReel"></span>
+                                                    </div>
+                                                    <div class="col">
+                                                        <span class="collapse-label">{{ lang.context.projetDevise }}</span><br>
+                                                        {{ app.getRefLabel('refDevises', projet.idDevise) }}
+                                                    </div>
+                                                </div>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                                <!-- PROJET -->
+                                <ng-container *ngIf="sidebarSelected == 'PROJET'">
+                                    <!-- AFD -->
+                                    <div *ngIf="isAFD" class="row infos-projet">
+                                        <div class="col-7">
+                                            <span class="infos-fieldset h-100">
+                                                <div class="row mb-5">
+                                                    <div class="col">
+                                                        <span class="collapse-label">{{ lang.context.projetAgence }}</span><br>
+                                                        {{ app.renderEmpty(app.getRefLabel('refAgencesGestions', projet.idAgenceGestion)) }}
+                                                    </div>
+                                                    <div class="col">
+                                                        <span *ngIf="projet.projetPaysRealisation != null" class="collapse-label">{{ lang.context.projetPays }}</span><br>
+                                                        {{ app.getRefLabel('refPays', app.getPaysRealisationProjet(projet.projetPaysRealisation)) }}
+                                                    </div>
+                                                    <div class="col">
+                                                        <span class="collapse-label">{{ lang.context.projetDateOctroi }}</span><br>
+                                                        {{ app.formatDate(projet.dateOctroi) }}
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-5">
+                                                    <div class="col">
+                                                        <span class="collapse-label">{{ lang.context.projetImpaye }}</span><br>
+                                                        <span [innerHTML]="impayeProjet"></span>
+                                                    </div>
+                                                    <div class="col">
+                                                        <span class="collapse-label">{{ lang.context.projetDevise }}</span><br>
+                                                        {{ app.getRefLabel('refDevises', projet.idDevise) }}
+                                                    </div>
+                                                    <div class="col">
+                                                        <span class="collapse-label">{{ lang.context.projetDirRegion }}</span><br>
+                                                        {{ app.getRefLabel('refAgencesGestions', projet.idDirectionRegionale) }}
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <span class="collapse-label">{{ lang.context.projetCofinancement }}</span><br>
+                                                        {{ app.getRefLabel('refBooleanNA', projet.flgCofinancement) }}
+                                                    </div>
+                                                    <div class="col">
+                                                        <span class="collapse-label">{{ lang.context.projetDivision }}</span><br>
+                                                        {{ app.getRefLabel('refDivisionsLibLong',projet.idDivisionProparco ) }}
+                                                    </div>
+                                                    <div class="col">
+                                                        <span class="collapse-label">{{ lang.context.projetRemb }}</span><br>
+                                                        <span [innerHTML]="remboursementProjet"></span>
+                                                    </div>
+                                                </div>
+                                            </span>
+                                        </div>
+                                        <div class="col-5">
+                                            <span class="infos-fieldset-montants">
+                                                <div class="row mb-2">
+                                                    <div class="col-auto">{{ lang.context.projetMontantInitial }}</div>
+                                                    <div class="col text-right" [innerHTML]="montantInitial"></div>
+                                                </div>
+                                                <div class="row mb-2 row-separator">
+                                                    <div class="col-auto">{{ lang.context.projetMontantFinal }}</div>
+                                                    <div class="col text-right" [innerHTML]="montantFinal"></div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-auto">{{ lang.context.projetMontantVerseDC }}</div>
+                                                    <div class="col text-right" [innerHTML]="montantVerseDC"></div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-auto">{{ lang.context.projetMontantVerseHorsDC }}</div>
+                                                    <div class="col text-right" [innerHTML]="montantVerseHorsDC"></div>
+                                                </div>
+                                                <div class="row mb-2 row-separator">
+                                                    <div class="col-auto">{{ lang.context.projetMontantVerseAvance }}</div>
+                                                    <div class="col text-right" [innerHTML]="montantVerseAvance"></div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-auto">{{ lang.context.projetMontantVerseTotalVerso }}</div>
+                                                    <div class="col text-right" [innerHTML]="montantVerseTotalVerso"></div>
+                                                </div>
+                                                <div class="row mb-2 row-separator">
+                                                    <div class="col-auto">{{ lang.context.projetMontantRAVVerso }} </div>
+                                                    <div class="col text-right" [innerHTML]="montantRAVVerso"></div>
+                                                </div>
+                                                <div class="row mb-2 font-weight-bold">
+                                                    <div class="col-auto">{{ lang.context.projetMontantVerseTotalGCF }} </div>
+                                                    <div class="col text-right" [innerHTML]="montantVerseTotalGCF"></div>
+                                                </div>
+                                                <div class="row mb-2 font-weight-bold row-separator">
+                                                    <div class="col-auto">{{ lang.context.projetMontantRAV }} </div>
+                                                    <div class="col text-right" [innerHTML]="montantRAVReel"></div>
+                                                </div>
+                                                <div class="row font-weight-bold">
+                                                    <div class="col-auto">{{ lang.context.projetMontantRAJ }}</div>
+                                                    <div class="col text-right" [innerHTML]="montantRAJ"></div>
+                                                </div>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <!-- PROPARCO -->
+                                    <div *ngIf="!isAFD" class="row infos-projet">
+                                        <div class="col-7">
+                                            <span class="infos-fieldset h-100">
+                                                <div class="row mb-3">
+                                                    <div class="col">
+                                                        <span class="collapse-label">{{ lang.context.projetDLVF }}</span><br>
+                                                        {{ app.formatDate(DLVFProjet) }}
+                                                    </div>
+                                                    <div class="col">
+                                                        <span *ngIf="projet.projetPaysRealisation != null" class="collapse-label">{{ lang.context.projetPays }}</span><br>
+                                                        {{ app.getRefLabel('refPays', app.getPaysRealisationProjet(projet.projetPaysRealisation)) }}
+                                                    </div>
+                                                    <div class="col">
+                                                        <span class="collapse-label">{{ lang.context.projetSyndication }}</span><br>
+                                                        {{ app.getRefLabel('refBooleanNA', projet.flgSyndication) }}
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <div class="col">
+                                                        <span class="collapse-label">{{ lang.context.projetCofinancement }}</span><br>
+                                                        {{ app.getRefLabel('refBooleanNA', projet.flgCofinancement) }}
+                                                    </div>
+                                                    <div class="col">
+                                                        <span class="collapse-label">{{ lang.context.projetFiDelegue }}</span><br>
+                                                        {{ app.getRefLabel('refBooleanNA', projet.flgFinancementsDelegues) }}
+                                                    </div>
+                                                    <div class="col">
+                                                        <span class="collapse-label">{{ lang.context.projetDivision }}</span><br>
+                                                        {{ projet.idDivisionProparco }}
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <div class="col">
+                                                        <span class="collapse-label">{{ lang.context.projetChAppui }}</span><br>
+                                                        {{ projet.intervenantCA }}
+                                                    </div>
+                                                    <div class="col">
+                                                        <span class="collapse-label">{{ lang.context.projetChAffaire }}</span><br>
+                                                        {{ projet.intervenantCAF }}
+                                                    </div>
+                                                    <div class="col">
+                                                        <span class="collapse-label">{{ lang.context.projetChAffaireSup }}</span><br>
+                                                        {{ projet.intervenantCAFS }}
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <span class="collapse-label">{{ lang.context.projetChAppuiDAF }}</span><br>
+                                                        {{ projet.intervenantCAFD }}
+                                                    </div>
+                                                    <div class="col">
+                                                        <span class="collapse-label">{{ lang.context.projetRemb }}</span><br>
+                                                        <span [innerHTML]="remboursementProjet"></span>
+                                                    </div>
+                                                    <div class="col"></div>
+                                                </div>
+                                            </span>
+                                        </div>
+                                        <div class="col-5">
+                                            <span class="infos-fieldset-montants">
+                                                <div class="row mb-2">
+                                                    <div class="col-auto">{{ lang.context.projetMontantEngagement }}</div>
+                                                    <div class="col text-right" [innerHTML]="montantFinal"></div>
+                                                </div>
+                                                <div class="row mb-2 row-separator">
+                                                    <div class="col-auto">{{ lang.context.projetMontantSousPartAFD }}</div>
+                                                    <div class="col text-right" [innerHTML]="montantInitial"></div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-auto">{{ lang.context.projetMontantVerseTotalGCF }}</div>
+                                                    <div class="col text-right" [innerHTML]="montantVerseTotalGCF"></div>
+                                                </div>
+                                                <div class="row mb-2 row-separator">
+                                                    <div class="col-auto">{{ lang.context.projetMontantVerseAvance }}</div>
+                                                    <div class="col text-right" [innerHTML]="montantVerseAvance"></div>
+                                                </div>
+                                                <div class="row mb-2 font-weight-bold">
+                                                    <div class="col-auto">{{ lang.context.projetMontantRAV }}</div>
+                                                    <div class="col text-right" [innerHTML]="montantRAVReel"></div>
+                                                </div>
+                                                <div class="row mb-2 font-weight-bold">
+                                                    <div class="col-auto">{{ lang.context.projetMontantRAJ }}</div>
+                                                    <div class="col text-right" [innerHTML]="montantRAJ"></div>
+                                                </div>
+                                                <div class="row font-weight-bold">
+                                                    <div class="col-auto">{{ lang.context.projetImpaye }}</div>
+                                                    <div class="col text-right" [innerHTML]="impayeProjet"></div>
+                                                </div>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <!-- PROJET : TABS -->
+                                    <div class="row mt-3">
+                                        <div class="col">
+                                            <ul class="nav nav-tabs">
+                                                <li class="nav-item">
+                                                    <button class="nav-link active" data-toggle="tab" data-target="#tab-projet-comments" type="button">{{ lang.projets.comments }}</button>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <button class="nav-link" data-toggle="tab" data-target="#tab-projet-avenant" type="button">{{ lang.projets.avenant }}</button>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <button class="nav-link" data-toggle="tab" data-target="#tab-projet-tiers" type="button">{{ lang.projets.tiers }}</button>
+                                                </li>
+                                            </ul>
+                                            <div class="tab-content border-0">
+                                                <div class="tab-pane fade show active pt-3" id="tab-projet-comments">
+                                                    <app-comments [numero]="projet.numeroProjet" type="projet" [read]="read" (save)="showToastSaveComment($event)"></app-comments>
+                                                </div>
+                                                <div class="tab-pane fade pt-3" id="tab-projet-avenant">
+                                                    avenant...
+                                                </div>
+                                                <div class="tab-pane fade pt-3" id="tab-projet-tiers">
+                                                    tiers...
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                                <!-- CONCOURS -->
+                                <ng-container *ngIf="sidebarSelected == 'CONCOURS'">
+                                    <div class="row">
+                                        <div class="col">
+                                            <h6 class="mt-4 text-dark">{{ lang.context.listConcours }}</h6>
+                                        </div>
+                                    </div>
+                                    <app-table #tableConcours type="projetConcours" [parentItems]="concours" [itemsByPage]="itemsByPage" [manualLoading]=true [hideFilters]=true [hideFooter]=true [lineClickable]=true (goto)="gotoDetailConcours($event)"></app-table>
+                                </ng-container>
+                                <!-- CONCOURS DETAIL -->
+                                <ng-container *ngIf="sidebarSelected == 'CONCOURS_DETAIL' && detailConcours != null">
+                                    <div class="row">
+                                        <div class="col">
+                                            <h6 class="mt-4 text-dark">{{ lang.context.detailConcours }}&nbsp;<span class="collapse-label-sidebar">{{ detailConcours.numeroConcours }}</span></h6>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="row mb-3">
+                                        <div class="form-group col">
+                                            <label for="inputDevise">{{ lang.context.libelleConcours }}</label>
+                                            <input type="text" class="form-control" id="inputLibelleConcours" [(ngModel)]="libelleConcours">
+                                        </div>
+                                    </div> -->
+                                    <!-- AFD -->
+                                    <div *ngIf="isAFD" class="row infos-projet">
+                                        <div class="col-7">
+                                            <span class="infos-fieldset h-100">
+                                                <div class="row mb-4">
+                                                    <div class="col">
+                                                        <span class="collapse-label">{{ lang.context.concours }}</span><br>
+                                                        {{ detailConcours.numeroConcours }}
+                                                    </div>
+                                                    <div class="col">
+                                                        <span class="collapse-label">{{ lang.context.concoursBeneficiairePrimaire }}</span><br>
+                                                        {{ detailConcours.beneficiairePrimaire }}
+                                                    </div>
+                                                    <div class="col">
+                                                        <span class="collapse-label">{{ lang.context.concoursDevise }}</span><br>
+                                                        {{ detailConcours.idDevise }}
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-4">
+                                                    <div class="col">
+                                                        <span class="collapse-label">{{ lang.context.concoursProduit }}</span><br>
+                                                        {{ detailConcours.idFamilleProduit }}
+                                                    </div>
+                                                    <div class="col">
+                                                        <span class="collapse-label">{{ lang.context.concoursOperation }}</span><br>
+                                                        {{ detailConcours.operation }}
+                                                    </div>
+                                                    <div class="col">
+                                                        <span class="collapse-label">{{ lang.context.concoursMOAD }}</span><br>
+                                                        {{ app.getRefLabel('refBooleanNA', detailConcours.moad) }}
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-4">
+                                                    <div class="col">
+                                                        <span class="collapse-label">{{ lang.context.concoursOctroi }}</span><br>
+                                                        {{ app.formatDate(detailConcours.dateOctroi) }}
+                                                    </div>
+                                                    <div class="col">
+                                                        <span class="collapse-label">{{ lang.context.concoursConvention }}</span><br>
+                                                        {{ detailConcours.numeroConvention }}
+                                                    </div>
+                                                    <div class="col">
+                                                        <span class="collapse-label">{{ lang.context.concoursImpaye }}</span><br>
+                                                        {{ app.getRefLabel('refBooleanNA', detailConcours.impaye) }}
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-4">
+                                                    <div class="col">
+                                                        <span class="collapse-label">{{ lang.context.concoursDLVFI }}</span><br>
+                                                        {{ app.formatDate(detailConcours.dlvfInitiale) }}
+                                                    </div>
+                                                    <div class="col">
+                                                        <span class="collapse-label">{{ lang.context.concoursDLVFF }}</span><br>
+                                                        {{ app.formatDate(detailConcours.dlvfFinale) }}
+                                                    </div>
+                                                    <div class="col">
+                                                        <span class="collapse-label">{{ lang.context.projetRemb }}</span><br>
+                                                        <span [innerHTML]="remboursementConcours"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <span class="collapse-label">{{ lang.context.concoursDateSignature }}</span><br>
+                                                        {{ app.formatDate(detailConcours.dateSignature) }}
+                                                    </div>
+                                                    <div class="col">
+                                                        <span class="collapse-label">{{ lang.context.concoursDateAchevement }}</span><br>
+                                                        {{ app.formatDate(detailConcours.dateAchevement) }}
+                                                    </div>
+                                                    <div class="col">
+                                                    </div>
+                                                </div>
+                                            </span>
+                                        </div>
+                                        <div class="col-5">
+                                            <span class="infos-fieldset-montants">
+                                                <div class="row mb-2">
+                                                    <div class="col-auto">{{ lang.context.projetMontantInitial }}</div>
+                                                    <div class="col text-right" [innerHTML]="montantInitialConcours"></div>
+                                                </div>
+                                                <div class="row mb-2 row-separator">
+                                                    <div class="col-auto">{{ lang.context.projetMontantFinal }}</div>
+                                                    <div class="col text-right" [innerHTML]="montantFinalConcours"></div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-auto">{{ lang.context.projetMontantVerseDC }}</div>
+                                                    <div class="col text-right" [innerHTML]="montantVerseDCConcours"></div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-auto">{{ lang.context.projetMontantVerseHorsDC }}</div>
+                                                    <div class="col text-right" [innerHTML]="montantVerseHorsDCConcours"></div>
+                                                </div>
+                                                <div class="row mb-2 row-separator">
+                                                    <div class="col-auto">{{ lang.context.projetMontantVerseAvance }}</div>
+                                                    <div class="col text-right" [innerHTML]="montantVerseAvanceConcours"></div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-auto">{{ lang.context.projetMontantVerseTotalVerso }}</div>
+                                                    <div class="col text-right" [innerHTML]="montantVerseTotalVersoConcours"></div>
+                                                </div>
+                                                <div class="row mb-2 row-separator">
+                                                    <div class="col-auto">{{ lang.context.projetMontantRAVVerso }}</div>
+                                                    <div class="col text-right" [innerHTML]="montantRAVVersoConcours"></div>
+                                                </div>
+                                                <div class="row mb-2 font-weight-bold">
+                                                    <div class="col-auto">{{ lang.context.projetMontantVerseTotalGCF }}</div>
+                                                    <div class="col text-right" [innerHTML]="montantVerseConcours"></div>
+                                                </div>
+                                                <div class="row mb-2 font-weight-bold row-separator">
+                                                    <div class="col-auto">{{ lang.context.projetMontantRAV }}</div>
+                                                    <div class="col text-right" [innerHTML]="montantRAVConcours"></div>
+                                                </div>
+                                                <div class="row font-weight-bold">
+                                                    <div class="col-auto">{{ lang.context.projetMontantRAJ }}</div>
+                                                    <div class="col text-right" [innerHTML]="montantRAJConcours"></div>
+                                                </div>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <!-- PROPARCO -->
+                                    <div *ngIf="!isAFD" class="row infos-projet">
+                                        <div class="col-7">
+                                            <span class="infos-fieldset h-100">
+                                                <div class="row mb-4">
+                                                    <div class="col">
+                                                        <span class="collapse-label">{{ lang.context.concours }}</span><br>
+                                                        {{ detailConcours.numeroConcours }}
+                                                    </div>
+                                                    <div class="col">
+                                                        <span class="collapse-label">{{ lang.context.concoursBeneficiairePrimaire }}</span><br>
+                                                        {{ detailConcours.beneficiairePrimaire }}
+                                                    </div>
+                                                    <div class="col">
+                                                        <span class="collapse-label">{{ lang.context.concoursDevise }}</span><br>
+                                                        {{ detailConcours.idDevise }}
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-4">
+                                                    <div class="col">
+                                                        <span class="collapse-label">{{ lang.context.concoursProduit }}</span><br>
+                                                        {{ detailConcours.idFamilleProduit }}
+                                                    </div>
+                                                    <div class="col">
+                                                        <span class="collapse-label">{{ lang.context.concoursOperation }}</span><br>
+                                                        {{ detailConcours.operation }}
+                                                    </div>
+                                                    <div class="col">
+                                                        <span class="collapse-label">{{ lang.context.projetDLVF }}</span><br>
+                                                        {{ app.formatDate(detailConcours.dlvfFinale) }}
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-4">
+                                                    <div class="col">
+                                                        <span class="collapse-label">{{ lang.context.concoursConvention }}</span><br>
+                                                        {{ detailConcours.numeroConvention }}
+                                                    </div>
+                                                    <div class="col">
+                                                        <span class="collapse-label">{{ lang.context.concoursDateSignature }}</span><br>
+                                                        {{ app.formatDate(detailConcours.dateSignature) }}
+                                                    </div>
+                                                    <div class="col">
+                                                        <span class="collapse-label">{{ lang.context.concoursDateAchevement }}</span><br>
+                                                        {{ app.formatDate(detailConcours.dateAchevement) }}
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-4">
+                                                    <div class="col">
+                                                        <span class="collapse-label">{{ lang.context.projetRemb }}</span><br>
+                                                        <span [innerHTML]="remboursementConcours"></span>
+                                                    </div>
+                                                </div>
+                                            </span>
+                                        </div>
+                                        <div class="col-5">
+                                            <span class="infos-fieldset-montants">
+                                                <div class="row mb-2">
+                                                    <div class="col-auto">{{ lang.context.projetMontantEngagement }}</div>
+                                                    <div class="col text-right" [innerHTML]="montantFinalConcours"></div>
+                                                </div>
+                                                <div class="row mb-2 row-separator">
+                                                    <div class="col-auto">{{ lang.context.projetMontantSousPartAFD }}</div>
+                                                    <div class="col text-right" [innerHTML]="montantInitialConcours"></div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-auto">{{ lang.context.projetMontantVerseTotalGCF }}</div>
+                                                    <div class="col text-right" [innerHTML]="montantVerseConcours"></div>
+                                                </div>
+                                                <div class="row mb-2 row-separator">
+                                                    <div class="col-auto">{{ lang.context.projetMontantVerseAvance }}</div>
+                                                    <div class="col text-right" [innerHTML]="montantVerseAvanceConcours"></div>
+                                                </div>
+                                                <div class="row mb-2 font-weight-bold">
+                                                    <div class="col-auto">{{ lang.context.projetMontantRAV }}</div>
+                                                    <div class="col text-right" [innerHTML]="montantRAVConcours"></div>
+                                                </div>
+                                                <div class="row mb-2 font-weight-bold">
+                                                    <div class="col-auto">{{ lang.context.projetMontantRAJ }}</div>
+                                                    <div class="col text-right" [innerHTML]="montantRAJConcours"></div>
+                                                </div>
+                                                <div class="row font-weight-bold">
+                                                    <div class="col-auto">{{ lang.context.projetImpaye }}</div>
+                                                    <div class="col text-right" [innerHTML]="detailConcours.impayesSIRP"></div>
+                                                </div>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                                <!-- DOCUMENT CONTRACTUEL -->
+                                <ng-container *ngIf="sidebarSelected == 'DC'">
+                                    <div class="row">
+                                        <div class="col">
+                                            <h6 class="mt-4 mb-3 text-dark">{{ lang.context.libelleDC }} <i class="fas fa-question-circle info-bulle" [title]="lang.context.tooltipDC"></i></h6>
+                                        </div>
+                                    </div>
+                                    <app-table #tableDC type="documentsContractuels" [parentItems]="DC" [manualLoading]=true [noMT]=true [itemsByPage]="10" [lineClickable]=true (goto)="gotoDC($event)" (refresh)="getDC()" (add)="gotoDC()" [enableAdd]=true></app-table>
+                                </ng-container>
+                                <!-- AVANCE -->
+                                <ng-container *ngIf="sidebarSelected == 'AVANCE'">
+                                    <div class="row">
+                                        <div class="col">
+                                            <h6 class="mt-4 mb-3 text-dark">{{ lang.context.libelleAvance }} <i class="fas fa-question-circle info-bulle" [title]="lang.context.tooltipAvance"></i></h6>
+                                        </div>
+                                    </div>
+                                    <app-table #tableAvance type="avancesContractuels" [parentItems]="avances" [manualLoading]=true [noMT]=true [itemsByPage]="10" [lineClickable]=true (goto)="gotoAvance($event)" (refresh)="getAvance()" (add)="gotoAvance()" [enableAdd]=true></app-table>
+                                </ng-container>
+                                <!-- DDVS -->
+                                <ng-container *ngIf="sidebarSelected == 'DDV'">
+                                    <div class="row">
+                                        <div class="col">
+                                            <h6 class="mt-4 mb-3 text-dark">{{ lang.context.libelleDdv }} <i class="fas fa-question-circle info-bulle" [title]="lang.context.tooltipDdv"></i></h6>
+                                        </div>
+                                    </div>
+                                    <app-table #tableDdv type="versementsVuePC" [parentItems]="dossiersVersement" [manualLoading]=true [noMT]=true [itemsByPage]="10" [lineClickable]=true (goto)="gotoDdv($event)" (refresh)="getDdv()" [enableAdd]=false></app-table>
+                                </ng-container>
+                                <!-- DDRS -->
+                                <ng-container *ngIf="sidebarSelected == 'DDR'">
+                                    <div class="row">
+                                        <div class="col">
+                                            <h6 class="mt-4 mb-3 text-dark">{{ lang.context.libelleDdr }} <i class="fas fa-question-circle info-bulle" [title]="lang.context.tooltipDdr"></i></h6>
+                                        </div>
+                                    </div>
+                                    <app-table #tableDdr type="reglementsVuePC" [parentItems]="dossiersReglement" [manualLoading]=true [noMT]=true [itemsByPage]="10" [lineClickable]=true  (file)="downloadFile($event)" (goto)="gotoDdr($event)" (refresh)="getDdr()" [enableAdd]=false></app-table>
+                                </ng-container>
+                                <!-- ANOMALIE -->
+                                <ng-container *ngIf="sidebarSelected == 'ANO'">
+                                    <div class="row">
+                                        <div class="col">
+                                            <h6 class="mt-4 mb-3 text-dark">{{ lang.context.libelleAnomalie }} <i class="fas fa-question-circle info-bulle" [title]="lang.context.tooltipAnomalie"></i></h6>
+                                        </div>
+                                    </div>
+                                    <app-table #tableAnomalies type="anomalies" [parentItems]="anomalies" [manualLoading]=true [itemsByPage]="10" [lineClickable]=true (goto)="gotoAnomalies($event)" (refresh)="getAnomalies()"></app-table>
+                                </ng-container>
+                                <!-- DOSSIERS DE CONTROLES -->
+                                <ng-container *ngIf="sidebarSelected == 'DDC'">
+                                    <div class="row">
+                                        <div class="col">
+                                            <h6 class="mt-4 mb-3 text-dark">{{ lang.context.libelleDDC }} <i class="fas fa-question-circle info-bulle" [title]="lang.context.tooltipDDC"></i></h6>
+                                        </div>
+                                    </div>
+                                    <app-table #tableDDC type="dossiersControles" [parentItems]="DDC" [manualLoading]=true [itemsByPage]="10" [lineClickable]=true (goto)="gotoDDC($event)" (refresh)="getDDC()"></app-table>
+                                </ng-container>
+                                <!-- DOSSIERS DE CONTROLES RAJ -->
+                                <ng-container *ngIf="sidebarSelected == 'DDCRaj'">
+                                    <div class="row">
+                                        <div class="col">
+                                            <h6 class="mt-4 mb-3 text-dark">{{ lang.context.libelleDDCRaj }} <i class="fas fa-question-circle info-bulle" [title]="lang.context.tooltipDDCRaj"></i></h6>
+                                        </div>
+                                    </div>
+                                    <app-table #tableDDCRaj type="avancesContractuelsRAJ" [parentItems]="DDCRaj" [manualLoading]=true [itemsByPage]="10" [lineClickable]=true (goto)="gotoDDCRaj($event)" (refresh)="getDDCRaj()"></app-table>
+                                </ng-container>
+                            </ng-container>
+                        </div>
+                    </app-card>
+                </div>
+            </div>
+        </div>
+    </div>
+</app-content>
+<!-- MODALS -->
+<app-modal modalId="modalSearchProjet" icon="file-alt" size="xl" [modalTitle]="lang.findProject" hideFooter="true">
+    <div *ngIf="loadingProjets" class="container p-3">
+        <app-spinner></app-spinner>
+    </div>
+    <div [ngClass]="{ 'invisible': loadingProjets }">
+        <app-table *ngIf="projets != null" #tableProjets type="projetsVuePC" [parentItems]="projets" [manualLoading]=true [itemsByPage]="8" (goto)="selectProjet($event)" [lineClickable]=true [hideSubfilters]=true [noMT]=true (refresh)="getProjets()"></app-table>
+    </div>
+</app-modal>
+
+<div class="toast" id="toastSaveCommentSuccessProjets">{{ lang.toastSaveCommentSuccess }}</div>
+<div class="toast error" id="toastSaveErrorProjets">{{ lang.anomalie.toastSaveError }}</div> 

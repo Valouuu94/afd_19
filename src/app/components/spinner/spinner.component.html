@@ -1,0 +1,8 @@
+<div class="d-flex justify-content-center">
+    <div *ngIf="!error" class="spinner-border" [ngClass]="{ 'spinner-border-sm': small }"></div>
+    <div *ngIf="error" class="error">
+        <div class="spinner-grow spinner-grow-sm"></div>
+        <span class="mx-4">{{ lang.table.errorLoading }}</span>
+        <div class="spinner-grow spinner-grow-sm"></div>
+    </div>
+</div>

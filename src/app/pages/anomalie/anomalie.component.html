@@ -1,0 +1,255 @@
+<app-nav-actions>
+    <div class="col">
+        <button class="btn btn-secondary" (click)="annulerAnomalie()">
+            {{ lang.return }}
+        </button>
+    </div>
+    <div *ngIf="!read" class="col-md-auto text-right">
+        <app-btn #btnSaveAnomalie [label]="lang.save" type="secondary" ico="save" (action)="saveAnomalie(false)"></app-btn>
+        <button class="btn btn-new ml-2" (click)="confirmValiderAnomalie()">
+            <i class="fas fa-arrow-right"></i> {{ lang.validate }}
+        </button>
+    </div>
+</app-nav-actions>
+<app-content>
+    <div class="row d-flex mt-2">
+        <!-- SIDEBAR -->
+        <div id="sidebar-col" class="col-12 col-md-4 col-xl-3">
+            <app-card [autoHeight]=false>
+                <div id="sidebar-container" class="container infos-dossier">
+                    <span *ngIf="showSidebar" class="mb-3 mt-4 info-header text-uppercase">
+						<span *ngIf="!isAnoRaj && !isAnoRajDefaut">{{ lang.reglementControles.dossierReglement }}</span>
+						<span *ngIf="isAnoRaj || isAnoRajDefaut">{{ lang.reglementControles.contexteDossier }}</span>
+					</span>
+                    <button class="btn btn-collapse-sidebar float-right" (click)="app.toggleSidebar(this)" [title]="titleSidebarToggle">
+                        <i id="ico-sidebar-context" class="fas fa-compress-alt"></i>
+                    </button>
+                    <app-infos-context *ngIf="!isAnoRaj && !isAnoRajDefaut && reglement != null && showSidebar" [reglement]="reglement" [entite]="entite" [isDCV]="true"></app-infos-context>
+   					<app-infos-context *ngIf="(isAnoRaj || isAnoRajDefaut) && avanceContractuel != null && showSidebar" [avance]="avanceContractuel" [isDCV]="true" [isDcRAJ]="true" [entite]="entite"></app-infos-context>
+                </div>
+            </app-card>
+        </div>
+        <div id="sidebar-col-content" class="col-12 col-md-8 col-xl-9">
+            <div class="row d-flex">
+                <div *ngIf="anomalie != null" class="col">
+                    <app-card [autoHeight]=false>
+                        <div class="m-4">
+                            <!-- TITRE -->
+                            <div class="row infos-dossier">
+                                <div class="col-auto mr-5">
+                                    <span class="mb-4 mt-0 info-header text-uppercase">
+                                        <span *ngIf="!isCritiqueManager()">
+											<span *ngIf="!isAnoRaj && !isAnoRajDefaut">{{ lang.anomalie.declare }}</span>
+											<span *ngIf="isAnoRaj || isAnoRajDefaut">{{ lang.anomalie.declareRaj }}</span>
+											<span *ngIf="isCritique()">&nbsp;{{ lang.anomalie.critique }}</span>
+										</span>
+                                        <span *ngIf="isCritiqueManager()">{{ lang.anomalie.validAnoCritique }}</span>
+                                        <span class="c-highlight ml-3">&nbsp;{{ anomalie.codeFonctionnel }} </span>
+                                    </span>
+                                </div>
+                                <div class="col-auto mb-2 pl-0">
+                                    <span class="anomalie-status ml-2 mr-2">{{ anomalie.statut }}</span>
+                                    <span *ngIf="anomalie.regularisable" class="anomalie-tags">{{ lang.anomalie.regul }}</span>
+                                    <span *ngIf="!anomalie.regularisable" class="anomalie-tags-not">{{ lang.anomalie.nonRegul }}</span>
+                                    <span *ngIf="!isAgent" class="anomalie-tags ml-2">{{ app.capitalize(anomalie.criticite) }}</span>
+                                </div>
+                            </div>
+                            <span class="mt-2 mb-3 ml-auto form-label-sousTitle-anomalie">{{ anomalie.code }} - {{ anomalie.libelle }}</span>
+                            <div *ngIf="!isAgent" class="row">
+                                <div *ngIf="!isAnoRaj && !isAnoRajDefaut" class="col-2 col-form-label">{{ lang.anomalie.dossierControle }}</div>
+								<div *ngIf="isAnoRaj || isAnoRajDefaut" class="col-2 col-form-label">{{ lang.anomalie.dossierControleRaj }}</div>
+								<div class="col col-form-label font-weight-bold">
+                                    <a (click)="gotoDossier()" class="comment-link" target="_blank">{{ anomalie.numeroDC }}</a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-2 col-form-label">{{ lang.anomalie.thema }}</div>
+                                <div class="col col-form-label font-weight-bold">{{ anomalie.theme }}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-2 col-form-label pb-0">{{ lang.anomalie.PC }}</div>
+                                <div class="col col-form-label font-weight-bold pb-0">{{ anomalie.libellePC }}</div>
+                            </div>
+                            <div *ngIf="!isAgent" class="row mt-2">
+                                <div class="col-2 col-form-label pb-0">{{ lang.anomalie.SPC }}</div>
+                                <div class="col col-form-label font-weight-bold pb-0">{{ anomalie.libelleSPC }}</div>
+                            </div>
+                        </div>
+                    </app-card>
+                    <app-card [autoHeight]=false className="mt-3">
+                        <div *ngIf="loading" class="container p-3">
+                            <app-spinner></app-spinner>
+                        </div>
+                        <div *ngIf="!loading" class="m-4">
+                            <!-- ACTIONS UTILISATEUR -->
+                            <h6 *ngIf="isCritiqueManager()" class="mb-4">{{ lang.anomalie.validManager }}</h6><!-- SI MANAGER/CRITIQUE/MODIF -->
+                            <h6 *ngIf="!isCritiqueManager() && !isAgent" class="mb-4 field-required">{{ lang.anomalie.regulAno }}</h6><!-- SI PAS MANAGER/CRITIQUE/EDITION ET PAS AGENT -->
+                            <div *ngIf="!isAgent || read" class="mb-3"><!-- SI PAS AGENT OU LECTURE -->
+                                <ng-container *ngIf="!isCritiqueManager()"><!-- SI PAS MANAGER/CRITIQUE/MODIF -->
+                                    <div *ngIf="anomalie.regularisable" class="form-check">
+                                        <input class="form-check-input" type="radio" name="anomalieRegulAction" [(ngModel)]="action" value="REGULARISEE" [disabled]="read">
+                                        <label class="form-check-label">{{ lang.anomalie.actionRegul }}</label>
+                                        <i class="fas fa-question-circle info-bulle" [title]="lang.anomalie.tooltipRegularisee"></i>
+                                    </div>
+                                    <div *ngIf="anomalie.regularisable" class="form-check">
+                                        <input class="form-check-input" type="radio" name="anomalieRegulAction" [(ngModel)]="action" value="REFUSE" [disabled]="read">
+                                        <label class="form-check-label">{{ lang.anomalie.actionRefus }}</label>
+                                        <i class="fas fa-question-circle info-bulle" [title]="lang.anomalie.tooltipAttRegul"></i>
+                                    </div>
+                                    <div *ngIf="anomalie.regularisable" class="form-check">
+                                        <input class="form-check-input" type="radio" name="anomalieRegulAction" [(ngModel)]="action" value="ABAND" [disabled]="read">
+                                        <label class="form-check-label">{{ lang.anomalie.abandon }}</label>
+                                    </div>
+                                    <div *ngIf="!anomalie.regularisable" class="form-check">
+                                        <input class="form-check-input" type="radio" name="anomalieRegulAction" [(ngModel)]="action" value="DECLAR" [disabled]="read">
+                                        <label class="form-check-label">{{ lang.anomalie.declaree }}</label>
+                                        <i class="fas fa-question-circle info-bulle" [title]="lang.anomalie.tooltipAnoConfirmee"></i>
+                                    </div>
+                                    <div *ngIf="!anomalie.regularisable && !isAnoRajDefaut" class="form-check">
+                                        <input class="form-check-input" type="radio" name="anomalieRegulAction" [(ngModel)]="action" value="DECLAR_DOC_OK" [disabled]="read">
+                                        <label class="form-check-label">{{ lang.anomalie.declareeOK }}</label>
+                                        <i class="fas fa-question-circle info-bulle" [title]="lang.anomalie.tooltipAnoDocEnvoye"></i>
+                                    </div>
+                                    <div *ngIf="!anomalie.regularisable" class="form-check">
+                                        <input class="form-check-input" type="radio" name="anomalieRegulAction" [(ngModel)]="action" value="ABAND" [disabled]="read">
+                                        <label class="form-check-label">{{ lang.anomalie.abandonnee }}</label>
+                                    </div>
+                                </ng-container>
+                                <ng-container *ngIf="isCritiqueManager()"><!-- SI MANAGER/CRITIQUE/MODIF -->
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="anomalieRegulAction" [(ngModel)]="action" value="AVEC_INCIDENT" [disabled]="read">
+                                        <label class="form-check-label">{{ lang.anomalie.validerAvecIncident }}</label>
+                                        <i class="fas fa-question-circle info-bulle" [title]="lang.anomalie.tooltipAvecIncident"></i>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="anomalieRegulAction" [(ngModel)]="action" value="SANS_INCIDENT" [disabled]="read">
+                                        <label class="form-check-label">{{ lang.anomalie.validerSansIncident }}</label>
+                                        <i class="fas fa-question-circle info-bulle" [title]="lang.anomalie.tooltipSansIncident"></i>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="anomalieRegulAction" [(ngModel)]="action" value="ABAND" [disabled]="read">
+                                        <label class="form-check-label">{{ lang.anomalie.abandon }}</label>
+                                        <i class="fas fa-question-circle info-bulle" [title]="lang.anomalie.tooltipAband"></i>
+                                    </div>
+                                </ng-container>
+                            </div>
+                            <!-- ISIMAN -->
+                            <div *ngIf="(isCritiqueAgent() || isCritiqueControleur() || (isCritique() && read))" class="form-group mb-4 col-4 pl-0">
+                                <label>{{ lang.anomalie.isiman }}</label>
+                                <input type="text" class="form-control" [(ngModel)]="numeroISIMAN" [disabled]="isCritiqueControleur() || read" [placeholder]="lang.anomalie.placeholderIsiman">
+                                <ng-container *ngIf="isCritiqueControleur() || read">
+                                    <br>
+                                    <input type="checkbox" [(ngModel)]="numeroISIMANValide" [disabled]="read" class="mr-2"> {{ lang.anomalie.isimanValid }}
+                                    <i class="fas fa-question-circle info-bulle" [title]="lang.anomalie.tooltipIsimanValid"></i>
+                                </ng-container>
+                            </div>
+                            <!-- COMMENTAIRES -->
+                            <label>{{ lang.anomalie.fil }}</label>
+                            <ng-container *ngFor="let comment of anomalie.comments; let idxComment = index">
+                                <div *ngIf="!comment.annule" class="row mx-0 anomalie-comment">
+                                    <div class="col-auto">
+                                        <div class="anomalie-avatar d-flex justify-content-center text-center align-items-center">
+                                            {{ comment.userInitials }}
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="row align-items-center">
+                                            <div class="col">
+                                                <span class="font-weight-bold mr-3">{{ comment.userName }}</span>
+                                                <span class="mr-3 anomalie-sublabel">{{ app.getRefLabel('refRoles', comment.userRole) }}</span>
+                                                <span class="anomalie-sublabel">{{ app.formatDate(comment.date) + ' ' + app.formatHours(comment.date) }}</span>
+                                            </div>
+                                            <div *ngIf="!read && existMyComment && (idxComment == anomalie.comments.length - 1)  && comment.userId == currentUserId" class="col-auto right">
+                                                <button class="btn btn-help" (click)="editCommentaire(comment)" [title]="lang.anomalie.updateComment">
+                                                    <i class="fas fa-pen"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3 align-items-center">
+                                            <div class="col">
+                                                {{ comment.comment }}
+                                            </div>
+                                        </div>
+                                        <div *ngIf="comment.liens != null && comment.liens.length > 0 && comment.liens[0].value != ''" class="row mt-3 align-items-center">
+                                            <div class="col">
+                                                <div *ngFor="let lien of comment.liens" class="mt-1">
+                                                    <i class="fas fa-link"></i>
+                                                    <a [href]="lien.value" class="ml-3 comment-link" target="_blank">{{ lien.value }}</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-container>
+                            <!-- AJOUT/MODIF COMMENTAIRE -->
+                            <div *ngIf="!read && !existMyComment && !existMyCommentLast" class="row mx-0 anomalie-comment">
+                                <div class="col-auto">
+                                    <div class="anomalie-avatar d-flex justify-content-center text-center align-items-center">
+                                        {{ app.getUserInitiales(currentUserName) }}
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="row align-items-center">
+                                        <div class="col">
+                                            <span class="font-weight-bold mr-3">{{ currentUserName }}</span>
+                                            <span class="mr-3 anomalie-sublabel">{{ currentUserRole }}</span>
+                                            <span class="anomalie-sublabel">{{ app.formatDate(currentDate) }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-4 align-items-center">
+                                        <div class="col">
+                                            <label [ngClass]="{ 'field-required': isCommentRequired() }">{{ lang.anomalie.comment }}</label>
+                                            <textarea class="form-control" [(ngModel)]="commentaire" [placeholder]="lang.anomalie.placeholderComment" maxlength="4000"></textarea>
+                                        </div>
+                                    </div>
+                                    <div *ngFor="let lien of liens; let idxLien = index" class="row mt-3 align-items-center">
+                                        <div class="col">
+                                            <label *ngIf="idxLien == 0">{{ lang.anomalie.links }}</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text">
+                                                        <i class="fa fa-link"></i>
+                                                    </div>
+                                                </div>
+                                                <input type="text" class="form-control no-radius-left" [placeholder]="lang.anomalie.placeholderLink" [(ngModel)]="lien.value">
+                                            </div>
+                                        </div>
+                                        <div class="col-2" [ngClass]="{ 'mt-4': idxLien == 0 }">
+                                            <button *ngIf="idxLien > 0" class="btn btn-secondary" (click)="supprimerLien(lien)" [title]="lang.anomalie.deleteLink">
+                                                <i class="fas fa-minus"></i>
+                                            </button>
+                                            <button *ngIf="liens.length - 1 == idxLien && liens.length < 5" class="btn btn-secondary ml-2" (click)="ajouterLien()" [title]="lang.anomalie.addLink">
+                                                <i class="fas fa-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col">
+                                            <button class="btn btn-new" (click)="saveComment(false)">
+                                                {{ lang.anomalie.saveComment }}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </app-card>
+                </div>
+            </div>
+        </div>
+    </div>
+</app-content>
+<!-- MODALS -->
+<app-modal #modalConfirmationValiderAnomalie modalId="modalConfirmationValiderAnomalie" [validateLabel]="lang.validate" (validate)="validerAnomalie()">
+    {{ getConfirmMessage() }}
+</app-modal>
+<!-- TOASTS -->
+<div class="toast error" id="toastAnomalieCommentRequired">{{ lang.anomalie.toastCommentRequired }}</div>
+<div class="toast error" id="toastAnomalieActionRequired">{{ lang.anomalie.toastActionRequired }}</div>
+<div class="toast error" id="toastAnomalieNumeroIsimanValideRequired">{{ lang.errors.anomalie.errorNumeroIsimanNotValid }}</div>
+<div class="toast" id="toastValidationSuccessAno">{{ lang.anomalie.toastValidationActionSuccess }}</div>
+<div class="toast" id="toastSaveCommentSuccessAno">{{ lang.anomalie.toastSaveCommentSuccess }}</div>
+<div class="toast" id="toastSaveSuccessAno">{{ lang.successSave }}</div>
+<div class="toast" id="toastControlesValid">{{ lang.successValidation }}</div>
+<div class="toast error" id="toastSaveErrorAno">{{ lang.anomalie.toastSaveError }}</div>
+

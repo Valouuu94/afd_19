@@ -1,0 +1,8 @@
+<app-content>
+    <div class="row">
+        <div class="col page-title">
+            {{ lang.nav.adminHabilitationsTitle }}
+        </div>
+    </div>
+    <app-table #tableHabilitations type="habilitations" [parentItems]="rubriques" [itemsByPage]="10" [manualLoading]=true (refresh)="getHabilitations()"></app-table>
+</app-content>

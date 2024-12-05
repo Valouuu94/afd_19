@@ -1,0 +1,9 @@
+<app-content>
+    <div class="row">
+        <div class="col page-title">
+            {{ lang.nav.historiqueDossiersTitle }}
+        </div>
+    </div>
+    <app-table #tableDossiers type="dossiersControles" [parentItems]="dossiers" [manualLoading]=true [itemsByPage]="10" [lineClickable]=true (goto)="gotoDossier($event)" (refresh)="getDossiers()" [enableExport]=true (export)="exportExcel()"></app-table>
+</app-content>
+<app-export-excel #exportDossiers></app-export-excel>

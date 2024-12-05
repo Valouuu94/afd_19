@@ -1,0 +1,33 @@
+<app-content>
+    <div class="row">
+        <div class="col page-title">
+            {{ lang.nav.paramAnosTitle }}
+        </div>
+    </div>
+    <div *ngIf="isDCV" class="row mb--4">
+        <div *ngIf="tableParamAnomalies != null && tableParamAnomalies.filters != null" class="col">
+            <button class="btn" [ngClass]="{ 'btn-filter-selected': filterAnomaliesAllSelected() }" (click)="filterAnomaliesReset()">
+                <i class="fas fa-filter"></i> {{ lang.paramAnomalies.filterAll }}
+            </button>
+            <button class="btn" [ngClass]="{ 'btn-filter-selected': filterAnomaliesSelected('statutActif', 'oui') }" (click)="filterAnomaliesBy('statutActif', 'oui')">
+                <i class="fas fa-filter"></i> {{ lang.paramAnomalies.filterActif }}
+            </button>
+            <button class="btn" [ngClass]="{ 'btn-filter-selected': filterAnomaliesSelected('statutActif', 'non') }" (click)="filterAnomaliesBy('statutActif', 'non')">
+                <i class="fas fa-filter"></i> {{ lang.paramAnomalies.filterInactif }}
+            </button>
+        </div>
+    </div>
+    <app-table *ngIf="paramAnomalies != null" #tableParamAnomalies type="paramAnomalies" [parentItems]="paramAnomalies" [itemsByPage]="10" [manualLoading]=false [enableAdd]=true [hideSubfilters]=true (edit)="updateAnomalie($event)" (add)="addAnomalie()" (refresh)="getParamAnomalies()">
+    </app-table>
+</app-content>
+<!-- MODALS -->
+<app-modal #modalAnomalie modalId="modalAnomalie" icon="pen" size="xl" [modalTitle]="modalTitle" [noRightBtn]="hasNoRight" [validateLabel]="lang.validate" (validate)="confirmSaveAnomalie()">
+    <div id="formio_typeAnomalie"></div>
+</app-modal>
+<div class="toast error" id="toastTypeAnomalieSaveError">{{lang.paramAnomalies.toastAnomalySaveError}}</div>
+<app-modal #modalConfirmationAnomalie modalId="modalConfirmationAnomalie" [validateLabel]="lang.validate" (validate)="saveAnomalie()">
+    {{lang.paramAnomalies.validateSaveAnomaly}}
+</app-modal>
+<!-- TOASTS -->
+<div class="toast error" id="toastParamAnomalieAlreadyExist">{{ lang.errorAlreadyExist }}</div>
+<div class="toast" id="toastSaveSuccessParamAnos">{{ lang.successSave}}</div>

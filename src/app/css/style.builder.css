@@ -1,0 +1,63 @@
+#builder .row, .formio-dialog .row, #formioTemplate .row {
+    display: flex;
+}
+.formio-dialog .formio-component-checkbox {
+    margin: 10px !important;
+}
+#builder .builder-sidebar_search,
+.float-right a,
+.formio-dialog .formio-component-autoAdjust,
+.formio-dialog .formio-component-hidden,
+.formio-dialog .formio-component-hideLabel,
+.formio-dialog .formio-component-modalEdit,
+.formio-dialog .formio-component-tags,
+.formio-dialog .formio-component-theme,
+.formio-dialog .formio-component-tabindex,
+.formio-dialog .formio-component-disabled,
+.formio-dialog .formio-component-tooltip,
+.formio-dialog .formio-component-autofocus,
+.formio-dialog .formio-component-tableView,
+.formio-dialog .formio-component-hideOnChildrenHidden,
+.formio-dialog a[href="#logic"].nav-link,
+.formio-dialog a[href="#layout"].nav-link,
+.builder-component div[ref="moveComponent"],
+.builder-component div[ref="editJson"] {
+    display: none;
+}
+.btn-copy {
+    background-color: var(--c1-light);
+    color: white;
+    border-color: var(--c1);
+}
+.btn-copy:hover, .btn-copy:focus, .btn-copy:active {
+    background-color: white!important;
+    color: var(--c1-light) !important;
+    border-color: var(--c1) !important;
+}
+#formioTemplate .formio-component-fieldset {
+    border: 1px solid var(--c2);
+    text-align: center;
+    padding: 5px;
+}
+#formioTemplate .formio-component-fieldset legend {
+    color: var(--c2);
+    margin-bottom: 0px;
+    font-size: 1rem;
+}
+#formioTemplate {
+    /*width: 600px;*/
+    background-color: var(--c-grey);
+    padding: 10px;
+}
+#formioFields .datagrid-table .fa-times-circle-o:before {
+    content: "\f057";
+}
+#formioFields .datagrid-table tfoot {
+    display: none;
+}
+#formioFields .btn {
+    font-size: 10px;
+}
+#formioFields .datagrid-table tbody[ref="datagrid-fields-tbody"] tr:first-child {
+    display: none;
+}

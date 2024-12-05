@@ -1,0 +1,60 @@
+<ng-container>
+    <app-nav-actions>
+        <div class="col">
+            <app-btn [label]="isAFD ? lang.return : lang.cancel" type="secondary" ico="arrow-left" (action)="backToControles()"></app-btn>
+        </div>
+        <div *ngIf="!read" class="col-md-auto text-right">
+            <app-btn #btnSaveJustifRemboursement [label]="lang.validate" type="secondary" ico="check" (action)="saveJustifRemboursement(true)"></app-btn>
+        </div>
+    </app-nav-actions>
+    <app-content>
+        <div class="row d-flex mt-2">
+            <div *ngIf="reglement != null" id="sidebar-col" class="col-12 col-md-4 col-xl-3">
+                <app-card [autoHeight]=false>
+                    <div id="sidebar-container" class="container infos-dossier">
+                        <span *ngIf="showSidebar" class="mb-3 mt-4 info-header text-uppercase">{{ lang.reglementControles.contexteDossier }}</span>
+                        <button class="btn btn-collapse-sidebar float-right" (click)="app.toggleSidebar(this)" [title]="titleSidebarToggle">
+                            <i id="ico-sidebar-context" class="fas fa-compress-alt"></i>
+                        </button>
+                        <app-infos-context #infosContext *ngIf="showSidebar" [reglement]="reglement" [entite]="entite" [isDCV]="isDCV"></app-infos-context>
+                    </div>
+                </app-card>
+            </div>
+            <div id="sidebar-col-content" class="col-12 col-md-8 col-xl-9">
+                <div class="col px-0">
+                    <app-card [autoHeight]=false>
+                        <div *ngIf="loading" class="container p-3">
+                            <app-spinner></app-spinner>
+                        </div>
+                        <div class="m-4" [ngClass]="{ 'invisible': loading }">
+                            <div class="row">
+                                <div class="col-10">
+                                    <h4>{{ lang.justificatifRemboursement.formTitle }}</h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <p class="title-form">{{ lang.infoRequired }} <span class="text-danger">*</span> {{ lang.mandatory }}</p>
+                                </div>
+                            </div>
+                            <div id="formio_justificatifRemboursement"></div>
+                        </div>
+                    </app-card>
+                </div>
+            </div>
+        </div>
+    </app-content>
+</ng-container>
+<!-- TELEPORT -->
+<app-teleport #teleportDcJustifRemboursement to=".teleport-dc-justif-remb">
+    <input type="text" class="form-control" id="inputDC" [value]="infosDcJustificatif" readonly>
+</app-teleport>
+<app-teleport #teleportJustifRemboursementRubriques to=".teleport-rubriques-justif-remb">
+    <p *ngIf="!showRubriquesDC">{{ lang.justificatifRemboursement.nonShowRubriquesDC }}</p>
+    <h6 *ngIf="showRubriquesDC" class="mt-3">{{ lang.justificatifRemboursement.showRubriquesDC }}</h6>
+    <app-table *ngIf="typeTableRubriquesRemboursement != null" #tableRubriques [type]="typeTableRubriquesRemboursement" [parentItems]="ventilationRubriques" [manualLoading]=true [hideFilters]=true [enableAdd]=false [itemsByPage]="5" [hideSort]=true></app-table>
+    <app-rubriques #rubriquesComponent [isJustificatifRemboursment]=true [enableAdd]=false [readOnly]=false [isInsideModal]=false></app-rubriques>
+</app-teleport>
+<!-- TOASTS -->
+<div class="toast error" id="toastMontantsVentilationError">{{ lang.reglement.montantsVentilationRembError }}</div>
+<div class="toast error" id="toastMontantsRembSupReglementError">{{ lang.reglement.montantsRembSupReglementError }}</div>

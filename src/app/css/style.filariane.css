@@ -1,0 +1,42 @@
+.filariane {
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+.filariane.row {
+    height: 25px;
+    display: flex;
+}
+.filariane .progress-bar {
+    background-color: var(--c1-light);
+}
+.filariane .fa {
+    font-size: 30px;
+    padding-left: 20px;
+    padding-right: 5px;
+    color: var(--c1-ulight);
+    margin-top: -8px;
+}
+.filariane button .fa {
+    font-size: var(--fs);
+    padding-left: 0px;
+    padding-right: 5px;
+    color: unset;
+	margin-top: unset;
+}
+.filariane .progress {
+    height: 7px;
+    margin-top: 5px;
+}
+.filariane .h5 {
+    font-size: 16px;
+    padding-right: 10px;
+	padding-left: 10px;
+    color: var(--c1);
+    font-weight: 700;
+    letter-spacing: 0.5rem;
+    margin-top: -2px;
+}
+.filariane .btn {
+	margin-top: -5px;
+    width: 150px;
+}

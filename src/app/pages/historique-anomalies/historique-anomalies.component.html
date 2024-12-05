@@ -1,0 +1,9 @@
+<app-content>
+    <div class="row">
+        <div class="col page-title">
+            {{ lang.nav.historiqueAnomaliesTitle }}
+        </div>
+    </div>
+    <app-table #tableAnomalies type="anomalies" [parentItems]="anomalies" [manualLoading]=true [itemsByPage]="10" [lineClickable]=true (goto)="gotoAnomalie($event)" (refresh)="getAnomalies()" [enableExport]=true (export)="exportExcel()"></app-table>
+</app-content>
+<app-export-excel #exportHistoAnos></app-export-excel>

@@ -1,0 +1,10 @@
+<div class="input-group">
+    <div class="input-group-append">
+        <button class="btn btn-secondary rounded" data-toggle="dropdown">
+            <i [class]="icon"></i>
+        </button>
+        <div [class]="'dropdown-menu text-nowrap mt-2 dropdown-menu-' + side">
+            <ng-content></ng-content>
+        </div>
+    </div>
+</div>

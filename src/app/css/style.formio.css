@@ -1,0 +1,264 @@
+.formio-form .row {
+    display: flex;
+}
+.formio-form, .formio-form .form-control {
+    font-size: var(--fs);
+}
+.formio-form .error {
+    width: unset;
+}
+.formio-form .form-group .formio-component-submit {
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+.formio-form .formio-choices.form-group {
+    min-width: unset;
+}
+.formio-form .formio-error-wrapper, .formio-warning-wrapper {
+    padding: 10px;
+}
+.formio-form .formio-component-checkbox {
+    margin-top: 50px;
+    margin-bottom: 19px !important;
+}
+.formio-form .navbar.shadow {
+    box-shadow: unset !important;
+    border-bottom: 1px solid var(--c-border);
+}
+.formio-form > div > nav > ul.pagination {
+    margin-top: -5px;
+}
+.formio-choices .form-control.dropdown {
+    padding-bottom: 0px;
+}
+.formio-component-checkbox {
+    margin-top: 40px
+}
+.formio-suffix input {
+    border-right: 0px;
+}
+.formio-suffix .input-group-append {
+    height: 35px;
+    border-left: 0px;
+}
+.formio-amount input, input.formio-amount {
+    text-align: right;
+    padding-right: 10px !important;
+}
+.formio-date .input-group, .formio-suffix .input-group {
+    width: 145px;
+}
+.formio-number input {
+    width: 130px;
+}
+.formio-number .form-text.error {
+    width: 130px;
+}
+.formio-number-short input, .formio-suffix.formio-number-short .input-group {
+    width: 130px;
+}
+.form-devise-label {
+    width: 75px;
+}
+.border-contrevaleur-formio {
+    margin-top: -18px;
+    left: 1px;
+    width: 10px;
+    height: 68px;
+    position: absolute;
+    background-color: transparent;
+    border-left: 1px solid var(--c3);
+    border-top: 1px solid var(--c3);
+    border-bottom: 1px solid var(--c3);
+}
+.border-contrevaleur {
+    margin-top: -34px;
+    left: 1px;
+    width: 10px;
+    height: 83px;
+    position: absolute;
+    background-color: transparent;
+    border-left: 1px solid var(--c3);
+    border-top: 1px solid var(--c3);
+    border-bottom: 1px solid var(--c3);
+}
+.card .row .card-header::after {
+    font-family:"Font Awesome 5 Free";
+    content: "\f077";
+    float: right;
+    color: grey;
+}
+.card .row .card-header.collapsed::after {
+    font-family:"Font Awesome 5 Free";
+    content: "\f078";
+}
+.collspace-margin {
+    margin-top:-15px;
+}
+.contre-valeur-ml {
+    margin-left:12px;
+}
+/* READONLY FIELDS */
+.form-control[disabled], .form-control[disabled] + div .input-group-text, .formio-component-datagrid .formio-component-textarea .card {
+   /* border: 0px;
+    padding: 0px;
+    font-size: var(--fs);
+    color: var(--c-black);
+    font-weight: bold !important;
+    background-color: unset !important;*/
+    word-wrap: break-word;
+    word-break: break-all;
+    box-shadow: unset;
+    /* height: unset; */
+    background-color: #eaecf4;
+}
+.form-control[disabled] + div .input-group-text, .formio-component-datagrid .formio-component-textarea .card {
+     height: unset;
+ }
+/* .form-control[disabled] + div .fa, .form-control[disabled] + div .input-group-text {
+    display: none;
+} */
+
+/* AUTRES */
+.choices__list--multiple .choices__item.is-highlighted, .choices__list--multiple .choices__item {
+    background-color: var(--c1-light);
+}
+.choices__list--multiple .choices__item {
+    margin-bottom: unset;
+    border-color: var(--c1); 
+}
+.choices__input {
+    background-color: #fff;
+}
+.bg-gradient-primary {
+    background-color: var(--c1);
+    background-image: unset;
+}
+.col-form-label {
+    font-weight: 300;
+}
+.form-label-sousTitle-anomalie {
+	font-size: 14px;
+    line-height: 1.2;
+    display: block;
+    margin-block-start: 2.33em;
+    margin-block-end: 2.33em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+
+    font-weight: 300;
+    color: var(--c-black);
+    font-weight: bold;
+}
+.formio-errors .error {
+    font-size: 12px;
+}
+.form-text.text-muted {
+    font-size: 12px;
+    color: var(--c1-ulight) !important;
+    margin-bottom: 5px;
+}
+.was-validated .form-control:invalid, .form-control.is-invalid {
+    background-image: unset;
+}
+.fieldset-title {
+    color: var(--dark);
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-top: 35px;
+    margin-bottom: 5px;
+}
+.fieldset-subtitle {
+    color: var(--dark);
+    font-size: 14px;
+    font-weight: 300;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-top: 20px;
+    margin-bottom: 3px;
+}
+.form-group {
+    margin-bottom: 0px;
+}
+.teleport-element {
+    display: none;
+}
+.formio-toggle {
+    margin-top: 5px;
+    margin-bottom: 8px;
+}
+.formio-toggle div[ref="buttonMessageContainer"] {
+    display: none;
+}
+.formio-hidden, .control-label--hidden, .alert-success {
+    display: none;
+}
+.was-validated .form-control:invalid, .form-control.is-invalid {
+    padding-right: unset;
+}
+.formio-icon-warning {
+    position: absolute;
+    top: -30px;
+    left: 165px;
+}
+.btn-formio {
+    position: absolute;
+}
+.btn-add-tiers {
+    margin-top: 29px;
+}
+.builder-component.has-error .invalid-feedback, 
+.formio-component.has-error .invalid-feedback, 
+.formio-component.alert-danger .invalid-feedback, 
+.formio-component.has-message .invalid-feedback,
+.formio-component.formio-error-wrapper .invalid-feedback {
+    display: block;
+    color: inherit;
+    margin-top: 10px;
+}
+.input-group-text {
+    color: darkgrey;
+    background-color: white;
+    font-size: 14px;
+}
+.input-group > .form-control:not(:first-child),
+.input-group > .custom-select:not(:first-child) {
+  border-top-left-radius: 0.35rem;
+  border-bottom-left-radius: 0.35rem;
+}
+.choices__placeholder .choices__button {
+    display: none;
+}
+.alert-danger {
+    display: none;
+}
+.cursor-pointer {
+    cursor: pointer;
+}
+.cursor-pointer .input-group-text:hover {
+    background-color: var(--c-grey);
+}
+
+.formio-component-date_reception_rapport_annuel label, .formio-component-date_reception_rapport_final label {
+    width: 230px;
+}
+select:disabled {
+    appearance: none;
+}
+.choices__list--single .choices__item.choices__item--selectable span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: inherit;
+}
+.choices__list--dropdown .choices__item.choices__item--selectable {
+    white-space: normal;
+    word-break: normal;
+    overflow: unset;
+    text-overflow: unset;
+}
+.formio-component-textarea .card-body {
+    min-height: 75px;
+}

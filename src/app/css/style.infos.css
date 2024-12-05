@@ -1,0 +1,297 @@
+/* TODO verifier les noms */
+.title {
+    color: var(--c3-light);
+    font-size: 16px;
+    font-weight: 100;
+    letter-spacing: 10px;
+    text-transform: uppercase;
+    margin: 10px 0 10px 0;
+    text-align: center;
+    margin-left: 50px;
+}
+.blockSubTitle {
+    margin-top: -15px;
+    margin-bottom: 44px;
+}
+.icone {
+    color: var(--c1-light);
+    margin-left: -45px;
+    margin-top: 0px !important;
+}
+.title-form {
+    margin-bottom: 30px;
+}
+.table.infos {
+    margin-bottom: 0px;
+}
+.table.infos td {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 0px;
+    color: var(--c3);
+    font-weight: bold;
+}
+.table.infos td.label {
+    color: unset;
+    font-weight: normal;
+}
+
+/* PROJET */
+.infos-projet, .infos-dossier {
+    color: var(--c-black);
+}
+.infos-projet .info-header, .infos-dossier .info-header {
+    font-weight: bold;
+}
+.infos-projet .info-header i, .infos-dossier .info-header i {
+    color: var(--c1-light);
+    font-weight: bold;
+}
+.infos-projet .info-title, .infos-dossier .info-title {
+    color: var(--c1-light);
+    font-size: 16px;
+    font-weight: bold;
+}
+.info-link {
+    color: var(--c1-light);
+}
+.infos-projet .info-subtext, .infos-dossier .info-subtext {
+    color: darkgray;
+}
+.info-subtitle {
+    color: darkgray;
+    margin-top: -5px;
+}
+.infos-dossier .info-border {
+    border: 1px solid var(--c-grey-dark);
+    border-radius: 8px;
+    padding: 0.35em;
+    padding-left: 12px;
+    padding-right: 12px;
+    background-color: var(--c-grey-dark);
+    color: white;
+}
+.infos-dossier .danger-border {
+    border: 1px solid var(--c-no);
+    border-radius: 8px;
+    padding: 0.5em;
+    padding-left: 12px;
+    padding-right: 12px;
+    background-color: var(--c-no);
+    color: white;
+}
+.infos-dossier .warning-border {
+    border: 1px solid var(--yellow);
+    border-radius: 8px;
+    padding: 0.5em;
+    padding-left: 12px;
+    padding-right: 12px;
+    background-color: var(--yellow);
+    color: black;
+}
+/* CARD INFOS */
+.card.infos.demande {
+    background-color: white;
+    border: 3px solid var(--c3-ulight);
+}
+.card.infos.montant {
+    background-color: white;
+    border: 3px solid var(--c-border);
+}
+.card.infos .card-body {
+    padding: 5px;
+}
+.card.infos .form.card-body {
+    padding: 1rem;
+}
+.card.infos .table {
+    margin-bottom: 0px;
+}
+
+/* TIMELINE */ 
+.timeline {
+    width: 350px;
+}
+.timeline-steps .name-step {
+    color: var(--c1-light);
+    margin-left: -50px;
+}
+.timeline-steps .name-currentStep {
+    color:var(--c1-light);
+    font-weight: bold;
+    margin-left: -50px;
+}
+.timeline-steps {
+    border-left: 1px solid var(--c1-light);
+    padding: 0px 0px 21px 1.5rem;
+    margin-top: 30px;
+}
+.timeline-steps .step {
+    margin-top: -19px;
+}
+.timeline-steps .index-step{
+    margin-left: -50px;
+    margin-top: -20px;
+}
+.timeline-steps:last-child{
+    border: 0;
+}
+
+/* ANOMALIE */
+.anomalie-title {
+    color: var(--c1-light);
+}
+.anomalie-status {
+    border: 1px solid var(--c-grey-dark);
+    border-radius: 8px;
+    padding: 0.35em;
+    padding-left: 12px;
+    padding-right: 12px;
+    background-color: var(--c-grey-dark);
+    color: white;
+}
+.anomalie-tags {
+    border: 1px solid var(--c3-ulight);
+    border-radius: 8px;
+    padding: 0.35em;
+    padding-left: 12px;
+    padding-right: 12px;
+    background-color: white;
+    color: var(--c3-ulight);
+}
+.anomalie-tags-not {
+    border: 1px solid var(--c-grey-dark);
+    border-radius: 8px;
+    padding: 0.35em;
+    padding-left: 12px;
+    padding-right: 12px;
+    background-color: white;
+    color: var(--c-grey-dark);
+}
+.anomalie-comment {
+    background-color: white;
+    border: 1px solid var(--c-border);
+    padding: 10px;
+    margin-bottom: 7px;
+}
+.anomalie-sublabel {
+    color: darkgrey;
+}
+.anomalie-avatar {
+    width: 40px;
+    height: 40px;
+    background-color: var(--c3-ulight);
+    color: white;
+    border-radius: 20px;
+}
+.anomalie-avatar-empty {
+    width: 40px;
+}
+app-anomalie a, app-anomalie a:hover, app-anomalie a:focus {
+    color: var(--c3-light);
+}
+.comment-counter {
+    color: var(--c-counter);
+    border: 1px solid var(--c-counter);
+    border-radius: 12px;
+    padding: 3px;
+    width: 25px;
+    margin-right: 0.25rem;
+}
+.comment-link {
+    color: var(--c1-light);
+    text-decoration: underline;
+    cursor: pointer;
+}
+.col-pilotage-regles {
+    border: 1px solid lightgrey;
+    padding: 10px;
+}
+.affectations-date {
+    color: var(--c3);
+    font-size: 20px;
+    margin-left: 10px;
+}
+.small-padding td {
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+}
+.small-padding .btn {
+    padding: unset;
+    padding-left: 6px;
+    padding-right: 5px;
+}
+.badge-table {
+    border: 1px solid white;
+    border-radius: 8px;
+    padding: 0.5em;
+    padding-left: 12px;
+    padding-right: 12px;
+    background-color: var(--c3-light);
+    color: white;
+    width: fit-content;
+}
+.badge-table.col2 {
+    background-color: var(--c-grey-dark);
+}
+.badge-table.col3 {
+    background-color: var(--c-na);
+}
+.badge-table.entite-role {
+    background-color: var(--c-border);
+    color: var(--c-grey-dark);
+}
+.capacite-highlight {
+    color: var(--c1-light);
+    font-weight: bold;
+}
+.badge-table .highlight {
+    color: var(--c1);
+}
+
+.badge-hab-write {
+    border: 1px solid white;
+    border-radius: 8px;
+    padding: 0.5em;
+    padding-left: 12px;
+    padding-right: 12px;
+    background-color: var(--c1-light);
+    color: white;
+    width: fit-content;
+    flex-basis: 0;
+    flex-grow: 1;
+    max-width: 100%;
+}
+.badge-hab-read {
+    border: 1px solid white;
+    border-radius: 8px;
+    padding: 0.5em;
+    padding-left: 12px;
+    padding-right: 12px;
+    background-color: var(--c-grey);
+    color: var(--c3);
+    width: fit-content;
+    flex-basis: 0;
+    flex-grow: 1;
+    max-width: 100%;
+}
+.badge-hab-no {
+    border: 1px solid white;
+    border-radius: 8px;
+    padding: 0.5em;
+    padding-left: 12px;
+    padding-right: 12px;
+    background-color: var(--c-no-light);
+    color: var(--c3-ulight);
+    width: fit-content;
+    flex-basis: 0;
+    flex-grow: 1;
+    max-width: 100%;
+}
+.badge-hab{
+   display: flex;
+   flex-wrap: wrap;
+}
+.fas.fa-check-square.dernier_justif_color {
+    color: var(--c3-light);
+}

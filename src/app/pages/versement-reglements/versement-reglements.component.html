@@ -1,0 +1,69 @@
+<app-nav-actions>
+    <div class="col">
+        <button class="btn btn-secondary" (click)="annulerTache()">
+            {{ lang.return }}
+        </button>
+    </div>
+    <div *ngIf="versement != null && !isDossierAnnule" class="col-auto text-right d-flex">
+        <app-btnMenu *ngIf="!read" icon="fas fa-ellipsis-h" [side]="(versement != null && versement.dossier_reglement.length > 0 && !app.isAFD(entite)) ? 'left' : 'right'">
+            <app-btn #btnAnnulerDossier [inMenu]=true colorLabel="text-danger" side="right" [label]="lang.versement.annulerDossierbtn" (action)="notification.showModalNotification(-1)"></app-btn>
+        </app-btnMenu>
+        <button *ngIf="!read && versement.dossier_reglement.length > 0 && !app.isAFD(entite)" class="btn btn-new ml-2" (click)="validerTache(true)">
+            <span *ngIf="isLoadingValidate" class="spinner-border spinner-border-sm mr-1"></span>
+            <i *ngIF="!isLoadingValidate" class="fas fa-arrow-right"></i> {{ lang.reglement.validateReglements}}
+        </button>
+    </div>
+</app-nav-actions>
+<app-content>
+    <div class="row d-flex mt-2" [ngClass]="{ 'invisible': loading }">
+        <div id="sidebar-col" class="col-12 col-md-4 col-xl-3">
+            <app-card [autoHeight]=false>
+                <div id="sidebar-container" class="container infos-dossier">
+                    <span *ngIf="showSidebar" class="mb-3 mt-4 info-header text-uppercase">{{ lang.contexteDossier }}</span>
+                    <button class="btn btn-collapse-sidebar float-right" (click)="app.toggleSidebar(this)" [title]="titleSidebarToggle">
+                        <i id="ico-sidebar-context" class="fas fa-compress-alt"></i>
+                    </button>
+                    <app-infos-context #infosContext *ngIf="showSidebar && !loading" [showConcoursPROPARCO]="true" [versement]="versement" [reglements]="reglements" [entite]="entite" [isDCV]="isDCV"></app-infos-context>
+                </div>
+            </app-card>
+        </div>
+        <div id="sidebar-col-content" class="col-12 col-md-8 col-xl-9">
+            <div class="row d-flex">
+                <div class="col">
+                    <app-card [autoHeight]=false className="mt-0">
+                        <div class="m-4">
+                            <div>
+                                <div *ngIf="versement == null" class="container">
+                                    <app-spinner></app-spinner>
+                                </div>
+                                <app-infos-dossier #infosDossier *ngIf="versement != null && !loading" [dossier]="versement" type="DV" [versement]="versement"></app-infos-dossier>
+                            </div>
+                            <h4 class="titre">
+                                {{ lang.versement.requestList }}
+                                <i *ngIf="app.isAFD(entite)" class="fas fa-question-circle info-bulle" [title]="lang.versement.requestListTooltipAFD"></i>
+                                <i *ngIf="!app.isAFD(entite)" class="fas fa-question-circle info-bulle" [title]="lang.versement.requestListTooltipPRO"></i>
+                            </h4>
+                            <div class="row mt-4">
+                                <div class="col">
+                                    <app-infos-versement *ngIf="versement != null" [versement]="versement" [tache]="tache" [caseId]="caseId" [role]="role"></app-infos-versement>
+                                </div>
+                            </div>
+                            <div *ngIf="reglements != null" class="row mt-4">
+                                <div class="col">
+                                    <h6>{{ lang.reglementControles.reglementRequest }}</h6>
+                                    <app-table #tableReglements [type]="'reglements' + entite" [parentItems]="reglements" [manualLoading]=true [hideFilters]=true [enableAdd]="(app.isAgentVersement(role) || app.isChargeAppui(role)) && !isDossierAnnule && !app.isDirecteur(role)" [itemsByPage]="10" (file)="downloadFile($event)" (goto)="gotoReglement($event)" (add)="gotoReglement()" highlightIf="canceled" [highlightIfValue]=true highlightMode="canceled" [lineClickable]=true [hideSort]=true (refresh)="getReglements()"></app-table>
+                                </div>
+                            </div>
+                        </div>
+                    </app-card>
+                </div>
+            </div>
+        </div>
+    </div>
+</app-content>
+<app-infos-reglement *ngIf="showReglement" #detailsReglement [role]="role"></app-infos-reglement>
+<app-notification *ngIf="versement != null && versement != null" #notification typeDossier="DV" [dossier]="versement" [tache]="tache" persistenceIdParent="0" [checkReglementsAnnule]="true" (annulerDossier)="annulerDossier($event)" (annulerAction)="annulerAction($event)"></app-notification>
+<!-- TOASTS -->
+<div class="toast" id="toastVersementAnnulerOk">{{ lang.versement.toastDossierAnnulerOk }}</div>
+<div class="toast error" id="toastVersementAnnulerKo">{{ lang.versement.toastDossierAnnulerKo }}</div>
+<div class="toast error" id="toastImpossibleAnnulerDossier">{{ lang.versement.toastImpossibleAnnulerDossier }}</div>

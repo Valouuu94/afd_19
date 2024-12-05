@@ -1,0 +1,7 @@
+.flatpickr-day.today {
+    border-color: var(--c1-light);
+}
+.flatpickr-day.selected {
+    background-color: var(--c1) !important;
+    border-color: var(--c1) !important;
+}

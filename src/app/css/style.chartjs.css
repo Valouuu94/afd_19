@@ -1,0 +1,15 @@
+canvas {
+    margin: 0 auto;
+}
+.chartc1 .input-group-append {
+    border: 1px solid #bcb0da;
+}
+.chartc2 .input-group-append {
+    border: 1px solid var(--c1-light);
+}
+.chartc3 .input-group-append {
+    border: 1px solid #20a740;
+}
+.chartc4 .input-group-append {
+    border: 1px solid var(--c2);
+}

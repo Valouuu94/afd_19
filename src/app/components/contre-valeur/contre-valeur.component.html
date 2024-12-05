@@ -1,0 +1,22 @@
+<ng-container *ngIf="contrevaleurVisible">
+    <div [class]="isFormio ? 'border-contrevaleur-formio' : 'border-contrevaleur'"></div>
+    <div class="row mt-2">
+        <div class="col-auto formio-number-short formio-amount">
+            <label>{{ lang.reglement.mntProvisoire }}</label>
+            <input type="text" class="form-control" disabled [(ngModel)]="contrevaleurMontantRender">
+        </div>
+        <div class="col-auto">
+            <label>{{ lang.reglement.deviseProjet }}</label>
+            <input type="text" class="form-control form-devise-label" disabled [(ngModel)]="contrevaleurDevise">
+        </div>
+        <div class="col-auto formio-number-short formio-amount">
+            <label>{{ lang.actualizedOn }}</label>
+            <input type="text" class="form-control" disabled [(ngModel)]="contrevaleurDateRender">
+        </div>
+        <div class="col-auto mt-2">
+            <button class="btn btn-secondary button-form" (click)="getContrevaleur(true)">
+                <i class="fas fa-refresh"></i> {{ lang.actualize }}
+            </button>
+        </div>
+    </div>
+</ng-container>

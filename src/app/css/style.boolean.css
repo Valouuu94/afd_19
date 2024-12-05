@@ -1,0 +1,40 @@
+.renderBoolean {
+    font-size: 30px;
+    color: var(--c1-light);
+}
+.renderBoolean.false {
+    color: var(--c2);
+}
+.renderBoolean.falsealert {
+    color: var(--c2-light);
+    font-size: 28px;
+}
+.renderBoolean .field-required:after {
+    display: none;
+}
+
+/* TOGGLE */
+.formio-component-fieldset.d-flex .fieldset-body {
+    display: flex;
+}
+.btn-toggle {
+    background-color: white;
+    color: var(--c-black) !important;
+    border-color: var(--c-border);
+    padding: 12px;
+    display: block;
+    width: 100%;
+    min-width: 175px;
+}
+.selected .btn-toggle {
+    background-color: var(--c3);
+    color: white !important;
+}
+.btn-toggle.toggle-0 {
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+}
+.btn-toggle.toggle-1 {
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+}

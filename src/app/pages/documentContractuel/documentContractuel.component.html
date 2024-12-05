@@ -1,0 +1,77 @@
+<ng-container *ngIf="paramDC == null">
+    <app-nav-actions>
+        <div class="col">
+            <app-btn [label]="lang.cancel" type="secondary" ico="arrow-left" (action)="annulerDC()"></app-btn>
+        </div>
+        <div *ngIf="!read" class="col-md-auto text-right">
+            <app-btn #btnValidateDocumentContractuel [label]="lang.validate" type="secondary" ico="check" (action)="saveDC(true)"></app-btn>
+        </div>
+    </app-nav-actions>
+    <app-content>
+        <div class="row d-flex mt-2" [ngClass]="{ 'invisible': loading }">
+            <div *ngIf="reglement != null || versement != null" id="sidebar-col" class="col-12 col-md-4 col-xl-3">
+                <app-card [autoHeight]=false>
+                    <div id="sidebar-container" class="container infos-dossier">
+                        <span *ngIf="showSidebar" class="mb-3 mt-4 info-header text-uppercase">{{ lang.documentContractuel.contexte }}</span>
+                        <button class="btn btn-collapse-sidebar float-right" (click)="app.toggleSidebar(this)" [title]="titleSidebarToggle">
+                            <i id="ico-sidebar-context" class="fas fa-compress-alt"></i>
+                        </button>
+                        <app-infos-context #infosContext *ngIf="showSidebar" [reglement]="reglement" [versement]="versement" [entite]="entite" [isDCV]="isDCV"></app-infos-context>
+                    </div>
+                </app-card>
+            </div>
+            <div id="sidebar-col-content" class="col-12 col-md-8 col-xl-9">
+                <div class="col px-0">
+                    <app-card [autoHeight]=false>
+                        <div class="m-4">
+                            <div class="row">
+                                <div class="col-10">
+                                    <h4>{{ lang.documentContractuel.titleForm }}</h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <p class="title-form">{{ lang.infoRequired }} <span class="text-danger">*</span> {{ lang.mandatory }}</p>
+                                </div>
+                            </div>
+                            <div *ngIf="this.DC != null && app.isAFD(entite) && this.DC.obj_ext_id != null" class="row m-0 mt-1 mb-5">
+                                <div class="badge-table col3"><span>{{ lang.documentContractuel.repriseVersement }}</span></div>
+                            </div>
+                            <div id="formio_documentContractuel"></div>
+                        </div>
+                    </app-card>
+                </div>
+            </div>
+        </div>
+    </app-content>
+</ng-container>
+<!-- TELEPORTS -->
+<app-teleport #teleportFournisseur to=".teleport-fournisseur">
+    <app-infos-beneficiaire #infosFournisseurDC [showTiersUsedByConcours]="false" [objectParentRepris]="dcRepris"></app-infos-beneficiaire>
+</app-teleport>
+<app-teleport #teleportSelectFournisseur to=".teleport-select-fournisseur">
+    <app-select-beneficiaire *ngIf="!isInsideModal" #selectbeneficaire (change)="getFournisseur()"></app-select-beneficiaire>
+</app-teleport>
+<app-teleport #teleportRubriquesDC to=".teleport-rubriques-dc">
+    <app-rubriques #rubriquesComponent [enableAdd]="!isInsideModal && !read" [readOnly]="read || isInsideModal" [isInsideModal]="isInsideModal"></app-rubriques>
+</app-teleport>
+<app-teleport #teleportAutresDevises to=".teleport-autresDevisesDC">
+    <app-autre-devise *ngIf="autresDevises != null && !avanceRemboursable" #cmpAutresDevises [autresDevises]="autresDevises" [read]="read" [parentObject]="projet" maxDevises=2 typeObject="DC" [checkDuplicate]=true></app-autre-devise>
+</app-teleport>
+<app-teleport #teleportContrevaleurAFD to=".teleport-contrevaleurAFD">
+    <app-contre-valeur #contreValeurAFD (displayToast)="displayToast($event)" [isFormio]=true></app-contre-valeur>
+</app-teleport>
+<app-teleport #teleportContrevaleurHT to=".teleport-contrevaleurHT">
+    <app-contre-valeur #contreValeurHT (displayToast)="displayToast($event)" [isFormio]=true></app-contre-valeur>
+</app-teleport>
+<!-- TOASTS -->
+<div class="toast error" id="toastDCSaveError">{{ lang.failedFormSave }}</div>
+<div class="toast error" id="toastRubriquesDCError">{{ lang.documentContractuel.errorRubriquesDC }}</div>
+<div class="toast error" id="toastDCMontantError">{{ lang.documentContractuel.errorAmountAFD }}</div>
+<div class="toast error" id="toastDCMontantRubriqueError">{{ lang.documentContractuel.errorAmountRubriquesDC }}</div>
+<div class="toast error" id="toastDCLibelleMontantRubriqueError">{{ lang.documentContractuel.errorAmountLabelRubriquesDC }}</div>
+<div class="toast error" id="toastRubriqueDeleteError">{{ lang.rubrique.failedDeleteRubrique}}</div>
+<div class="toast error" id="toastUpdateContrevaleurError">{{ lang.reglement.updateContrevaleurError }}</div>
+<div class="toast" id="toastRubriqueDeleteSuccess">{{ lang.successDelete }}</div>
+<div class="toast" id="toastUpdateContrevaleurSuccess">{{ lang.reglement.updateContrevaleurOk }}</div>
+<div class="toast" id="toastSaveSuccessDC">{{ lang.successSave }}</div>

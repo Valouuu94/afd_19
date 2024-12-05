@@ -1,0 +1,48 @@
+<div *ngFor="let autreDevise of autresDevises; let idxAutreDevise = index" class="position-relative row mt-4">
+    <div class="formio-number formio-amount col-auto">
+        <label>{{ lang.autreDevise.montant }}</label>
+        <input type="text" class="form-control" [class]="((checkAtrDevise && ((autreDevise.montant == 'NaN' || app.isEmpty(autreDevise.montant)) && displayIfValidate) ||(!app.isEmpty(parentObject) && !checkAutreDeviseUsedByChildObject(autreDevise, true)))) ? 'border border-danger' : ''" [(ngModel)]="autreDevise.montant" separator [disabled]="read || autreDevise.readAmount" (ngModelChange)="updateContrevaleur(autreDevise, idxAutreDevise, false)">
+        <div *ngIf="(checkAtrDevise && (autreDevise.montant == 'NaN' || app.isEmpty(autreDevise.montant)) && displayIfValidate) " class="form-text error mt-2">
+            {{ lang.formFieldMandatory }}
+        </div>
+        <div *ngIf="!(checkAtrDevise && (autreDevise.montant == 'NaN' || app.isEmpty(autreDevise.montant)))" class="form-text error mt-2">
+            &nbsp;
+        </div>
+        <div *ngIf="(!app.isEmpty(parentObject) && !app.isEmpty(autreDevise.montant) && !checkAutreDeviseUsedByChildObject(autreDevise, true))" class="form-text error">
+            {{ lang.versement.errorSumDDRs }}
+        </div>
+    </div>
+    <div [class]="isInsideModal ? 'col-6' : 'col-4'">
+        <label>{{ lang.autreDevise.devise }}</label>
+        <select class="form-control" [class]="((checkAtrDevise && (app.isEmpty(autreDevise.devise)) && displayIfValidate) || (!autreDevise.read && checkDuplicate && checkDuplicateDevises(autreDevise))) ? 'border border-danger' : ''" [(ngModel)]="autreDevise.devise" [disabled]="read || autreDevise.read" (change)="updateContrevaleur(autreDevise, idxAutreDevise, true)">
+            <option *ngFor="let devise of devises" [value]="devise.idDevise">{{ devise.idDevise }} - {{ devise.libelleCourtDevise }}</option>
+        </select>
+        <div *ngIf="(!autreDevise.read && checkDuplicate && checkDuplicateDevises(autreDevise))" class="form-text error mt-2">
+            {{ lang.rubrique.duplicatedDevise }}
+        </div>
+        <div *ngIf="(checkAtrDevise && (app.isEmpty(autreDevise.devise)) && displayIfValidate)" class="form-text error mt-2">
+            {{ lang.formFieldMandatory }}
+        </div>
+    </div>
+    <div *ngIf="!read" class="col-auto mt-2">
+        <button *ngIf="checkAutreDeviseUsedByChildObject(autreDevise, false)" class="btn btn-secondary button-form" (click)="deleteAutreDevise(autreDevise)" [title]="lang.deleteDevise">
+            <i class="fas fa-minus"></i>
+        </button>
+        <button *ngIf="autresDevises.length < maxDevises && (idxAutreDevise == autresDevises.length - 1)" class="btn btn-secondary button-form ml-2" (click)="addAutreDevise()" [title]="lang.addDevise">
+            <i class="fas fa-plus"></i>
+        </button>
+    </div>
+    <div class="col-12">
+        <app-contre-valeur *ngIf="typeObject =='DC'" [ref]="'contrevaleur-' + idxAutreDevise" [contrevaleurVisible]="autreDevise.contrevaleurVisible" [contrevaleurDate]="autreDevise.date_contrevaleur" [contrevaleurDevise]="autreDevise.devise_contrevaleur" [contrevaleurMontant]="autreDevise.montant_contrevaleur" (displayToast)="displayToast($event)"></app-contre-valeur>
+    </div>
+</div>
+<div *ngIf="autresDevises.length == 0 && !read" class="row mt-1">
+    <div class="col">
+        <button class="btn btn-secondary button-form ml-2" (click)="addAutreDevise()">
+            <i class="fas fa-plus mr-1"></i>{{ lang.autreDevise.add }}
+        </button>
+    </div>
+</div>
+<!-- TOAST -->
+<div class="toast" id="toastUpdateContrevaleurSuccess">{{ lang.reglement.updateContrevaleurOk }}</div>
+<div class="toast error" id="toastUpdateContrevaleurError">{{ lang.reglement.updateContrevaleurError }}</div>

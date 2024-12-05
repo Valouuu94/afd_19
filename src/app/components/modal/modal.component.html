@@ -1,0 +1,42 @@
+<div class="modal fade" [id]="modalId" tabindex="-1">
+    <div [class]="'modal-dialog' + ((size != null) ? ' modal-' + size : '')">
+        <div class="modal-content" [ngClass]="{ 'modal-error': isError }">
+            <div class="modal-header border-0">
+                <h5 *ngIf="modalTitle != null" class="modal-title">
+                    <i *ngIf="icon != null" [class]="'fa fa-' + icon + ' mr-3 ml-2'"></i>
+                    {{ modalTitle }}
+                    <span *ngIf="subTitle != ''" [class]="classSubTitle">{{ subTitle }}</span>
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" (click)="emitCancel()">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" [ngClass]="{ 'pb-0': showSwitchToUpdate }">
+                <ng-content select="[slot=subtitle]"></ng-content>
+                <ng-content></ng-content>
+            </div>
+            <div *ngIf="!hideFooter && !isError" class="modal-footer border-0">
+                <div class="col">
+                    <button *ngIf="isDelete" type="button" class="btn btn-default btn-delete" (click)="emitDelete()">
+                        <i class="fa fa-trash-alt mr-2"></i>{{ lang.delete }}
+                    </button>
+                </div>
+                <div class="col text-right">
+                    <button type="button" class="btn btn-secondary border-0" data-dismiss="modal" (click)="emitCancel()">
+                        <span *ngIf="(labelBtnClose == ''); else isNotNull">
+                            {{ lang.cancel }}
+                        </span>
+                        <ng-template #isNotNull>{{ labelBtnClose }}</ng-template>
+                    </button>
+                    <app-btn #btnSave [ico]="iconValidate" [label]="validateLabel" [type]="(noRightBtn) ? 'noright' : (typeBtn != '') ? typeBtn : 'primary'" (click)="emitValidate()"></app-btn>
+                </div>
+            </div>
+            <div *ngIf="isError" class="modal-footer border-0">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ lang.return }}</button>
+            </div>
+            <div *ngIf="showSwitchToUpdate" class="modal-footer border-0 pt-0">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="emitSwitchToUpdate()" [disabled]="disabledBtnSwitchToUpdate">{{ lang.update }}</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,236 @@
+.table.grid {
+    background-color: white;
+    border: 1px solid #e3e6f0;
+    border-radius: 0.35rem;
+    box-shadow: 0 5px 7px rgb(0 0 0 / 6%);
+    margin-bottom: 0;
+}
+.table.grid thead {
+    background-color: #fbfbfc;
+}
+.table.grid thead th {
+    border-bottom: unset;
+}
+.table.grid td {
+    vertical-align: top;
+}
+.table.grid .body-tr:hover { 
+    background-color: var(--c-grey-ulight);
+    cursor: pointer;
+}
+.cursor-default {
+    cursor: default !important;
+}
+.table.grid .body-tr-highlight- {
+    background-color: var(--c-border);
+}
+.table.grid .body-tr-highlight-:hover { 
+    background-color: var(--c-grey-hover);
+}
+.table.grid .body-tr-highlight-deleted {
+    background-color: var(--c-error);
+}
+.table.grid .body-tr-highlight-deleted:hover { 
+    background-color: var(--c-error);
+}
+.table.grid .body-tr-highlight-deleted i {
+    color: var(--c-no);
+}
+.table.grid thead th:hover {
+    cursor: pointer;
+}
+.table thead th:hover .fa {
+    color: var(--c3-light);
+}
+.table.grid .fa {
+    font-size: 16px;
+    color: var(--c-border);
+}
+.accordion .table.grid .fa {
+    font-size: 14px;
+}
+.table.grid .pagination {
+    margin-bottom: 0px;
+}
+.table.grid .page-item .page-link, .table.grid .page-item:hover .page-link {
+    background-color: inherit;
+    border-color: var(--c-border);
+    color: var(--c-black);
+}
+.table.grid .page-item:hover .page-link {
+    background-color: var(--c-grey);
+    border-color: var(--c-border);
+    color: var(--c-black);
+}
+.table.grid .page-item.active .page-link, .table.grid .page-item.active:hover .page-link {
+    background-color: var(--c-grey);
+    font-weight: bold;
+    border-color: var(--c-border);
+    color: var(--c-black);
+}
+.table.grid .page-item.disabled .page-link {
+    color: var(--c-border);
+    pointer-events: none;
+}
+.table.grid .page-item.disabled:hover .page-link {
+    background-color: inherit;
+}
+.table.grid td .fa {
+    color: var(--c3);
+}
+.table.grid td .btn {
+    background-color: white;
+    color: var(--c3-light);
+    border-color: var(--c-border);
+}
+.table.grid td .btn:hover {
+    background-color: white !important;
+    color: var(--c3) !important;
+    border-color: var(--c3) !important;
+}
+.table.grid .footer .fa {
+    font-size: 20px;
+}
+.table.grid .footer .btn, .table.grid td .btn.action, .table.grid .footer .btn.btn-alter:hover {
+    background-color: var(--c3) !important;
+    border-color: var(--c3) !important;
+    color: white !important;
+}
+.table.grid .footer .btn:hover, .table.grid td .btn.action:hover, .table.grid .footer .btn.btn-alter {
+    background-color: white !important;
+    border-color: var(--c3) !important;
+    color: var(--c3) !important;
+}
+.table.grid .footer .btn:hover .fa, .table.grid td .btn.action:hover .fa, .table.grid .footer td .fa, .table.grid .footer .btn.btn-alter .fa {
+    color: var(--c3);
+}
+.table.grid .footer td .fa, .table.grid td .btn.action .fa, .table.grid .footer .btn.btn-alter:hover .fa {
+    color: white;
+}
+
+/* PAGE-ITEM */
+.page-item.active .page-link {
+    background-color: var(--c1-light);
+    border-color: var(--c1-light);
+    color: white;
+}
+.page-item .page-link {
+    background-color: white;
+    border-color: var(--c1-light);
+    color: var(--c1-light);
+}
+.page-item .page-link:hover {
+    cursor: pointer;
+    border-color: var(--c1-light);
+    color: var(--c1-light);
+    background-color: var(--c-grey);
+}
+.page-item.active .page-link:hover {
+    border-color: var(--c1-light);
+    background-color: var(--c1-light);
+}
+table th i .current {
+    color: var(--c1-light);
+}
+.table.grid .subitem {
+    color: var(--c-border);
+}
+/* TODO : nooooo */
+.element-underline-danger {
+    border-bottom: 3px solid darksalmon;
+}
+table .th-amount span {
+    margin-right: 10px;
+}
+table .th-amount-no-sort span {
+    margin-right: 5px !important;
+}
+table .td-amount {
+    padding-right: 15px;
+}
+table .td-truncate {
+    max-width: 0;
+}
+table .td-truncate .span-truncate {
+    display: unset;
+}
+.table thead th {
+    vertical-align: top;
+}
+/* PILOTAGE AFFECTATION */
+.table-pilotage td {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    vertical-align: middle !important;
+}
+.table-pilotage .critere {
+    background-color: var(--c-grey);
+    font-weight: bold;
+}
+.table-pilotage .critere-col {
+    background-color: var(--c-scrollbar);
+    font-weight: bold;
+    text-transform: uppercase;
+    vertical-align: middle;
+}
+.table-pilotage .totaux {
+    background-color: var(--c3-light);
+    font-weight: normal;
+    color: white;
+}
+.table-pilotage .suivi {
+    background-color: var(--c3);
+    font-weight: normal;
+    color: white;
+}
+.kpiTitle {
+    font-weight: bold;
+    height: 25px;
+}
+.kpiSubtitle {
+    font-size: 12px;
+    font-weight: normal;
+}
+.kpiValue {
+    color: var(--c3-ulight);
+    font-size: 26px;
+    font-weight: 500;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: -5px;
+    margin-top: 5px !important;
+    text-align: center !important;
+    padding-top: 2rem;
+}
+
+
+.overflow-auto.tableFixHead td:first-child,
+.overflow-auto.tableFixHead th:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    background-color: white;
+}
+.overflow-auto.tableFixHead.tableFixSecChild td:nth-child(2),
+.overflow-auto.tableFixHead.tableFixSecChild th:nth-child(2) {
+    position: sticky;
+    left: 40px;
+    z-index: 1;
+    background-color: white;
+}
+.overflow-auto.tableFixHead th {
+    position: sticky;
+    top: 0;
+    background: #fbfbfc;
+    z-index: 2
+}
+.input-width-rubrique {
+    width: 195px;
+}
+.overflow-auto.tableFixHead thead th:first-child,
+.overflow-auto.tableFixHead.tableFixSecChild th:nth-child(2) {
+    z-index: 3
+}
+.rubrique-table-width {
+    width:850px;
+}

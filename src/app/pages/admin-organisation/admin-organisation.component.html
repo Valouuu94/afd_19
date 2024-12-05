@@ -1,0 +1,85 @@
+<app-content>
+    <div class="row">
+        <div class="col page-title">
+            {{ lang.nav.adminOrganisationTitle }}
+        </div>
+    </div>
+    <div class="row d-flex mt-1">
+        <!-- DETAIL ENTITE -->
+        <div *ngIf="entite" class="col-3">
+            <app-card [autoHeight]=false className="mt-4">
+                <div class="container infos-dossier">
+                    <span class="mb-3 mt-4 info-header text-uppercase">{{ lang.entitesOrga.detailTitle }}</span>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <span class="collapse-label mb-0">{{ lang.entitesOrga.codeEntiteOrga }}</span><br>
+                            <span class="collapse-label-highlight">{{ entite.codeEntiteOrga }}</span>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <span class="collapse-label mb-0">{{ lang.entitesOrga.libCourt }}</span><br>
+                            {{ entite.libCourt }}
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <span class="collapse-label mb-0">{{ lang.entitesOrga.typeEntiteOrga }}</span><br>
+                            {{ entite.typeEntiteOrga }}
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <span class="collapse-label mb-0">{{ lang.entitesOrga.codeEntitePere }}</span><br>
+                            {{ entite.codeEntitePere }}
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <span class="collapse-label mb-0">{{ lang.entitesOrga.codeEntiteRoot }}</span><br>
+                            {{ entite.codeEntiteRoot }}
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <span class="collapse-label mb-0">{{ lang.entitesOrga.statut }}</span><br>
+                            {{ lang.entitesOrga.statutActif }}
+                        </div>
+                    </div>
+                </div>
+            </app-card>
+        </div>
+        <!-- LISTE ENTITES -->
+        <div class="col">
+            <!-- FIL ARIANE -->
+            <div *ngIf="history != null && history.length > 1" class="row mt-4">
+                <div class="col d-flex">
+                    <ng-container *ngFor="let hist of history; let idxHist = index">
+                        <button class="btn btn-history p-2" [ngClass]="{ 'history-selected': level == idxHist }" (click)="setEntite(hist.entite, idxHist)" [title]="getHistoryTitle(idxHist, hist)">
+                            <ng-container *ngIf="hist.entite == null">
+                                {{ hist.label }}
+                            </ng-container>
+                            <ng-container *ngIf="hist.entite != null">
+                                <span class="history-label">{{ hist.entite.codeEntiteOrga }}</span>
+                                <span *ngIf="level == idxHist" class="history-label">&nbsp;&nbsp;:&nbsp;&nbsp;{{ hist.entite.libCourt }}</span>
+                            </ng-container>
+                            <i *ngIf="level != idxHist" class="fas fa-angle-right ml-2"></i>
+                        </button>
+                    </ng-container>
+                </div>
+            </div>
+            <!-- LISTE ENTITES -->
+            <div class="row d-flex">
+                <div class="col">
+                    <app-table #tableEntites type="entitesOrga" [parentItems]="entites" [lineClickable]=true [itemsByPage]="10" [manualLoading]=true (refresh)="getEntites()" (goto)="setEntite($event)" [enableAdd]="level > 0" (add)="updateEntite()" (edit)="updateEntite($event)"></app-table>
+                </div>
+            </div>
+        </div>
+    </div>
+</app-content>
+<!-- MODALS -->
+<app-modal #modalUpdateEntite modalId="modalUpdateEntite" [modalTitle]="titleModal" (validate)="saveEntite()" [isDelete]="false" (delete)="deleteEntite()">
+    <div id="formio_entiteOrga"></div>
+</app-modal>
+<!-- TOASTS -->
+<div class="toast error" id="toastEntiteSaveError">{{ errorMessage }}</div>

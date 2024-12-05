@@ -1,0 +1,143 @@
+<div *ngIf="avanceContractuel != null" class="accordion container float-left p-1">
+	<div class="card infos card-collapse mt-3 pb-0">
+		<div class="card-header card-collapse-header" data-target="#collapseInfoAvance">
+			<i class="fas fa-window-restore mr-3"></i>
+			{{ avanceContractuel.code_fonctionnel }} - {{ avanceContractuel.libelle }}
+			<button *ngIf="displayButtonAvance" type="button" class="btn btn-collapse-goto w-auto float-right py-0 bg-transparent" (click)="goToAvanceContractuel()">{{ lang.avanceContractuel.open }}</button>
+		</div>
+		<div id="collapseInfoAvance" class="collapse show">
+			<div class="card-body py-0">
+				<div class="container px-2">
+					<div class="row mt-0 pb-2 pt-2 card-collapse-group">
+						<div class="col card-collapse-th">{{ lang.reglement.totalAmounts }}</div>
+					</div>
+					<div class="row mt-2 pb-2 card-collapse-separator">
+						<div class="col">
+							<span class="card-collapse-th">{{ lang.reglement.totalPaidAmount }}</span>
+						</div>
+						<div class="col">
+							<span class="card-collapse-th">{{ lang.reglement.totalJustifiedAmount }}</span>
+						</div>
+						<div class="col">
+							<span class="card-collapse-th">{{ lang.reglement.raj }}</span>
+						</div>
+					</div>
+					<div class="row mt-2 pb-2">
+						<div class="col">
+							<span *ngIf="!isFixed">{{ app.formatNumberWithDecimals(montantVerseTotal) }} </span>
+							<span *ngIf="isFixed">{{ app.formatNumberWithDecimals(avanceFig.montant_verse_total_copy) }} </span>
+							{{ avanceContractuel.devise_avance }}
+						</div>
+						<div class="col">
+							<span *ngIf="!isFixed">{{ app.formatNumberWithDecimals(montantTotalJustificatifsAvance) }} </span>
+							<span *ngIf="isFixed">{{ app.formatNumberWithDecimals(avanceFig.montant_total_justificatifs_avance_copy) }} </span>
+							{{ avanceContractuel.devise_avance }}
+						</div>
+						<div class="col">
+							<span [style.color]="resteJustifier < 0 ? 'red' : ''" *ngIf="!isFixed">
+								{{ app.formatNumberWithDecimals(resteJustifier) }}
+								{{ avanceContractuel.devise_avance }}
+							</span>
+							<span [style.color]="avanceFig.reste_justifier_copy < 0 ? 'red' : ''" *ngIf="isFixed">
+								{{ app.formatNumberWithDecimals(avanceFig.reste_justifier_copy) }}
+								{{ avanceContractuel.devise_avance }}
+							</span>
+						</div>
+					</div>
+					<div class="row mt-0 pb-2 pt-2 card-collapse-group">
+						<div class="col card-collapse-th">{{ lang.reglement.justification }}</div>
+					</div>
+					<div class="row mt-2 pb-2 card-collapse-separator">
+						<div class="col">
+							<span class="card-collapse-th">{{ lang.reglement.dljf }}</span>
+						</div>
+						<div class="col">
+							<span class="card-collapse-th">{{ lang.reglement.justificationThreshold }}</span>
+						</div>
+						<div class="col">
+							<span class="card-collapse-th">{{ lang.reglement.restJustify }}</span>
+						</div>
+					</div>
+					<div class="row mt-2 pb-2">
+						<div class="col">
+							<div *ngIf="avanceContractuel.date_ljf_final != null; else ngElseDljfFinalIsNull">{{ app.formatDate(avanceContractuel.date_ljf_final) }}</div>
+							<ng-template #ngElseDljfFinalIsNull>
+								<div>{{ app.formatDate(avanceContractuel.date_ljf_initial) }}</div>
+							</ng-template>
+						</div>
+						<div class="col">
+							<div *ngIf="(avanceContractuel.avenant != null && avanceContractuel.avenant.pourcentage_final_dernier_versement != null); else ngElsePfdvIsNull">
+								{{ avanceContractuel.avenant.pourcentage_final_dernier_versement }} %
+							</div>
+							<ng-template #ngElsePfdvIsNull>
+								<div>{{ avanceContractuel.pourcentage_initial_dernier_versement }} %</div>
+							</ng-template>
+						</div>
+						<div *ngIf="app.isEmpty(avanceContractuel.obj_ext_id); else ngElseIsRdd" class="col">
+							<div *ngIf="(!isFixed && resteJustifierDecaisserDossier == 0 || isFixed && avanceFig?.reste_justifier_decaisser_dossier_copy == 0); else ngElseIsNegatif" class="text-success font-weight-bold">
+								<span *ngIf="!isFixed">{{ app.formatNumberWithDecimals(resteJustifierDecaisserDossier) }} </span>
+								<span *ngIf="isFixed">{{ app.formatNumberWithDecimals(avanceFig.reste_justifier_decaisser_dossier_copy) }} </span>
+								{{ avanceContractuel.devise_avance }}
+							</div>
+							<ng-template #ngElseIsNegatif>
+								<div class="text-danger">
+									<span *ngIf="!isFixed">{{ app.formatNumberWithDecimals(resteJustifierDecaisserDossier) }} </span>
+									<span *ngIf="isFixed">{{ app.formatNumberWithDecimals(avanceFig.reste_justifier_decaisser_dossier_copy) }} </span>
+									{{ avanceContractuel.devise_avance }}
+								</div>
+							</ng-template>
+						</div>
+						<ng-template #ngElseIsRdd>
+							<div class="col"><span>-</span></div>
+						</ng-template>
+					</div>
+					<!-- JUSTIFICATIFS -->
+					<ng-container *ngIf="!isFixed && avanceContractuel?.justificatifsAvance?.length > 0 || isFixed && avanceFig?.justificatifs_avance_figee?.length > 0">
+						<div class="row mt-0 pb-2 pt-2 card-collapse-group">
+							<div class="col card-collapse-th">{{ lang.reglement.justificatifs }}</div>
+						</div>
+						<div class="row mt-2 pb-2 card-collapse-separator">
+							<div class="col">
+								<div class="card-collapse-th">{{ lang.reglement.dateTraitement }}</div>
+							</div>
+							<div class="col">
+								<div class="card-collapse-th">{{ lang.reglement.montantsJustificatifs }}</div>
+							</div>
+							<div class="col">
+								<div class="card-collapse-th">{{ lang.reglement.liensRomeJustificatifs }}</div>
+							</div>
+						</div>
+						<div *ngIf="!isFixed">
+							<div *ngFor="let justificatif of avanceContractuel.justificatifsAvance" class="row mt-2 pb-2">
+								<div class="col">
+									{{ app.formatDate(justificatif.date_creation) }}
+								</div>
+								<div class="col">
+									<span *ngIf="app.isAFD(entite)">{{ app.formatNumberWithDecimals(justificatif.montant_finance_afd) }} {{ justificatif.devise }} </span>
+									<span *ngIf="!app.isAFD(entite)">{{ app.formatNumberWithDecimals(justificatif.montant_justifie) }} {{ justificatif.devise }} </span>
+								</div>
+								<div class="col">
+									<span *ngIf="justificatif.lien_rom != null" class="comment-link" (click)="app.gotoLink(justificatif.lien_rom)">{{ justificatif.lien_rom }}</span>
+								</div>
+							</div>
+						</div>
+						<div *ngIf="isFixed">
+							<div *ngFor="let justificatif of avanceFig.justificatifs_avance_figee" class="row mt-2 pb-2">
+								<div class="col">
+									{{ app.formatDate(justificatif.date_creation) }}
+								</div>
+								<div class="col">
+									<span *ngIf="app.isAFD(entite)">{{ app.formatNumberWithDecimals(justificatif.montant_finance_afd) }} {{ justificatif.devise }} </span>
+									<span *ngIf="!app.isAFD(entite)">{{ app.formatNumberWithDecimals(justificatif.montant_justifie) }} {{ justificatif.devise }} </span>
+								</div>
+								<div class="col">
+									<span *ngIf="justificatif.lien_rom != null" class="comment-link" (click)="app.gotoLink(justificatif.lien_rom)">{{ justificatif.lien_rom }}</span>
+								</div>
+							</div>
+						</div>
+					</ng-container>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

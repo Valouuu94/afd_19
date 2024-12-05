@@ -1,0 +1,26 @@
+<app-content>
+    <div class="row">
+        <div class="col page-title">
+            {{ lang.nav.versements }}
+        </div>
+    </div>
+    <div class="row mb--3 mt--5" *ngIf="app.hasRight(store, 'DossierVersement.newDV')">
+        <div class="col text-right">
+            <button class="btn btn-new" (click)="addVersement()" [disabled]="!refsModalLoaded">
+                <span *ngIf="!refsModalLoaded" class="spinner-border spinner-border-sm"></span>
+                <i *ngIf="refsModalLoaded" class="fas fa-plus"></i>
+                {{ lang.newFolder }}
+            </button>
+        </div>
+    </div>
+    <app-table #tableVersements [type]="'versements' + entite" [parentItems]="versements" [manualLoading]=true [itemsByPage]="10" (goto)="gotoVersement($event)" highlightIf="canceled" [highlightIfValue]=true highlightMode="canceled" [lineClickable]=true [filtersButtons]="filtersButtons" (refresh)="getVersements()" [enableExport]=true (export)="exportExcel()"></app-table>
+</app-content>
+<app-export-excel #exportDV></app-export-excel>
+<!-- MODALS -->
+<app-modal #modalAddVersement modalId="modalAddVersement" [modalTitle]="lang.newFolder" icon="plus" (validate)="saveVersement()">
+    <p slot="subtitle" class="blockSubTitle">
+        {{ lang.createFolder }}
+    </p>
+    <div class="mt-6" [id]="'formio_versementInit' + entite"></div>
+    <div class="toast error" id="toastVersementSaveError">{{ lang.failedFormSave }}</div>
+</app-modal>

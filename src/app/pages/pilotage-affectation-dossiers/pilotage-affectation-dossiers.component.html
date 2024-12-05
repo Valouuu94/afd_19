@@ -1,0 +1,204 @@
+<app-content>
+    <!-- KPI -->
+    <div class="row">
+        <div class="col page-title mb-2">
+            {{ lang.pilotageDossiers.titlePilotage }}
+        </div>
+    </div>
+    <div class="row mt-3 justify-content-center">
+        <div class="col-2 text-center mx-2 p-3 card">
+            <div class="kpiTitle">{{ lang.pilotageDossiers.kpiDDRreglees }}</div>
+            <div class="kpiValue" [title]="lang.pilotageDossiers.tooltipKpiDDRreglees">{{ kpiDDRreglees }}</div>
+        </div>
+        <div class="col-2 text-center mx-2 p-3 card">
+            <div class="kpiTitle">{{ lang.pilotageDossiers.kpiDDReligibles }}</div>
+            <div class="kpiValue pt-3" [title]="lang.pilotageDossiers.tooltipKpiDDReligibles">{{ kpiDDReligibles }}</div>
+            <span class="kpiSubtitle pt-3">{{ lang.pilotageDossiers.dontKpi }} {{ kpiDDReligibles1CR }} {{ lang.pilotageDossiers.minimaKpi }} </span>
+        </div>
+        <div class="col-2 text-center mx-2 p-3 card">
+            <div class="kpiTitle">{{ lang.pilotageDossiers.kpiDDRcontrolees }}</div>
+            <div class="kpiValue pt-3" [title]="lang.pilotageDossiers.tooltipKpiDDRcontrolees">{{ kpiDDRcontrolees }}</div>
+            <span class="kpiSubtitle pt-3">{{ lang.pilotageDossiers.dontKpi }} {{ kpiDDRcontrolees1CR }} {{ lang.pilotageDossiers.minimaKpi }}</span>
+        </div>
+        <div class="col-2 text-center mx-2 p-3 card">
+            <div class="kpiTitle">{{ lang.pilotageDossiers.kpiTauxControle }}</div>
+            <div class="kpiValue" [title]="lang.pilotageDossiers.tooltipKpiTauxControle">{{ kpiTauxControle }}%</div>
+        </div>
+        <div class="col-2 text-center mx-2 p-3 card">
+            <div class="kpiTitle">{{ lang.pilotageDossiers.kpiAvanceObjectif }}</div>
+            <div class="kpiValue" [title]="lang.pilotageDossiers.tooltipKpiAvanceObjectif">{{ kpiAvanceObjectif }}%</div>
+        </div>
+    </div>
+    <!-- TABLEAU GLOBAL -->
+    <div class="row mt-5">
+        <div class="col page-title mb-2">
+            {{ lang.pilotageDossiers.titleGlobal }}
+        </div>
+    </div>
+    <div class="row mt-2 justify-content-center">
+        <div class="col text-center">
+            <table class="table grid mt-2 table-pilotage">
+                <thead>
+                    <tr>
+                        <th scope="col" colspan="2" rowspan="2" class="critere-col">
+                            {{ lang.pilotageDossiers.colCritere }} {{ currentYear }}
+                        </th>
+                        <th scope="col" colspan="3" class="totaux">
+                            {{ lang.pilotageDossiers.colDDRtotaux }}
+                        </th>
+                        <th scope="col" colspan="3" class="suivi">
+                            {{ lang.pilotageDossiers.colSuiviTaux }}
+                        </th>
+                    </tr>
+                    <tr>
+                        <th scope="col" class="totaux">
+                            {{ lang.pilotageDossiers.colDDRreglees }}
+                        </th>
+                        <th scope="col" class="totaux">
+                            {{ lang.pilotageDossiers.colDDReligibles }}
+                        </th>
+                        <th scope="col" class="totaux">
+                            {{ lang.pilotageDossiers.colDDRnonAffectees }}
+                        </th>
+                        <th scope="col" class="suivi">
+                            {{ lang.pilotageDossiers.colDDRaffectees }}
+                        </th>
+                        <th scope="col" class="suivi">
+                            {{ lang.pilotageDossiers.colDDRcontrolees }}
+                        </th>
+                        <th scope="col" class="suivi">
+                            {{ lang.pilotageDossiers.colTauxControle }}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let item of dataGlobal">
+                        <tr>
+                            <td class="critere-col" style="width: 0%">{{ item.idCritere }}</td>
+                            <td class="critere text-left" style="width: 28%">{{ item.critere }}</td>
+                            <td [title]="lang.pilotageDossiers.tooltipGlobalDDRreglees">{{ item.DDRreglees }}</td>
+                            <td [title]="lang.pilotageDossiers.tooltipGlobalDDReligibles">{{ item.DDReligibles }}</td>
+                            <td [title]="lang.pilotageDossiers.tooltipGlobalDDRnonAffectees">{{ item.DDRnonAffectees }}</td>
+                            <td [title]="lang.pilotageDossiers.tooltipGlobalDDRaffectees">{{ item.DDRaffectees }}</td>
+                            <td [title]="lang.pilotageDossiers.tooltipGlobalDDRcontrolees">{{ item.DDRcontrolees }}</td>
+                            <td [title]="lang.pilotageDossiers.tooltipGlobalTauxControle">{{ item.tauxControle }}&nbsp;%</td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- TABLEAU DETAIL ANNEE -->
+    <div class="row mt-5">
+        <div class="col page-title mb-2">
+            {{ lang.pilotageDossiers.titleDetailControleurAnnee }}
+        </div>
+    </div>
+    <div class="row mt-2 justify-content-center">
+        <div class="col text-center">
+            <table class="table grid mt-2 table-pilotage">
+                <thead>
+                    <tr>
+                        <th scope="col" colspan="2" rowspan="2" class="critere-col">
+                            {{ lang.pilotageDossiers.colUser }}
+                        </th>
+                        <th scope="col" colspan="4" class="totaux">
+                            {{ lang.pilotageDossiers.colDDRtotaux }}
+                        </th>
+                        <th scope="col" colspan="3" class="suivi">
+                            {{ lang.pilotageDossiers.colSuiviTaux }}
+                        </th>
+                    </tr>
+                    <tr>
+                        <th scope="col" class="totaux">
+                            {{ lang.pilotageDossiers.colDDRreglees }}
+                        </th>
+                        <th scope="col" class="totaux">
+                            {{ lang.pilotageDossiers.colDDReligibles }}
+                        </th>
+                        <th scope="col" class="totaux">
+                            {{ lang.pilotageDossiers.colDDReligiblesMinima }}
+                        </th>
+                        <th scope="col" class="totaux">
+                            {{ lang.pilotageDossiers.colDDRnonAffectees }}
+                        </th>
+                        <th scope="col" class="suivi">
+                            {{ lang.pilotageDossiers.colDDRaffectees }}
+                        </th>
+                        <th scope="col" class="suivi">
+                            {{ lang.pilotageDossiers.colDDRcontrolees }}
+                        </th>
+                        <th scope="col" class="suivi">
+                            {{ lang.pilotageDossiers.colAvancee }}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let item of dataDetailAnnee">
+                        <tr>
+                            <td class="critere-col text-left" style="width: 15%">{{ item.user }}</td>
+                            <td class="critere text-left" style="width: 15%">{{ item.role }}</td>
+                            <td [title]="lang.pilotageDossiers.tooltipDetailAnneeDDRreglees">{{ item.DDRreglees }}</td>
+                            <td [title]="lang.pilotageDossiers.tooltipDetailAnneeDDReligibles">{{ item.DDReligibles }}</td>
+                            <td [title]="lang.pilotageDossiers.tooltipDetailAnneeDDReligiblesMinima">{{ item.DDReligiblesMinima }}</td>
+                            <td [title]="lang.pilotageDossiers.tooltipDetailAnneeDDRnonAffectees">{{ item.DDRnonAffectees }}</td>
+                            <td [title]="lang.pilotageDossiers.tooltipDetailAnneeDDRaffectees">{{ item.DDRaffectees }}</td>
+                            <td [title]="lang.pilotageDossiers.tooltipDetailAnneeDDRcontrolees">{{ item.DDRcontrolees }}</td>
+                            <td [title]="lang.pilotageDossiers.tooltipDetailAnneeAvancee">{{ item.avancee }}&nbsp;%</td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- TABLEAU DETAIL MOIS -->
+    <div class="row mt-5">
+        <div class="col page-title mb-2">
+            {{ lang.pilotageDossiers.titleDetailControleurMois }}
+        </div>
+    </div>
+    <div class="row mt-2 justify-content-center">
+        <div class="col text-center">
+            <table class="table grid mt-2 table-pilotage">
+                <thead>
+                    <tr>
+                        <th scope="col" colspan="2" rowspan="2" class="critere-col">
+                            {{ lang.pilotageDossiers.colUser }}
+                        </th>
+                        <th scope="col" colspan="4" class="suivi">
+                            {{ lang.pilotageDossiers.colSuiviTaux }}
+                        </th>
+                    </tr>
+                    <tr>
+                        <th scope="col" class="suivi">
+                            {{ lang.pilotageDossiers.colDDRcontrolees }}
+                        </th>
+                        <th scope="col" class="suivi">
+                            {{ lang.pilotageDossiers.colObjectif }}
+                        </th>
+                        <th scope="col" class="suivi">
+                            {{ lang.pilotageDossiers.colTauxControle }}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let item of dataDetailMois">
+                        <tr>
+                            <td class="critere-col text-left" style="width: 15%">{{ item.user }}</td>
+                            <td class="critere text-left" style="width: 15%">{{ item.role }}</td>
+                            <td [title]="lang.pilotageDossiers.tooltipDetailMoisDDRcontrolees">{{ item.DDRcontrolees }}</td>
+                            <td [title]="lang.pilotageDossiers.tooltipDetailMoisObjectif">{{ item.objectif }}</td>
+                            <td [title]="lang.pilotageDossiers.tooltipDetailMoisTauxControle">{{ item.tauxControle }}&nbsp;%</td>
+                        </tr>
+                    </ng-container>
+                    <tr>
+                        <td class="critere-col text-right" colspan="2">TOTAL</td>
+                        <td class="font-weight-bold">{{ totalDDRcontrolees }}</td>
+                        <td class="font-weight-bold">{{ totalobjectif }}</td>
+                        <td class="font-weight-bold">{{ totaltauxControle }}&nbsp;%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</app-content>

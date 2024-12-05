@@ -1,0 +1,242 @@
+<!-- MODALS -->
+<app-modal #detailsDemandeReglement *ngIf="reglement != null" modalId="detailsDemandeReglement" [subTitle]="(!app.isAFD(this.entite) && app.isDossierAnnule(reglement.code_statut_dossier)) ? '-' + lang.demandeAnnuleLabel : ''" classSubTitle="text-danger" icon="pen" size="xxl" [showSwitchToUpdate]="showSwitchToUpdate" [disabledBtnSwitchToUpdate]=true [hideFooter]=true (switchToUpdate)="switchToUpdate()" (validate)="saveReglement()">
+    <div class="row d-flex mt-2 sidebar-modal">
+        <!-- SIDEBAR MODAL -->
+        <div class="col-3 col-sidebar-modal">
+            <span class="sidebar-modal-group">{{ lang.templates.demande }}</span>
+            <div class="row">
+                <div class="col">
+                    <button class="btn btn-sidebar mt-2 py-2" [ngClass]="{ 'sidebar-selected': (sidebarSelected == 'DR') }" (click)="showReglement()">
+                        <i class="fas fa-file-invoice-dollar mx-3 collapse-point"></i><span class="sidebar-modal-collapse">{{ lang.context.reglementMontant }}</span>
+                    </button>
+                </div>
+            </div>
+            <ng-container *ngIf="reglement.justificatifs != null && reglement.justificatifs.length > 0">
+                <div class="row">
+                    <div class="col">
+                        <button class="btn btn-collapse first pb-2 pt-2" (click)="app.toggleCollapse('collapseModalSidebarDemande')">
+                            <i class="fas fa-level-up-alt mr-3 collapse-point rotate-sub"></i><span class="sidebar-modal-collapse">{{ lang.subJustifs }}</span>
+                            <i class="fas fa-chevron-up ml-2 float-right" [id]="'chevron-collapseModalSidebarDemande'"></i>
+                        </button>
+                    </div>
+                </div>
+                <div id="collapseModalSidebarDemande" class="collapse show">
+                    <div class="row">
+                        <div *ngFor="let justificatif of reglement.justificatifs" class="col-12 pl-5">
+                            <button class="btn btn-sidebar mt-0 py-2 w-100" [ngClass]="{ 'sidebar-selected': (sidebarSelected == 'J' + justificatif.persistenceId) }" (click)="gotoJustificatifReglement(justificatif)">
+                                <i class="fas fa-file mx-3 collapse-point"></i>
+                                <span class="sidebar-modal-collapse">
+                                    {{ justificatif.code_fonctionnel }} - {{ justificatif.reference }}
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+            <!-- justificatifs remboursement -->
+            <ng-container *ngIf="reglement.justificatifsRemboursement != null && reglement.justificatifsRemboursement.length > 0">
+                <div class="row">
+                    <div class="col">
+                        <button class="btn btn-collapse first pb-2 pt-2" (click)="app.toggleCollapse('collapseModalSidebarJR')">
+                            <i class="fas fa-level-up-alt mr-3 collapse-point rotate-sub"></i><span class="sidebar-modal-collapse">{{ lang.subJustifsRemboursement }}</span>
+                            <i class="fas fa-chevron-up ml-2 float-right" [id]="'chevron-collapseModalSidebarJR'"></i>
+                        </button>
+                    </div>
+                </div>
+                <div id="collapseModalSidebarJR" class="collapse show">
+                    <div class="row">
+                        <div *ngFor="let justificatifRemboursement of reglement.justificatifsRemboursement; let idxJR = index" class="col-12 pl-5">
+                            <button class="btn btn-sidebar mt-0 py-2 w-100" [ngClass]="{ 'sidebar-selected': (sidebarSelected == 'JR' + justificatifRemboursement.persistenceId) }" (click)="gotoJustificatifRemboursement(justificatifRemboursement)">
+                                <i class="fas fa-file mx-3 collapse-point"></i>
+                                <span class="sidebar-modal-collapse">
+                                    {{ (idxJR+1) }} - {{ justificatifRemboursement.reference }}
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+            <span *ngIf="showSidebarDC || showSidebarAC" class="sidebar-modal-group mt-4">{{ lang.linkDoc }}</span>
+            <ng-container *ngIf="showSidebarDC">
+                <div class="row">
+                    <div class="col">
+                        <button class="btn btn-sidebar mt-2 py-2" [ngClass]="{ 'sidebar-selected': (sidebarSelected == 'DC') }" (click)="gotoDC()">
+                            <i class="fas fa-copy mx-3 collapse-point"></i><span class="sidebar-modal-collapse">{{ lang.subDC }}</span>
+                        </button>
+                    </div>
+                </div>
+            </ng-container>
+            <ng-container *ngIf="showSidebarAC">
+                <div class="row">
+                    <div class="col">
+                        <button class="btn btn-sidebar mt-2 py-2" [ngClass]="{ 'sidebar-selected': (sidebarSelected == 'AC') }" (click)="gotoAC(avanceContractuel)">
+                            <i class="fas fa-copy mx-3 collapse-point"></i><span class="sidebar-modal-collapse">{{ lang.subAC }}</span>
+                        </button>
+                    </div>
+                </div>
+                <ng-container *ngIf="avanceContractuel.justificatifsAvance != null && avanceContractuel.justificatifsAvance.length > 0">
+                    <div class="row">
+                        <div class="col">
+                            <button class="btn btn-collapse first pb-2 pt-2" (click)="app.toggleCollapse('collapseModalSidebarAC')">
+                                <i class="fas fa-level-up-alt mr-3 collapse-point rotate-sub"></i><span class="sidebar-modal-collapse">{{ lang.subJustifs }}</span>
+                                <i class="fas fa-chevron-up ml-2 float-right" [id]="'chevron-collapseModalSidebarAC'"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="collapseModalSidebarAC" class="collapse show">
+                        <div class="row">
+                            <div *ngFor="let justificatif of avanceContractuel.justificatifsAvance" class="col-12 pl-5">
+                                <button class="btn btn-sidebar mt-0 py-2 w-100" [ngClass]="{ 'sidebar-selected': (sidebarSelected == 'J' + justificatif.persistenceId) }" (click)="gotoJustificatifAC(justificatif)">
+                                    <i class="fas fa-file mx-3 collapse-point"></i>
+                                    <span class="sidebar-modal-collapse">
+                                        {{ justificatif.code_fonctionnel }} - {{ justificatif.reference }}
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+            </ng-container>
+        </div>
+        <!-- CONTENT MODAL -->
+        <div class="col">
+            <div class="row d-flex">
+                <div class="col modal-body-sidebar-scroll" [ngClass]="{ 'modal-body-sidebar-scroll-update': showSwitchToUpdate }">
+                    <div *ngIf="loading" class="container">
+                        <app-spinner></app-spinner>
+                    </div>
+                    <div *ngIf="contentTitle != null && !loading" class="row">
+                        <div class="col page-title">{{ contentTitle }}</div>
+                    </div>
+                    <div *ngIf="reglement != null && app.isAFD(entite) && reglement.obj_ext_id != null && sidebarSelected == 'DR' || (app.isAFD(entite) && contentTitle?.includes('Justificatif') && showRepriseVersement) " class="row m-0 mt-1 mb-5">
+                        <div class="badge-table col3"><span>{{ lang.reprise }}</span></div>
+                    </div>
+                    <div *ngIf="app.isAFD(entite) && showRepriseVersement && sidebarSelected == 'DC' || (app.isAFD(entite) && sidebarSelected == 'AC' && showRepriseVersement) " class="row m-0 mt-1 mb-5">
+                        <div class="badge-table col3"><span>{{ lang.reprise }} </span></div>
+                    </div>
+                    <!-- Reglement -->
+                    <div class="mt-6" [id]="'formio_reglement' + entite" [ngClass]="{ 'invisible': loading }"></div>
+                    <!-- Justifs reglement -->
+                    <div id="formio_justificatifReglement" [ngClass]="{ 'invisible': loading }"></div>
+                    <!-- Justifs remboursement -->
+                    <div id="formio_justificatifRemboursement" [ngClass]="{ 'invisible': loading }"></div>
+                    <!-- Justifs Avance -->
+                    <div *ngIf="showJAC && !loading" class="mt-3 mb--3">
+                        <button class="btn btn-checkbox mr-2" [disabled]="true">
+                            <i *ngIf="!dernierJustifValue" class="far fa-square bg-white"></i>
+                            <i *ngIf="dernierJustifValue" class="fas fa-check-square"></i>
+                        </button>
+                        <label>{{ lang.justificatifsAvance.lastJustif }}</label>
+                        <i class="fas fa-question-circle info-bulle" [title]="lang.justificatifsAvance.lastJustifTooltip"></i>
+                    </div>
+                    <div [id]="'formio_justificatifAvance' + entite" [ngClass]="{ 'invisible': !(showJAC && !loading) }"></div>
+                    <!-- DC -->
+                    <div id="formio_documentContractuel" [ngClass]="{ 'invisible': loading }"></div>
+                    <app-documentContractuel #infosReglementDC *ngIf="showSidebarDC" [paramDC]="documentContractuel" [paramDR]="reglement" [isInsideModal]=true></app-documentContractuel>
+                    <!-- AC -->
+                    <div [id]="app.isAFD(this.entite) ? 'formio_avanceContractuelAFDFinal' : 'formio_avanceContractuelPROPARCOFinal'" [ngClass]="{ 'invisible': loading }"></div>
+                    <app-avance #infosReglementAvance *ngIf="showSidebarAC" [paramAC]="avanceContractuel" [paramDR]="reglement"></app-avance>
+                </div>
+            </div>
+        </div>
+    </div>
+</app-modal>
+<!-- TELEPORTS REGLEMENT -->
+<app-teleport #teleportContrevaleur to=".teleport-contrevaleur">
+    <ng-container *ngIf="contrevaleurVisible">
+        <div class="row">
+            <div class="col fieldset-subtitle">
+                {{ lang.reglement.contrevaleur }}
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-auto formio-number formio-amount">
+                <label>{{ lang.reglement.mntProvisoire }}</label>
+                <input type="text" class="form-control" disabled [(ngModel)]="contrevaleurMontantRender">
+            </div>
+            <div class="col-3">
+                <label>{{ lang.reglement.deviseConcours }}</label>
+                <input type="text" class="form-control" disabled [(ngModel)]="contrevaleurDeviseRender">
+            </div>
+            <div class="col-auto formio-number">
+                <label>{{ lang.actualizedOn }}</label>
+                <input type="text" class="form-control" disabled [(ngModel)]="contrevaleurDateRender">
+            </div>
+        </div>
+    </ng-container>
+</app-teleport>
+<app-teleport #teleportEquivalent to=".teleport-equivalent">
+    <ng-container *ngIf="equivalentVisible">
+        <div class="row mt-2">
+            <div class="col-auto formio-number formio-amount">
+                <label>{{ lang.reglement.mntEquivalent }}</label>
+                <input type="text" class="form-control" disabled [(ngModel)]="equivalentMontantRender">
+            </div>
+            <div class="col-3">
+                <label>{{ lang.reglement.deviseReglementRappel }}</label>
+                <input type="text" class="form-control" disabled [(ngModel)]="equivalentDeviseRender">
+            </div>
+            <div class="col-auto formio-number">
+                <label>{{ lang.actualizedOn }}</label>
+                <input type="text" class="form-control" disabled [(ngModel)]="equivalentDateRender">
+            </div>
+        </div>
+    </ng-container>
+</app-teleport>
+<app-teleport #teleportBeneficiaireReglement to=".teleport-beneficiaire-reglement">
+    <app-infos-beneficiaire #infosBeneficiaireReglement [objectParentRepris]="ddrReprise"></app-infos-beneficiaire>
+</app-teleport>
+<app-teleport #teleportDetailAvanceContractuel to=".teleport-avance">
+    <app-infos-avance [displayButtonAvance]="!showButtonGetAvance" [enableCollapse]="false" [role]="role" #infosAvance></app-infos-avance>
+</app-teleport>
+<app-teleport #teleportBeneficiairePrimaire to=".teleport-beneficiaire-primaire">
+    <app-infos-beneficiaire #beneficiairePrimaire [showTiersUsedByConcours]="false" [objectParentRepris]="ddrReprise"></app-infos-beneficiaire>
+</app-teleport>
+<app-teleport #teleportJustificatifReglement to=".teleport-justificatifs-reglement">
+    <app-table *ngIf="showJustificatifsReglement" #tableJustificatifsReglement type="justificatifsReglement" [parentItems]="justificatifsReglement" [manualLoading]=true [hideFilters]=true [enableAdd]=false [read]=true [itemsByPage]="5" [disabledEditAndDelete]=true (goto)="gotoJustificatifReglement($event)"></app-table>
+</app-teleport>
+<app-teleport #teleportJustificatifRemboursement to=".teleport-justificatifs-remboursement">
+    <app-table *ngIf="showJustificatifsRemboursement" #tableJustificatifsRemboursement type="justificatifsRemboursement" [parentItems]="justificatifsRemboursement" [manualLoading]=true [hideFilters]=true [enableAdd]=false [read]=true [itemsByPage]="5" [disabledEditAndDelete]=true (goto)="gotoJustificatifRemboursement($event)"></app-table>
+</app-teleport>
+<app-teleport #teleportDevisesReglement to=".teleport-devise-reglement">
+    <div *ngIf="!app.isEmpty(devise)" style="margin-top:10px">
+        <label>{{ labelDeviseSelected }}<span class="text-danger">*</span></label>
+        <input type="text" [value]="devise" class="form-control" readonly>
+    </div>
+</app-teleport>
+<app-teleport #teleportConcours to=".teleport-concours">
+    <app-infos-concours *ngIf="showConcours" #infosConcours [entite]="entite"></app-infos-concours>
+</app-teleport>
+<app-teleport #teleportDetailsCoordonneeBancaire to=".teleport-details-coordonnee-bancaire">
+    <app-infos-coordonnee-bancaire *ngIf="showDetailsCoordonneeBancaire" #infosCoordonneeBancaire></app-infos-coordonnee-bancaire>
+</app-teleport>
+<!-- TELEPORTS JUSTIFICATIF REGLEMENT -->
+<app-teleport #teleportRubriquesJust to=".teleport-rubriquesJust">
+    <p *ngIf="!showRubriquesDC">{{ lang.reglement.nonShowRubriquesDC }}</p>
+    <h6 *ngIf="showRubriquesDC" class="mt-3">{{ lang.reglement.showRubriquesDC }}</h6>
+    <app-rubriques #rubriquesComponentJust [enableAdd]=false [readOnly]=true [isInsideModal]=true></app-rubriques>
+</app-teleport>
+<app-teleport #teleportEmetteurJustificatif to=".teleport-emetteur-justificatif">
+    <app-infos-beneficiaire #infosEmetteurJustificatif [showTiersUsedByConcours]="false" [objectParentRepris]="ddrReprise"></app-infos-beneficiaire>
+</app-teleport>
+<!-- <app-teleport #teleportSelectEmetteurJustificatif to=".teleport-select-emetteur-justificatif">
+    <app-select-beneficiaire #selectEmetteur (change)="getEmetteurJustificatif()"></app-select-beneficiaire>
+</app-teleport> il sert a quoi ? -->
+<app-teleport #teleportDcJustificatif to=".teleport-document_contractuel">
+    <label class="mt-3 fieldset-title">{{ lang.document }}</label>
+    <input *ngIf="infosDcJustificatif != null" type="text" class="form-control" [value]="infosDcJustificatif" readonly>
+</app-teleport>
+<!-- TELEPORTS JUSTIFICATIF REMBOURSEMENT -->
+<app-teleport #teleportRubriquesRemboursement to=".teleport-rubriques-justif-remb">
+    <p *ngIf="!showRubriquesDC && !app.isAvance(versement?.modalite_paiement)">{{ lang.reglement.nonShowRubriquesDC }}</p>
+    <h6 *ngIf="showRubriquesDC" class="mt-3">{{ lang.reglement.showRubriquesDC }}</h6>
+    <app-table *ngIf="showRubriquesDC" #tableRubriques type="rubriquesRemboursementNotEditable" [parentItems]="ventilationRubriques" [manualLoading]=true [hideFilters]=true [enableAdd]=false [itemsByPage]="5" [hideSort]=true></app-table>
+    <app-rubriques #rubriquesComponent [enableAdd]=false [readOnly]=true [isInsideModal]=true [isJustificatifRemboursment]="showJR"></app-rubriques>
+</app-teleport>
+<app-teleport #teleportDcJustifRemboursement to=".teleport-dc-justif-remb">
+    <label *ngIf="!app.isEmpty(versement) && !app.isAvance(versement.modalite_paiement)" class="mt-3 fieldset-title">{{ lang.document }}</label>
+    <input *ngIf="infosDcJustificatif != null" type="text" class="form-control" [value]="infosDcJustificatif" readonly>
+</app-teleport>
+<app-teleport #teleportDC to=".teleport-detail-document-contractuel">
+    <app-infos-dc #infosDc></app-infos-dc>
+</app-teleport>

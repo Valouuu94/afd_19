@@ -1,0 +1,32 @@
+<app-table *ngIf="showTypeAvance" #tableTypesAvance [type]="typeAvance" [parentItems]="typesAvanceByTypeSelected" [itemsByPage]="itemsByPage" [manualLoading]=true [hideFilters]=true (add)="addTypeAvance($event)" (edit)="addTypeAvance($event)" [enableAdd]=true>
+</app-table>
+<app-modal #modalSaveTypeAvance modalId="modalAddTypeAvance" [modalTitle]="lang.avance.titleModalTypeAvance" size="lg" icon="plus" (validate)="saveTypeAvance()">
+    <div class="container">
+        <p>{{ lang.failedFormSave }}</p>
+        <form>
+            <h5>{{ lang.avance.title }}</h5>
+            <div class="form-row mt-2">
+                <div class="form-group col-md-3">
+                    <label for="inputId">{{ lang.avance.id }}</label>
+                    <input type="text" class="form-control" id="inputId" name="numeroTypeAvance" [(ngModel)]="numeroTypeAvance" readonly>
+                </div>
+                <div class="form-group col-md-9">
+                    <label for="inputLibelle">{{ lang.avance.label }}</label>
+                    <input type="text" class="form-control" id="inputLibelle" name="libelle" [(ngModel)]="libelle" required>
+                </div>
+            </div>
+            <h5>{{ lang.avance.amount }}</h5>
+            <div class="form-row mt-2">
+                <div class="form-group col-md-6">
+                    <label for="inputMontant">{{ lang.avance.inputMontant }} {{ labelTypeAvance }}</label>
+                    <input type="number" class="form-control" name="montant" id="inputMontant" [(ngModel)]="montant" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputDevise">{{ lang.currency }}</label>
+                    <input type="text" class="form-control" id="inputDevise" name="devise" [value]="deviseLabel" readonly>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="toast error" id="toastAutreDeviseSaveError">{{ lang.avance.typeAvanceSaveError }}</div>
+</app-modal>

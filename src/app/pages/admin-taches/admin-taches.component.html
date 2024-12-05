@@ -1,0 +1,22 @@
+<app-content>
+    <div class="row">
+        <div class="col page-title">
+            {{ lang.nav.adminTaches }}
+        </div>
+    </div>
+    <div class="row mb--3 mt--5">
+        <div class="col text-right">
+            <button class="btn btn-new" (click)="affectTaks()">
+                {{ lang.affectTask }}
+            </button>
+        </div>
+    </div>
+    <app-table #tableTaches type="tachesAdmin" [parentItems]="taches" [manualLoading]=true [itemsByPage]="itemsByPage" [lineClickable]=true [filtersButtons]="filtersButtons" (refresh)="getTaches()" (edit)="updateNombreTacheSelected($event)" [hideFooter]=true></app-table>
+</app-content>
+<!-- MODALS -->
+<app-modal #modalAffectTasks [modalTitle]="lang.affectTask" modalId="modalAffectTasks" [validateLabel]="lang.validate" (validate)="validateAffectTasks()">
+    <div class="mt-6" id="formio_affectTasks"></div>
+</app-modal>
+<!-- TOASTS -->
+<div class="toast error" id="toastFailedAffectTasksError">{{ lang.failedAffectTasks }}</div>
+<div class="toast error" id="toastValidateAffectTasksError">{{ lang.errorValidateForm }}</div>

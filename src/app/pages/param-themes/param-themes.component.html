@@ -1,0 +1,19 @@
+<app-content>
+    <div class="row">
+        <div class="col page-title">
+            {{ lang.nav.paramThemaTitle }}
+        </div>
+    </div>
+    <app-table #tableParamThemes type="paramThemes" url="urlGetParamThemes" [itemsByPage]="10" [manualLoading]=true [enableAdd]=true (edit)="updateTheme($event)" (add)="addTheme()">
+    </app-table>
+</app-content>
+<!-- MODALS -->
+<app-modal #modalTheme modalId="modalTheme" icon="pen" size="xl" [modalTitle]="modalTitle" [noRightBtn]="hasNoRight" [validateLabel]="lang.save" (validate)="confirmSaveTheme()">
+    <div id="formio_theme"></div>
+</app-modal>
+<div class="toast error" id="toastThemeSaveError">{{ lang.errorRequired }}</div>
+<app-modal #modalConfirmationTheme modalId="modalConfirmationTheme" [validateLabel]="lang.validate" (validate)="saveTheme()">
+    {{ lang.paramThemes.confirmSave }}
+</app-modal>
+
+<div class="toast" id="toastSaveSuccessThemes">{{ lang.successSave}}</div>

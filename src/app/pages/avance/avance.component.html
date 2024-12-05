@@ -1,0 +1,139 @@
+<ng-container *ngIf="paramAC == null">
+    <app-nav-actions>
+        <div class="col">
+            <app-btn [label]="lang.cancel" type="secondary" ico="arrow-left" (action)="annuler()"></app-btn>
+        </div>
+        <div *ngIf="!read" class="col-md-auto text-right">
+            <app-btn #btnSaveAvance [label]="lang.validate" type="secondary" ico="check" (action)="saveAvance(true)"></app-btn>
+        </div>
+    </app-nav-actions>
+    <app-content>
+        <div class="row d-flex mt-2" [ngClass]="{ 'invisible': loading }">
+            <div *ngIf="reglement != null || versement != null" id="sidebar-col" class="col-12 col-md-4 col-xl-3">
+                <app-card [autoHeight]=false>
+                    <div id="sidebar-container" class="container infos-dossier">
+                        <span *ngIf="showSidebar" class="mb-3 mt-4 info-header text-uppercase">{{ lang.contexteDossier }}</span>
+                        <button class="btn btn-collapse-sidebar float-right" (click)="app.toggleSidebar(this)" [title]="titleSidebarToggle">
+                            <i id="ico-sidebar-context" class="fas fa-compress-alt"></i>
+                        </button>
+                        <app-infos-context #infosContext *ngIf="showSidebar" [reglement]="reglement" [versement]="versement" [entite]="entite" [isDCV]="isDCV"></app-infos-context>
+                    </div>
+                </app-card>
+            </div>
+            <div id="sidebar-col-content" class="col-12 col-md-8 col-xl-9">
+                <div class="col px-0">
+                    <app-card [autoHeight]=false>
+                        <div class="m-4">
+                            <div class="row">
+                                <div class="col-10">
+                                    <h4>{{ lang.avanceContractuel.formTitle }}</h4>
+                                </div>
+                                <div *ngIf="!read" class="col text-right">
+                                    <button *ngIf="avanceContractuel != null && app.isAFD(entite)" class="btn btn-secondary text-right" (click)="addAvenant()">
+                                        <i class="fas fa-plus"></i> {{ lang.avanceContractuel.avenant }}
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <p class="title-form">{{ lang.infoRequired }} <span class="text-danger">*</span> {{ lang.mandatory }}</p>
+                                </div>
+                            </div>
+                            <div *ngIf="avanceContractuel != null && app.isAFD(entite) && avanceContractuel.obj_ext_id != null" class="row m-0 mt-1 mb-5">
+                                <div class="badge-table col3"><span>{{ lang.reprise }}</span></div>
+                            </div>
+                            <div [id]="'formio_avanceContractuel' + entite"></div>
+                            <div id="formio_avanceContractuelAFDFinal"></div>
+                            <div id="formio_avanceContractuelPROPARCOFinal"></div>
+                        </div>
+                    </app-card>
+                </div>
+            </div>
+        </div>
+    </app-content>
+</ng-container>
+<!-- TELEPORT -->
+<app-teleport #teleportTypeAvance to=".teleport-type-avance">
+    <div class="col text-left" style="display: inline-block; padding: 25px 0px;">
+        {{ lang.avance.totalAvances }} : <input type="text" [value]="app.formatNumberWithDecimals(sommeTranches())" readonly style="width: 125px; height: 35px; border: none; outline: none; background-color: #eaecf4; text-align: right; border: 1px solid #d1d3e2;
+        border-radius: 0.35rem;">
+    </div>
+    <div *ngIf="tableAvanceError() && showTypeAvance" class="error">
+        {{ lang.avance.remplirTable }}
+    </div>
+    <app-table #tableTypesAvance *ngIf="showTypeAvance" [type]="typesAvances" [parentItems]="typesAvanceByTypeSelected" [itemsByPage]="itemsByPage" [manualLoading]=true [hideFilters]=true [enableAdd]="!read" (add)="addTypeAvance($event)" (goto)="addTypeAvance($event)" highlightIf="deleted" [highlightIfValue]=true highlightMode="deleted" [disabledEditAndDelete]="paramAC != null"></app-table>
+</app-teleport>
+<app-teleport #teleportJustificatifAvance to=".teleport-justificatifs-avance">
+    <h6 *ngIf="avanceContractuel != null" class="mt-4">{{ lang.avanceContractuel.listJustificatifs }}</h6>
+    <app-table *ngIf="avanceContractuel != null" #tableJustificatifsAvance [type]="'justificatifsAvance' + entite" [parentItems]="justificatifsAvance" [manualLoading]=true [hideFilters]=true [enableAdd]="!read && !checkDernierJustif" (goto)="addJustificatifAvance($event)" (add)="confirmerAddJustificatifAvance($event)" [itemsByPage]="app.isAFD(this.entite) ? 5 : 20" highlightIf="deleted" [highlightIfValue]=true highlightMode="deleted" [disabledEditAndDelete]="paramAC != null"></app-table>
+</app-teleport>
+<app-teleport #teleportEmetteurJustificatifAvance to=".teleport-emetteur-justificatif-avance">
+    <app-infos-beneficiaire #infosEmetteurJustificatifAvance [showTiersUsedByConcours]="false" [objectParentRepris]="acRepris"></app-infos-beneficiaire>
+</app-teleport>
+<app-teleport #teleportSelectEmetteurJustificatifAvance to=".teleport-select-emetteur-justificatif-avance">
+    <app-select-beneficiaire #selectEmetteurAvance (change)="getEmetteurJustificatifAV()"></app-select-beneficiaire>
+</app-teleport>
+<app-teleport #teleportAudit to=".teleport-audit">
+    <div *ngFor="let audit of audits; let idxAudit = index" class="position-relative row">
+        <div class="col-10">
+            <div [id]="'formio_avanceAudit_' + idxAudit"></div>
+        </div>
+        <div class="col-auto mt-3">
+            <button *ngIf="audits.length > 1" class="btn btn-secondary button-form" (click)="deleteAudit(audit)">
+                <i class="fas fa-minus"></i>
+            </button>
+            <button *ngIf="idxAudit == audits.length - 1" class="btn btn-secondary button-form ml-2" (click)="addAudit()">
+                <i class="fas fa-plus"></i>
+            </button>
+        </div>
+    </div>
+</app-teleport>
+<!-- MODALS -->
+<app-modal #modalSaveAvenant modalId="modalAddAvenant" [modalTitle]="lang.avance.avenant" (validate)="saveAvenant()">
+    <p class="title-form">{{ lang.infoRequired }} <span class="text-danger">*</span> {{ lang.mandatory }}</p>
+    <div id="formio_avenant"></div>
+    <div class="toast error" id="toastJAvenantSaveError">{{ lang.failedFormSave }}</div>
+</app-modal>
+<app-modal #saveJustificatif modalId="modalAddJustificatifAvance" [modalTitle]="lang.avance.saisieJustif" size="xl" [hideFooter]="read" [isDelete]="alreadyCreatedJustif" (validate)="saveJustificatifAvance()" (delete)="showDeleteConfirmJustificatif()">
+    <div *ngIf="app.isAFD(entite) && alreadyCreatedJustif && showRepriseVersement" class="row m-0 mt-1 mb-5">
+        <div class="badge-table col3"><span>{{ lang.reprise }}</span></div>
+    </div>
+    <p class="title-form">{{ lang.infoRequired }} <span class="text-danger">*</span> {{ lang.mandatory }}</p>
+    <button class="btn btn-checkbox mr-2" (click)="lastJustif()" [disabled]="disabledCheckBoxDernierJustif">
+        <i *ngIf="!dernierJustifValue" class="far fa-square bg-white"></i>
+        <i *ngIf="dernierJustifValue" class="fas fa-check-square"></i>
+    </button>
+    <label>{{ lang.justificatifsAvance.lastJustif }}</label>
+    <!-- <i class="fas fa-question-circle info-bulle" [title]="lang.justificatifsAvance.lastJustifTooltip"></i> -->
+    <div class="form-text text-muted">{{ lang.justificatifsAvance.lastJustifTooltip }}</div>
+    <div [id]="'formio_justificatifAvance' + entite"></div>
+    <div class="toast error" id="toastJustificatifAvanceSaveError">{{ lang.failedFormSave }}</div>
+</app-modal>
+<app-modal #modalConfirmationAddJustificatifAvance modalId="modalConfirmationAddJustificatifAvance" size="s" validateLabel="Enregistrer" (validate)="addJustificatifAvance($event)">
+    <div class="container">
+        <p class="title-form">{{ lang.avance.confirmationAddJusitificatif }}</p>
+    </div>
+</app-modal>
+<app-modal #modalSaveTypeAvance modalId="modalAddTypeAvance" [modalTitle]="titleModalTypeAvance" size="lg" [icon]="iconeModalTypeAvance" [hideFooter]="read" [isDelete]="alreadyCreated" (validate)="saveTypeAvance()" (delete)="showDeleteConfirmTypeAvance()" (cancel)="cancelTypeAvance()">
+    <div class="container">
+        <p>{{ lang.infoRequired }} <span class="text-danger">*</span> {{ lang.mandatory }}</p>
+        <h5>{{ lang.avance.title }}</h5>
+        <div id="formio_typeAvance"></div>
+    </div>
+    <div class="toast error" id="toastTypeAvanceSaveSaveError">{{ lang.avance.typeAvanceSaveError }}</div>
+</app-modal>
+<app-modal #modalDeleteTypeAvance modalId="modalConfirmSuppressionTypeAvance" [modalTitle]="titleModalConfirmSuppressionTypeAvance" [validateLabel]="lang.validate" (validate)="deleteTypeAvance()" (cancel)="cancelDeleteTypeAvance()">
+    {{lang.avance.validateDeleteTypeAvance}} {{labelTypeAvance}} - {{typeAvanceLabel}} ? <br> <br>
+    {{lang.avance.alertDeleteTypeAvance}}
+</app-modal>
+<app-modal #modalDeleteJustificatif modalId="modalConfirmSuppressionJustificatif" [modalTitle]="titleModalConfirmSuppressionJustificatif" [validateLabel]="lang.validate" (validate)="deleteJustificatif()" (cancel)="cancelDeleteJustificatif()">
+    {{lang.justificatif.validateDeleteJustificatif}} - {{justificatifLabel}} ? <br>
+</app-modal>
+<!-- TOAST -->
+<div class="toast error" id="toastAvanceSaveError">{{ lang.failedFormSave }}</div>
+<div class="toast" id="toastAvanceSave">{{ lang.successSave }}</div>
+<div class="toast error" id="toastJustificatifDeleteError">{{ lang.justificatif.failedDeleteJustif }}</div>
+<div class="toast" id="toastJustificatifDeleteSuccess">{{ lang.successDelete }}</div>
+<div class="toast error" id="toastTypeAvanceDeleteError">{{ lang.avance.failedDeleteTypeAvance }}</div>
+<div class="toast" id="toastTypeAvanceDeleteSuccess">{{ lang.successDelete }}</div>
+<div class="toast" id="toastSaveSuccessAvance">{{ lang.successSave}}</div>

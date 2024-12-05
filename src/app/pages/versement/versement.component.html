@@ -1,0 +1,73 @@
+<app-nav-actions>
+    <div class="col">
+        <button class="btn btn-secondary" (click)="annulerTache()">
+            {{ lang.return }}
+        </button>
+    </div>
+    <div *ngIf="!read" class="col-md-auto text-right d-flex">
+        <app-btnMenu icon="fas fa-ellipsis-h" side="left">
+            <app-btn #btnAnnulerDossier [inMenu]=true colorLabel="text-danger" [label]="lang.versement.annulerDossierbtn" (action)="notification.showModalNotification(-1)"></app-btn>
+        </app-btnMenu>
+        <app-btn #btnSaveVersement [label]="lang.save" type="secondary" ico="save" (action)="saveVersement(false)"></app-btn>
+        <button class="btn btn-new ml-2" (click)="validerTache()">
+            <i class="fas fa-arrow-right"></i> {{ lang.versement.validateVersement }}
+        </button>
+    </div>
+</app-nav-actions>
+<app-content>
+    <div class="row d-flex mt-2" [ngClass]="{ 'invisible': loading }">
+        <div id="sidebar-col" class="col-12 col-md-4 col-xl-3">
+            <app-card [autoHeight]=false>
+                <div id="sidebar-container" class="container infos-dossier">
+                    <span *ngIf="showSidebar" class="mb-3 mt-4 info-header text-uppercase">{{ lang.contexteDossier }}</span>
+                    <button class="btn btn-collapse-sidebar float-right" (click)="app.toggleSidebar(this)" [title]="titleSidebarToggle">
+                        <i id="ico-sidebar-context" class="fas fa-compress-alt"></i>
+                    </button>
+                    <app-infos-context *ngIf="versement != null && showSidebar" [versement]="versement" [entite]="entite" [isDCV]="isDCV" [showConcoursPROPARCO]="(app.isAFD(entite)) ? true : false"></app-infos-context>
+                </div>
+            </app-card>
+        </div>
+        <div id="sidebar-col-content" class="col-12 col-md-8 col-xl-9">
+            <div class="row d-flex">
+                <div class="col">
+                    <app-card [autoHeight]="false" className="mt-0">
+                        <div class="m-4">
+                            <div>
+                                <div *ngIf="versement == null" class="container">
+                                    <app-spinner></app-spinner>
+                                </div>
+                                <app-infos-dossier #infosDossier *ngIf="versement != null" [dossier]="versement" type="DV"></app-infos-dossier>
+                            </div>
+                            <h4>{{ lang.versement.formTitle }}</h4>
+                            <p class="title-form">
+                                {{ lang.infoRequired }} <span class="text-danger">*</span> {{ lang.mandatory }}
+                            </p>
+                            <div *ngIf="entite != null" [id]="'formio_versement' + entite"></div>
+                        </div>
+                    </app-card>
+                </div>
+            </div>
+        </div>
+    </div>
+</app-content>
+<app-notification #notification typeDossier="DV" [dossier]="versement" [tache]="tache" persistenceIdParent="0" (annulerDossier)="annulerDossier($event)" (annulerAction)="annulerAction($event)" [checkReglementsAnnule]="true"></app-notification>
+<!-- TOASTS -->
+<div class="toast error" id="toastImpossibleAnnulerDossier">{{ lang.versement.toastImpossibleAnnulerDossier }}</div>
+<div class="toast" id="toastVersementSave">{{ lang.successSave }}</div>
+<div class="toast error" id="toastVersementSaveError">{{ lang.failedFormSave }}</div>
+<div class="toast" id="toastVersementAnnulerOk">{{ lang.versement.toastDossierAnnulerOk }}</div>
+<!-- TELEPORTS -->
+<app-teleport #teleportAutreDevise to=".teleport-autreDevise">
+    <app-autre-devise *ngIf="autresDevises != null" #autreDevise [autresDevises]="autresDevises" [read]="read" [parentObject]="versement" typeObject="DV" [checkDuplicate]=true></app-autre-devise>
+</app-teleport>
+<app-teleport #teleportBeneficiaireVersement to=".teleport-beneficiaire-versement">
+    <app-infos-beneficiaire #infosBeneficiaire></app-infos-beneficiaire>
+</app-teleport>
+<app-teleport #teleportSelectBeneficiareVersement to=".teleport-select-beneficiaire-versement">
+    <app-select-beneficiaire #selectbeneficaire (change)="getBeneficiaireVersement()"></app-select-beneficiaire>
+</app-teleport>
+<app-teleport #teleportErrorDatePaiement to=".teleport-errorDatePaiement">
+    <div *ngIf="verifDatePaiement()" class="warning formio-icon-warning">
+        <i class="fas fa-exclamation-circle" [title]="lang.warnings.projet.warningDLVF"></i>
+    </div>
+</app-teleport>

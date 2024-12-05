@@ -1,0 +1,30 @@
+<h6>{{ lang.versement.versementRequest }}</h6>
+<app-table *ngIf="showVersement" #tableVersements type="versement" [parentItems]="versements" [manualLoading]=true [hideFilters]=true [hideFooter]=true [lineClickable]=true (goto)="gotoVersement()" [itemsByPage]="1" highlightIf="canceled" [highlightIfValue]=true highlightMode="canceled"></app-table>
+<!-- MODALS -->
+<app-modal #modalSaveVersement modalId="detailsDemandeVersement" [modalTitle]="lang.versement.versementRequest" icon="pen" size="lg" [showSwitchToUpdate]="!read" [hideFooter]=true (switchToUpdate)="switchToUpdate()" (validate)="saveVersement()" (click)="annuler()">
+    <div *ngIf="loadingVersement" class="container p-3">
+        <app-spinner></app-spinner>
+    </div>
+    <div *ngIf="versement != null && app.isAFD(entite) && versement.obj_ext_id != null" class="row m-0 mt-1 mb-5">
+        <div class="badge-table col3"><span>{{ lang.reprise }}</span></div>
+    </div>
+    <div class="px-2 mt--5 modal-body-scroll" [id]="'formio_versement' + entite" [ngClass]="{ 'modal-body-scroll-update': !read, 'invisible': loadingVersement }"></div>
+</app-modal>
+<!-- TELEPORTS -->
+<app-teleport #teleportBeneficiaireVersement to=".teleport-beneficiaire-versement">
+    <app-infos-beneficiaire #infosBeneficiaireVersement [objectParentRepris]="ddvReprise"></app-infos-beneficiaire>
+</app-teleport>
+<app-teleport #teleportAutreDevise to=".teleport-autreDevise">
+    <app-autre-devise *ngIf="autresDevises != null" #autreDevise [autresDevises]="autresDevises" [read]=true [parentObject]="versement" typeObject="DV" [isInsideModal]=true [checkDuplicate]=true></app-autre-devise>
+</app-teleport>
+<app-teleport #teleportErrorDatePaiement to=".teleport-errorDatePaiement">
+    <div *ngIf="verifDatePaiement()" class="warning formio-icon-warning">
+        <i class="fas fa-exclamation-circle" [title]="lang.warnings.projet.warningDLVF"></i>
+    </div>
+</app-teleport>
+<app-teleport #teleportSelectBeneficiareVersement to=".teleport-select-beneficiaire-versement">
+    <app-select-beneficiaire *ngIf="!read" #selectbeneficaire (change)="getBeneficiaireVersement()"></app-select-beneficiaire>  
+</app-teleport>
+<!-- TOASTS -->
+<div class="toast error" id="toastVersementSaveError">{{ lang.failedFormSave }}</div>
+<div class="toast" id="toastVersementSave">{{ lang.successSave }}</div>

@@ -1,0 +1,183 @@
+.modal .row {
+    display: flex;
+    /* margin-bottom: 5px !important; */
+}
+.modal .btn-primary {
+    background-color: var(--c1);
+    color: white;
+    border-color: var(--c1);
+}
+.modal .btn-noright {
+    background-color: var(--c-border);
+    color: var(--c-black);
+    border-color: var(--c-border);
+    pointer-events: none;
+}
+.modal .btn-danger {
+    background-color: var(--c-no);
+    color: white;
+    border-color: var(--c-no);
+}
+.modal .btn-primary:hover {
+    background-color: white !important;
+    color: var(--c1) !important;
+    border-color: var(--c1) !important;
+}
+.modal-title {
+    text-transform: uppercase;
+}
+.modal-content.modal-error {
+    background-color: var(--c-error);
+}
+.tab-pane .modal-footer {
+    padding-right: 0px;
+    padding-left: 0px;
+    padding-bottom: 0px;
+}
+.subform {
+    background-color: var(--c-grey);
+    border: 1px solid var(--c-border);
+}
+.subform .btn-save {
+    background-color: white;
+    color: var(--c3);
+    border-color: var(--c3);
+    width: 100%;
+}
+.subform .btn-save:hover {
+    background-color: var(--c3) !important;
+    color: white !important;
+    border-color: var(--c3) !important;
+}
+.comments-scroll {
+    overflow-y: auto;
+    max-height: 70vh;
+    text-align: left;
+}
+
+/* TOAST */
+.toast {
+    visibility: hidden;
+    min-width: 250px;
+    margin-left: -125px;
+    background-color: var(--c-yes);
+    color: white;
+    text-align: center;
+    border-radius: 2px;
+    padding: 16px;
+    position: fixed;
+    z-index: 1050;
+    left: 50%;
+    top: 30px;
+    font-size: 16px;
+}
+.toast.error {
+    background-color: var(--c-no);
+}
+.toast.warning {
+    background-color: darkorange;
+}
+.toast.info {
+    background-color: var(--c3);
+}
+.toast.show {
+    visibility: visible;
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 6.5s;
+    animation: fadein 0.5s, fadeout 0.5s 6.5s;
+}
+.toast.long.show {
+    visibility: visible;
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 13.5s;
+    animation: fadein 0.5s, fadeout 0.5s 13.5s;
+}
+@-webkit-keyframes fadein {
+    from {top: 0; opacity: 0;} 
+    to {top: 30px; opacity: 1;}
+}
+@-webkit-keyframes fadeout {
+    from {top: 30px; opacity: 1;} 
+    to {top: 0; opacity: 0;}
+}
+@keyframes fadein {
+    from {top: 0; opacity: 0;}
+    to {top: 30px; opacity: 1;}
+}
+@keyframes fadeout {
+    from {top: 30px; opacity: 1;}
+    to {top: 0; opacity: 0;}
+}
+.modal-xxl {
+    max-width: 1200px;
+}
+.modal-dialog-scrollable {
+    display: none;
+}
+@media (min-width: 992px) {
+    .modal-lg {
+        max-width: 850px;
+    }
+}
+.modal-header {
+    z-index: 1 !important;
+}
+
+/* SIDEBAR MODAL */
+.sidebar-modal {
+    margin-top: -50px !important;
+}
+.sidebar-modal-group {
+    text-transform: uppercase;
+}
+.col-sidebar-modal {
+    border-right: 1px solid var(--c-border);
+    margin-right: 5px;
+    padding-right: 17px;
+}
+.sidebar-modal-collapse {
+    font-size: 14px;
+}
+.btn-sidebar.sidebar-selected, .btn-sidebar.sidebar-selected:focus, .btn-sidebar.sidebar-selected:active, .btn-sidebar.sidebar-selected:hover {
+    background-color: var(--c3-ulight) !important;
+    color: white !important;
+}
+.btn-sidebar.sidebar-selected i {
+    color: white !important;
+}
+.btn-sidebar {
+    background-color: white;
+    color: var(--c-black);
+    border: 0;
+    text-align: left;
+    width: 100%;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+.btn-sidebar:hover, .btn-sidebar:focus, .btn-sidebar:active {
+    background-color: var(--c-grey) !important;
+    color: var(--c-black) !important;
+    box-shadow: unset !important;
+}
+.btn-sidebar .collapse-point {
+    color: var(--c3-light);
+    width: 10px;
+}
+
+/* MODAL SCROLL & HEIGHT */
+.modal-body-scroll {
+    max-height: calc(100vh - 140px);
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.modal-body-scroll.modal-body-scroll-update {
+    max-height: calc(100vh - 175px);
+}
+.modal-body-sidebar-scroll {
+    height: calc(100vh - 110px);
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.modal-body-sidebar-scroll.modal-body-sidebar-scroll-update {
+    height: calc(100vh - 150px);
+}

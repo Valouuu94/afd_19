@@ -1,0 +1,140 @@
+<!-- NAVIGATION -->
+<app-nav-actions>
+    <div class="col">
+        <button class="btn btn-secondary" (click)="annulerTache()">
+            {{ lang.return }}
+        </button>
+    </div>
+    <div *ngIf="tache != null" class="col-md-auto d-flex">
+        <app-btn #btnSaveControles [label]="lang.save" type="secondary" ico="save" (action)="validerTache(false, false)"></app-btn>
+        <button class="btn btn-new ml-2 float-right" (click)="validerTacheDCV()">
+            <i class="fas fa-arrow-right"></i> {{ lang.reglementControles.validateControls }}
+        </button>
+    </div>
+</app-nav-actions>
+<!-- CONTENT -->
+<app-content>
+    <!-- NIVEAU 2 -->
+    <div class="row d-flex mt-2">
+        <!-- SIDEBAR -->
+        <div id="sidebar-col" class="col-3 show-xl">
+            <app-card [autoHeight]=false>
+                <div id="sidebar-container" class="container infos-dossier">
+                    <span *ngIf="showSidebar" class="mb-3 mt-4 info-header text-uppercase">{{ lang.contexteDossier }}</span>
+                    <button class="btn btn-collapse-sidebar float-right" (click)="app.toggleSidebar(this)" [title]="titleSidebarToggle">
+                        <i id="ico-sidebar-context" class="fas fa-compress-alt"></i>
+                    </button>
+                    <app-infos-context #infosContext *ngIf="avanceContractuel != null && showSidebar && !loading" [avance]="avanceContractuel" [entite]="entite" [isDCV]="isDCV" [isDcRAJ]="true"></app-infos-context>
+                </div>
+            </app-card>
+        </div>
+        <!-- CONTROLES / ANOMALIES -->
+        <div class="col">
+            <div class="row d-flex">
+                <div class="col">
+                    <app-card [autoHeight]=false>
+                        <div *ngIf="avanceContractuel != null" class="m-4">
+                            <!-- TITRE -->
+                            <div class="row infos-dossier">
+                                <div class="col">
+                                    <span class="mb-4 mt-0 info-header text-uppercase">
+                                        {{ lang.avanceLabel }} :
+                                        <span class="c-highlight ml-3">{{ avanceContratcuelRAJDefault.code_fonctionnel }} - {{ app.getRefLabel('refTypeAvanceDcRaj', avanceContractuel.choix_type_avance) }}</span>
+                                    </span>
+                                </div>
+                                <div class="col-auto">
+                                    <div class="info-border">
+                                        <span>{{ avanceContratcuelRAJDefault.lib_statut_raj }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- TABS -->
+                            <div class="row">
+                                <div class="col">
+                                    <ul class="nav nav-tabs">
+                                        <li class="nav-item">
+                                            <button class="nav-link active" data-toggle="tab" data-target="#tab-avance-contratuel-controles" type="button">{{ lang.controlesPlan }}</button>
+                                        </li>
+                                        <li class="nav-item">
+                                            <button class="nav-link" data-toggle="tab" data-target="#tab-avance-contratuel-anomalies" type="button">{{ lang.listAnos }}</button>
+                                        </li>
+                                    </ul>
+                                    <div class="tab-content border-0 pt-3">
+                                        <!-- CONTROLES -->
+                                        <div class="tab-pane fade show active" id="tab-avance-contratuel-controles">
+                                            <div *ngIf="themesControles == null" class="container mt-4">
+                                                <app-spinner></app-spinner>
+                                            </div>
+                                            <div *ngIf="themesControles != null" class="row hide-2xl mb-2 justify-content-end">
+                                                <div class="col-auto d-flex">
+                                                    <span class="badge-controles-counter mt-0" [title]="lang.controlesCount">
+                                                        <i class="fas fa-tasks mr-3"></i>
+                                                        {{ countControlesChecked }} / {{ countControlesTotal }}
+                                                    </span>
+                                                    <div class="dropdown h-100 ml-4">
+                                                        <button class="btn btn-secondary badge-controles-counter" type="button" data-toggle="dropdown">
+                                                            {{ lang.quickAccess }}
+                                                        </button>
+                                                        <div *ngIf="themesControles != null" class="dropdown-menu dropdown-menu-right">
+                                                            <a *ngFor="let theme of themesControles" href="" class="dropdown-item" (click)="app.scrollTo('ancre-' + app.removeSpaces(theme))">{{ app.capitalize(theme) }}</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row d-flex">
+                                                <div class="col">
+                                                    <app-controles #avanceContractuelControles></app-controles>
+                                                </div>
+                                                <div class="col-auto col-controles-right-sidebar show-2xl">
+                                                    <div *ngIf="themesControles != null" class="controles-right-sidebar">
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                {{ lang.controlesDone }}
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mt-2">
+                                                            <div class="col">
+                                                                <span class="badge-controles-counter">
+                                                                    <i class="fas fa-tasks mr-3"></i>
+                                                                    {{ countControlesChecked }} / {{ countControlesTotal }}
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mt-4 pt-2 mb-2">
+                                                            <div class="col">
+                                                                {{ lang.quickAccess }}
+                                                            </div>
+                                                        </div>
+                                                        <div *ngFor="let theme of themesControles" class="row mb-1">
+                                                            <div class="col">
+                                                                <button class="btn btn-controles-shortcut" (click)="app.scrollTo('ancre-' + app.removeSpaces(theme))">
+                                                                    {{ app.capitalize(theme) }}
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- ANOMALIES -->
+                                        <div class="tab-pane fade" id="tab-avance-contratuel-anomalies">
+                                            <div class="row d-flex mt-4">
+                                                <div class="col">
+                                                    <app-table #tableAnomalies type="anomaliesHistoriquesDC" [parentItems]="anomalies" [manualLoading]=true [hideFilters]=true [itemsByPage]="10" [lineClickable]=true (goto)="gotoAnomalie($event)" (refresh)="getAnomalies()"></app-table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </app-card>
+                </div>
+            </div>
+        </div>
+    </div>
+</app-content>
+<!-- TOAST -->
+<div class="toast" id="toastControlesSave">{{ lang.successSave }}</div>
+<div class="toast" id="toastControlesValid">{{ lang.successValidation }}</div>
+<app-notification *ngIf="tache != null" #notification typeDossier="DR" [dossier]="avanceContractuel" [tache]="tache" [isAvance]="true"></app-notification>

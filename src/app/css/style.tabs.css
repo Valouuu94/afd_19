@@ -1,0 +1,38 @@
+.tab-content {
+    background-color: white;
+    border: 3px solid var(--c3-ulight);
+    padding: 0px;
+    border-radius: 0.35rem;
+}
+.nav-tabs {
+    border-bottom: 1px solid var(--c-border);
+}
+.tab-content .table.grid {
+    margin-bottom: 0px;
+}
+.nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
+    border: 0;
+    border-bottom: 1px solid var(--c1);
+    color: var(--c1);
+}
+.nav-tabs .nav-link {
+    border: 0;
+    color: var(--c1);
+    background-color: white;
+    border-bottom: 1px solid var(--c-border);
+}
+.nav-tabs .nav-link:focus {
+    outline: 0;
+}
+.nav-tabs .nav-link:hover {
+    background-color: var(--c-grey-light);
+}
+.nav-tabs .nav-link.disabled {
+    color: var(--c-border) !important;
+}
+.nav-tabs .nav-link.incomplete {
+    color: var(--c2-light);
+}
+.trigramme-devise {
+    width: 35px;
+}

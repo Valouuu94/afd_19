@@ -1,0 +1,22 @@
+<app-content>
+    <div class="row">
+        <div class="col page-title">
+            {{ lang.nav.historiqueDossiersAvancesRAJTitle }}
+        </div>
+    </div>
+    <div class="row mt-3 mb--3">
+        <div *ngIf="tableDossiersRaj != null" class="col">
+            <button class="btn" [ngClass]="{ 'btn-filter-selected': filterRajSelected('') }" (click)="filterRajReset()">
+                <i class="fas fa-filter"></i> {{ lang.all }}
+            </button>
+            <button class="btn" [ngClass]="{ 'btn-filter-selected': filterRajSelected('1') }" (click)="filterRajBy('1')">
+                <i class="fas fa-filter"></i> {{ lang.controlesDCV.filterRAJdefault }}
+            </button>
+            <button class="btn" [ngClass]="{ 'btn-filter-selected': filterRajSelected('0') }" (click)="filterRajBy('0')">
+                <i class="fas fa-filter"></i> {{ lang.controlesDCV.filterRAJzero }}
+            </button>
+        </div>
+    </div>
+    <app-table #tableDossiersRaj type="avancesContractuelsRAJ" [parentItems]="dossiersRaj" [manualLoading]=true [itemsByPage]="10" [lineClickable]=true (goto)="gotoDossierRaj($event)" (refresh)="getDossiersRaj()" [enableExport]=true (export)="exportExcel()"></app-table>
+</app-content>
+<app-export-excel #exportDossiersRaj></app-export-excel>
