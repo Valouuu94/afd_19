@@ -2,7 +2,7 @@ import { Component, OnInit, input, output, viewChild } from "@angular/core";
 import { TableComponent } from "../table/table.component";
 import { StoreService } from '../../services/store.service';
 import { ModalComponent } from "../modal/modal.component";
-import { NgIf } from "@angular/common";
+
 
 
 declare const app: any;
@@ -15,7 +15,7 @@ declare const columns: any;
     selector: "app-rubriques",
     templateUrl: "./rubriques.component.html",
     standalone: true,
-    imports: [NgIf, TableComponent, ModalComponent]
+    imports: [TableComponent, ModalComponent]
 })
 export class RubriquesComponent implements OnInit {
     readonly tableRubriques = viewChild.required<TableComponent>("tableRubriques");

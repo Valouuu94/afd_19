@@ -1,6 +1,6 @@
 import { Component, OnInit, viewChild } from '@angular/core';
 import { UtilisateurAdhesionComponent } from './utilisateur-adhesion/utilisateur-adhesion.component';
-import { NgIf } from '@angular/common';
+
 import { TeleportComponent } from '../../components/teleport/teleport.component';
 import { ModalComponent } from '../../components/modal/modal.component';
 import { ExportExcelComponent } from '../../components/export-excel/export-excel.component';
@@ -18,7 +18,7 @@ declare const appFormio: any;
     selector: 'app-admin-utilisateurs',
     templateUrl: './admin-utilisateurs.component.html',
     standalone: true,
-    imports: [ContentComponent, TableComponent, ExportExcelComponent, ModalComponent, UtilisateurAdhesionComponent, TeleportComponent, NgIf]
+    imports: [ContentComponent, TableComponent, ExportExcelComponent, ModalComponent, UtilisateurAdhesionComponent, TeleportComponent]
 })
 export class AdminUtilisateursComponent implements OnInit {
 

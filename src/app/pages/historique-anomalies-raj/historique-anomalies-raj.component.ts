@@ -2,7 +2,7 @@ import { Component, OnInit, viewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { StoreService } from '../../services/store.service';
 import { TableComponent } from '../../components/table/table.component';
-import { NgIf, NgClass } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { ContentComponent } from '../../components/content/content.component';
 
 declare const app: any;
@@ -12,7 +12,7 @@ declare const lang: any;
     selector: 'app-historique-anomalies-raj',
     templateUrl: './historique-anomalies-raj.component.html',
     standalone: true,
-    imports: [ContentComponent, NgIf, NgClass, TableComponent]
+    imports: [ContentComponent, NgClass, TableComponent]
 })
 export class HistoriqueAnomaliesRajComponent implements OnInit {
 

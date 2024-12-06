@@ -1,4 +1,4 @@
-import { Location, NgIf, NgFor, NgClass } from '@angular/common';
+import { Location, NgClass } from '@angular/common';
 import { Component, OnInit, viewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalComponent } from '../../components/modal/modal.component';
@@ -21,7 +21,7 @@ declare const actionsAnomalie: any;
     selector: 'app-anomalie',
     templateUrl: './anomalie.component.html',
     standalone: true,
-    imports: [NavActionsComponent, NgIf, BtnComponent, ContentComponent, CardComponent, InfosContextComponent, SpinnerComponent, FormsModule, NgFor, NgClass, ModalComponent]
+    imports: [NavActionsComponent, BtnComponent, ContentComponent, CardComponent, InfosContextComponent, SpinnerComponent, FormsModule, NgClass, ModalComponent]
 })
 export class AnomalieComponent implements OnInit {
 

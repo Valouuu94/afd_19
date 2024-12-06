@@ -12,7 +12,7 @@ import { CardComponent } from '../../components/card/card.component';
 import { ContentComponent } from '../../components/content/content.component';
 import { BtnComponent } from '../../components/btn/btn.component';
 import { NavActionsComponent } from '../../components/nav-actions/nav-actions.component';
-import { NgIf, NgClass } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { TableComponent } from '../../components/table/table.component';
 import { ModalComponent } from '../../components/modal/modal.component';
 
@@ -27,8 +27,7 @@ declare const lang: any;
     selector: 'app-documentContractuel',
     templateUrl: './documentContractuel.component.html',
     standalone: true,
-    imports: [NgIf, NavActionsComponent, BtnComponent, ContentComponent, NgClass, CardComponent, InfosContextComponent, TeleportComponent,
-		InfosBeneficiaireComponent, SelectBeneficiaireComponent, RubriquesComponent, AutreDeviseComponent, ContreValeurComponent]
+    imports: [NavActionsComponent, BtnComponent, ContentComponent, NgClass, CardComponent, InfosContextComponent, TeleportComponent, InfosBeneficiaireComponent, SelectBeneficiaireComponent, RubriquesComponent, AutreDeviseComponent, ContreValeurComponent]
 })
 export class DocumentContractuelComponent implements OnInit {
 

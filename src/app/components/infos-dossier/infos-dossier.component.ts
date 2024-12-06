@@ -1,7 +1,7 @@
 import { Component, OnInit, input } from '@angular/core';
 import { StoreService } from '../../services/store.service';
 import { ModalComponent } from '../modal/modal.component';
-import { NgIf, NgFor } from '@angular/common';
+
 
 declare const app: any;
 declare const lang: any;
@@ -10,7 +10,7 @@ declare const lang: any;
     selector: 'app-infos-dossier',
     templateUrl: './infos-dossier.component.html',
     standalone: true,
-    imports: [NgIf, ModalComponent, NgFor]
+    imports: [ModalComponent]
 })
 export class InfosDossierComponent implements OnInit {
 

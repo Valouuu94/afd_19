@@ -1,18 +1,26 @@
 <div class="mx-auto w-75 d-none">
-    <table *ngIf="rows != null" id="excel-table" class="report-table">
+  @if (rows != null) {
+    <table id="excel-table" class="report-table">
+      <tr>
+        @for (col of cols; track col) {
+          @if (!col.action) {
+            <th>
+              <span>{{ col.label }}</span>
+            </th>
+          }
+        }
+      </tr>
+      @for (row of rows; track row) {
         <tr>
-            <ng-container *ngFor="let col of cols">
-                <th *ngIf="!col.action">
-                    <span>{{ col.label }}</span>
-                </th>
-            </ng-container>
+          @for (col of cols; track col) {
+            @if (!col.action) {
+              <td>
+                <span>{{ row[col.key] }}</span>
+              </td>
+            }
+          }
         </tr>
-        <tr *ngFor="let row of rows">
-            <ng-container *ngFor="let col of cols">
-                <td *ngIf="!col.action">
-                    <span>{{ row[col.key] }}</span>
-                </td>
-            </ng-container>
-        </tr>
+      }
     </table>
+  }
 </div>

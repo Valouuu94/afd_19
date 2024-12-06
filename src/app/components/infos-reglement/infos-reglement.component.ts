@@ -13,7 +13,7 @@ import { AvanceComponent } from '../../pages/avance/avance.component';
 import { DocumentContractuelComponent } from '../../pages/documentContractuel/documentContractuel.component';
 import { SpinnerComponent } from '../spinner/spinner.component';
 import { ModalComponent } from '../modal/modal.component';
-import { NgIf, NgClass, NgFor } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { SelectBeneficiaireComponent } from '../select-beneficiaire/select-beneficiaire.component';
 import { Router, ActivatedRoute } from '@angular/router';
 
@@ -27,8 +27,7 @@ declare const lang: any;
     selector: 'app-infos-reglement',
     templateUrl: './infos-reglement.component.html',
     standalone: true,
-    imports: [NgIf, ModalComponent, NgClass, NgFor, SpinnerComponent, DocumentContractuelComponent, AvanceComponent, TeleportComponent, FormsModule, InfosBeneficiaireComponent,
-		 InfosAvanceComponent, TableComponent, InfosConcoursComponent, InfosCoordonneBancaireComponent, RubriquesComponent, InfosDcComponent]
+    imports: [ModalComponent, NgClass, SpinnerComponent, DocumentContractuelComponent, AvanceComponent, TeleportComponent, FormsModule, InfosBeneficiaireComponent, InfosAvanceComponent, TableComponent, InfosConcoursComponent, InfosCoordonneBancaireComponent, RubriquesComponent, InfosDcComponent]
 })
 export class InfosReglementComponent implements OnInit {
 

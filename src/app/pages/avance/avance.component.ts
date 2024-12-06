@@ -10,7 +10,7 @@ import { CardComponent } from '../../components/card/card.component';
 import { ContentComponent } from '../../components/content/content.component';
 import { BtnComponent } from '../../components/btn/btn.component';
 import { NavActionsComponent } from '../../components/nav-actions/nav-actions.component';
-import { NgIf, NgClass, NgFor } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { TypeAvanceComponent } from '../../components/type-avance/type-avance.component';
 import { StoreService } from '../../services/store.service';
 
@@ -27,8 +27,7 @@ declare const refs: any;
     selector: 'app-avance',
     templateUrl: './avance.component.html',
     standalone: true,
-    imports: [NgIf, NavActionsComponent, BtnComponent, ContentComponent, NgClass, CardComponent, InfosContextComponent, TeleportComponent, TableComponent, InfosBeneficiaireComponent,
-		 SelectBeneficiaireComponent, NgFor, ModalComponent]
+    imports: [NavActionsComponent, BtnComponent, ContentComponent, NgClass, CardComponent, InfosContextComponent, TeleportComponent, TableComponent, InfosBeneficiaireComponent, SelectBeneficiaireComponent, ModalComponent]
 })
 export class AvanceComponent implements OnInit {
 

@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ModalComponent  } from '../../components/modal/modal.component';
 import { TableComponent  } from '../../components/table/table.component';
 import { ContentComponent } from '../../components/content/content.component';
-import { NgIf } from '@angular/common';
+
 
 declare const app: any;
 declare const appFormio: any;
@@ -13,7 +13,7 @@ declare const lang: any;
     selector: 'app-refs',
     templateUrl: './refs.component.html',
     standalone: true,
-    imports: [NgIf, ContentComponent, TableComponent, ModalComponent]
+    imports: [ContentComponent, TableComponent, ModalComponent]
 })
 export class RefsComponent implements OnInit {
 

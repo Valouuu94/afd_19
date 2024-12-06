@@ -2,7 +2,7 @@ import { Component, OnInit, viewChild } from '@angular/core';
 import { ExportExcelComponent } from '../../components/export-excel/export-excel.component';
 import { BtnComponent } from '../../components/btn/btn.component';
 import { SpinnerComponent } from '../../components/spinner/spinner.component';
-import { NgIf } from '@angular/common';
+
 import { ContentComponent } from '../../components/content/content.component';
 
 declare const app: any;
@@ -14,7 +14,7 @@ declare const lang: any;
     selector: 'app-audit',
     templateUrl: './audit.component.html',
     standalone: true,
-    imports: [ContentComponent, NgIf, SpinnerComponent, BtnComponent, ExportExcelComponent]
+    imports: [ContentComponent, SpinnerComponent, BtnComponent, ExportExcelComponent]
 })
 export class AuditComponent implements OnInit {
 

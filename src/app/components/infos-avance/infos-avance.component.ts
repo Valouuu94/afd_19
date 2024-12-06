@@ -1,6 +1,6 @@
 import { Component, OnInit, input } from '@angular/core';
 import { Router } from '@angular/router';
-import { NgIf, NgFor } from '@angular/common';
+
 import { StoreService } from '../../services/store.service';
 
 declare const app: any;
@@ -11,7 +11,7 @@ declare const refs: any;
     selector: 'app-infos-avance',
     templateUrl: './infos-avance.component.html',
     standalone: true,
-    imports: [NgIf, NgFor]
+    imports: []
 })
 export class InfosAvanceComponent implements OnInit {
     avanceContractuel: any = null;

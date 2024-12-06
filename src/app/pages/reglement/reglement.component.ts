@@ -19,7 +19,7 @@ import { CardComponent } from '../../components/card/card.component';
 import { SpinnerComponent } from '../../components/spinner/spinner.component';
 import { ContentComponent } from '../../components/content/content.component';
 import { BtnMenuComponent } from '../../components/btnMenu/btnMenu.component';
-import { NgIf, NgClass, NgFor } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { BtnComponent } from '../../components/btn/btn.component';
 import { NavActionsComponent } from '../../components/nav-actions/nav-actions.component';
 
@@ -37,9 +37,7 @@ declare const refs: any;
     selector: 'app-reglement',
     templateUrl: './reglement.component.html',
     standalone: true,
-    imports: [NavActionsComponent, BtnComponent, NgIf, BtnMenuComponent, ContentComponent, SpinnerComponent, NgClass, CardComponent, InfosContextComponent,
-		 InfosDossierComponent, InfosVersementComponent, NotificationComponent, ModalComponent, FormsModule, TeleportComponent, RubriquesComponent, InfosBeneficiaireComponent,
-		  TableComponent, InfosDcComponent, SelectBeneficiaireComponent, InfosAvanceComponent, InfosCoordonneBancaireComponent, NgFor]
+    imports: [NavActionsComponent, BtnComponent, BtnMenuComponent, ContentComponent, SpinnerComponent, NgClass, CardComponent, InfosContextComponent, InfosDossierComponent, InfosVersementComponent, NotificationComponent, ModalComponent, FormsModule, TeleportComponent, RubriquesComponent, InfosBeneficiaireComponent, TableComponent, InfosDcComponent, SelectBeneficiaireComponent, InfosAvanceComponent, InfosCoordonneBancaireComponent]
 })
 export class ReglementComponent implements OnInit {
 

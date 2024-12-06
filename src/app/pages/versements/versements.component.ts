@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { ModalComponent  } from '../../components/modal/modal.component';
 import { ExportExcelComponent  } from '../../components/export-excel/export-excel.component';
 import { TableComponent  } from '../../components/table/table.component';
-import { NgIf } from '@angular/common';
+
 import { ContentComponent } from '../../components/content/content.component';
 import { StoreService } from '../../services/store.service';
 
@@ -19,7 +19,7 @@ declare const lang: any;
     selector: 'app-versements',
     templateUrl: './versements.component.html',
     standalone: true,
-    imports: [ContentComponent, NgIf, TableComponent, ExportExcelComponent, ModalComponent]
+    imports: [ContentComponent, TableComponent, ExportExcelComponent, ModalComponent]
 })
 export class VersementsComponent implements OnInit {
 

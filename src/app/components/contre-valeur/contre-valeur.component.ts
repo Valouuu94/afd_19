@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, input, output } from '@angular/core';
-import { NgIf } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 
 declare const app: any;
@@ -9,7 +9,7 @@ declare const lang: any;
     selector: 'app-contre-valeur',
     templateUrl: './contre-valeur.component.html',
     standalone: true,
-    imports: [NgIf, FormsModule]
+    imports: [FormsModule]
 })
 
 export class ContreValeurComponent implements OnInit {

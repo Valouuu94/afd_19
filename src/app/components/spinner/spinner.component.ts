@@ -1,5 +1,5 @@
 import { Component, OnInit, input } from '@angular/core';
-import { NgIf, NgClass } from '@angular/common';
+import { NgClass } from '@angular/common';
 
 declare const lang: any;
 
@@ -7,7 +7,7 @@ declare const lang: any;
     selector: 'app-spinner',
     templateUrl: './spinner.component.html',
     standalone: true,
-    imports: [NgIf, NgClass]
+    imports: [NgClass]
 })
 export class SpinnerComponent implements OnInit {
 

@@ -8,7 +8,7 @@ import { TableComponent  } from '../../components/table/table.component';
 import { SpinnerComponent } from '../../components/spinner/spinner.component';
 import { ModalComponent } from '../../components/modal/modal.component';
 import { CardComponent } from '../../components/card/card.component';
-import { NgFor, NgIf } from '@angular/common';
+
 import { ContentComponent } from '../../components/content/content.component';
 
 declare const app: any;
@@ -20,7 +20,7 @@ declare const lang: any;
     selector: 'app-reporting',
     templateUrl: './reporting.component.html',
     standalone: true,
-    imports: [ContentComponent, NgFor, CardComponent, ModalComponent, NgIf, SpinnerComponent, TableComponent, ExportExcelComponent, TeleportComponent, FormsModule]
+    imports: [ContentComponent, CardComponent, ModalComponent, SpinnerComponent, TableComponent, ExportExcelComponent, TeleportComponent, FormsModule]
 })
 export class ReportingComponent implements OnInit {
 

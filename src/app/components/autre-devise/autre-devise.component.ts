@@ -1,6 +1,6 @@
 import { Component, OnInit, input, viewChildren } from '@angular/core';
 import { ContreValeurComponent  } from '../contre-valeur/contre-valeur.component';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 
 declare const app: any;
@@ -11,7 +11,7 @@ declare const crossVars: any;
 @Component({
     selector: 'app-autre-devise',
     templateUrl: './autre-devise.component.html',
-    imports: [CommonModule, ContreValeurComponent, FormsModule],
+    imports: [ContreValeurComponent, FormsModule],
 })
 
 export class AutreDeviseComponent implements OnInit {

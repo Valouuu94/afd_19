@@ -1,20 +1,24 @@
 <app-content>
-    <div class="row">
-        <div class="col page-title">
-            {{ lang.nav.taches }}
-        </div>
+  <div class="row">
+    <div class="col page-title">
+      {{ lang.nav.taches }}
     </div>
-    <div *ngIf="isDCV" class="row mt-3 mb--4">
-        <div *ngIf="tableTaches != null && tableTaches.filters != null" class="col">
-            <button class="btn" [ngClass]="{ 'btn-filter-selected': filterItemsAllSelected() }" (click)="filterItemsReset()">
-                <i class="fas fa-filter"></i> {{ lang.all }}
+  </div>
+  @if (isDCV) {
+    <div class="row mt-3 mb--4">
+      @if (tableTaches != null && tableTaches.filters != null) {
+        <div class="col">
+          <button class="btn" [ngClass]="{ 'btn-filter-selected': filterItemsAllSelected() }" (click)="filterItemsReset()">
+            <i class="fas fa-filter"></i> {{ lang.all }}
+          </button>
+          @for (filterDCV of filtersDCV; track filterDCV) {
+            <button class="btn" [ngClass]="{ 'btn-filter-selected': filterItemsSelected(filterDCV.key, filterDCV.value) }" (click)="filterItemsBy(filterDCV.key, filterDCV.value)">
+              <i class="fas fa-filter"></i> {{ filterDCV.label }}
             </button>
-            <ng-container *ngFor="let filterDCV of filtersDCV">
-                <button class="btn" [ngClass]="{ 'btn-filter-selected': filterItemsSelected(filterDCV.key, filterDCV.value) }" (click)="filterItemsBy(filterDCV.key, filterDCV.value)">
-                    <i class="fas fa-filter"></i> {{ filterDCV.label }}
-                </button>
-            </ng-container>
+          }
         </div>
+      }
     </div>
-    <app-table #tableTaches type="taches" [parentItems]="taches" [manualLoading]=true [itemsByPage]="10" [lineClickable]=true (goto)="gotoTache($event)" [filtersButtons]="filtersButtons" (refresh)="getTaches()"></app-table>
+  }
+  <app-table #tableTaches type="taches" [parentItems]="taches" [manualLoading]=true [itemsByPage]="10" [lineClickable]=true (goto)="gotoTache($event)" [filtersButtons]="filtersButtons" (refresh)="getTaches()"></app-table>
 </app-content>

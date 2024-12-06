@@ -1,6 +1,6 @@
 import { Component, OnInit, input, viewChild } from '@angular/core';
 import { TableComponent } from '../table/table.component';
-import { NgIf } from '@angular/common';
+
 
 declare const app: any;
 declare const lang: any;
@@ -9,7 +9,7 @@ declare const lang: any;
     selector: 'app-infos-concours',
     templateUrl: './infos-concours.component.html',
     standalone: true,
-    imports: [NgIf]
+    imports: []
 })
 export class InfosConcoursComponent implements OnInit {
 

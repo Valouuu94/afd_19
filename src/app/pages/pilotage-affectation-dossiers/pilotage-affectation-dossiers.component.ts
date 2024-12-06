@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgFor } from '@angular/common';
+
 import { ContentComponent } from '../../components/content/content.component';
 import { StoreService } from '../../services/store.service';
 
@@ -11,7 +11,7 @@ declare const lang: any;
     selector: 'app-pilotage-affectation-dossiers',
     templateUrl: './pilotage-affectation-dossiers.component.html',
     standalone: true,
-    imports: [ContentComponent, NgFor]
+    imports: [ContentComponent]
 })
 export class PilotageAffectationDossiersComponent implements OnInit {
 

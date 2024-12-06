@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, viewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StoreService } from '../../services/store.service';
-import { Location, NgIf, NgClass, NgFor } from '@angular/common';
+import { Location, NgClass } from '@angular/common';
 import { ModalComponent  } from '../../components/modal/modal.component';
 import { ExportPdfControleComponent  } from '../../components/export-pdf-controle/export-pdf-controle.component';
 import { ExportPdfBanComponent } from '../../components/export-pdf-ban/export-pdf-ban.component';
@@ -34,9 +34,7 @@ declare const refs: any;
     selector: 'app-reglement-controles',
     templateUrl: './reglement-controles.component.html',
     standalone: true,
-    imports: [NavActionsComponent, NgIf, FormsModule, BtnMenuComponent, BtnComponent, ContentComponent, NgClass, CardComponent, InfosContextComponent, SpinnerComponent,
-         InfosDossierComponent, InfosVersementComponent, TableComponent, NgFor, ControlesComponent, InfosAvanceComponent, InfosReglementComponent, NotificationComponent, ExportPdfBanComponent, 
-         ExportPdfControleComponent, ModalComponent]
+    imports: [NavActionsComponent, FormsModule, BtnMenuComponent, BtnComponent, ContentComponent, NgClass, CardComponent, InfosContextComponent, SpinnerComponent, InfosDossierComponent, InfosVersementComponent, TableComponent, ControlesComponent, InfosAvanceComponent, InfosReglementComponent, NotificationComponent, ExportPdfBanComponent, ExportPdfControleComponent, ModalComponent]
 })
 export class ReglementControlesComponent implements OnInit {
 

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { StoreService } from '../../services/store.service';
-import { NgFor } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { CardComponent } from '../../components/card/card.component';
 import { ContentComponent } from '../../components/content/content.component';
@@ -13,7 +13,7 @@ declare const refs: any;
     selector: 'app-pilotage-regles',
     templateUrl: './pilotage-regles.component.html',
     standalone: true,
-    imports: [ContentComponent, CardComponent, FormsModule, NgFor]
+    imports: [ContentComponent, CardComponent, FormsModule]
 })
 export class PilotageReglesComponent implements OnInit {
 	app: any = app;

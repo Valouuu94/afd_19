@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, input, output } from '@angular/core';
-import { NgFor, NgIf, NgClass } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { StoreService } from '../../services/store.service';
 
 declare const app: any;
@@ -10,7 +10,7 @@ declare const lang: any;
     templateUrl: './comments.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
-    imports: [NgFor, NgIf, NgClass]
+    imports: [NgClass]
 })
 export class CommentsComponent implements OnInit {
 

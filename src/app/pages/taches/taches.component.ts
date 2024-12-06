@@ -2,7 +2,7 @@ import { Component, OnInit, viewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { StoreService } from '../../services/store.service';
 import { TableComponent } from '../../components/table/table.component';
-import { NgIf, NgClass, NgFor } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { ContentComponent } from '../../components/content/content.component';
 
 declare const app: any;
@@ -13,7 +13,7 @@ declare const lang: any;
     selector: 'app-taches',
     templateUrl: './taches.component.html',
     standalone: true,
-    imports: [ContentComponent, NgIf, NgClass, NgFor, TableComponent]
+    imports: [ContentComponent, NgClass, TableComponent]
 })
 export class TachesComponent implements OnInit {
 

@@ -16,7 +16,7 @@ import { CardComponent } from '../../components/card/card.component';
 import { ContentComponent } from '../../components/content/content.component';
 import { BtnComponent } from '../../components/btn/btn.component';
 import { BtnMenuComponent } from '../../components/btnMenu/btnMenu.component';
-import { NgIf, NgClass, NgFor } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { NavActionsComponent } from '../../components/nav-actions/nav-actions.component';
 
 declare const app: any;
@@ -30,8 +30,7 @@ declare const refs: any;
     selector: 'app-versement-controles',
     templateUrl: './versement-controles.component.html',
     standalone: true,
-    imports: [NavActionsComponent, NgIf, BtnMenuComponent, BtnComponent, ContentComponent, NgClass, CardComponent, InfosContextComponent, SpinnerComponent, InfosDossierComponent,
-		 InfosVersementComponent, TableComponent, NgFor, ControlesComponent, InfosReglementComponent, NotificationComponent, ExportPdfBanComponent, ModalComponent, FormsModule]
+    imports: [NavActionsComponent, BtnMenuComponent, BtnComponent, ContentComponent, NgClass, CardComponent, InfosContextComponent, SpinnerComponent, InfosDossierComponent, InfosVersementComponent, TableComponent, ControlesComponent, InfosReglementComponent, NotificationComponent, ExportPdfBanComponent, ModalComponent, FormsModule]
 })
 export class VersementControlesComponent implements OnInit {
 

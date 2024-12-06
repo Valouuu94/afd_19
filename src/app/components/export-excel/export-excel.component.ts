@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as XLSX from 'xlsx';
-import { NgIf, NgFor } from '@angular/common';
+
 
 declare const app: any;
 declare const columns: any;
@@ -10,7 +10,7 @@ declare const lang: any;
     selector: 'app-export-excel',
     templateUrl: './export-excel.component.html',
     standalone: true,
-    imports: [NgIf, NgFor]
+    imports: []
 })
 export class ExportExcelComponent implements OnInit {
 

@@ -2,7 +2,7 @@ import { Component, OnInit, viewChild } from '@angular/core';
 import { StoreService } from '../../services/store.service';
 
 import { FormsModule } from '@angular/forms';
-import { NgIf, NgFor } from '@angular/common';
+
 import { ModalComponent } from '../../components/modal/modal.component';
 import { TableComponent } from '../../components/table/table.component';
 import { ContentComponent } from '../../components/content/content.component';
@@ -15,7 +15,7 @@ declare const refs: any;
     selector: 'app-pilotage-perimetre',
     templateUrl: './pilotage-perimetre.component.html',
     standalone: true,
-    imports: [ContentComponent, TableComponent, ModalComponent, NgIf, FormsModule, NgFor]
+    imports: [ContentComponent, TableComponent, ModalComponent, FormsModule]
 })
 export class PilotagePerimetreComponent implements OnInit {
 

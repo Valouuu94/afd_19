@@ -1,6 +1,6 @@
 import { Component, OnInit, input, output, viewChild } from '@angular/core';
 import { BtnComponent } from '../btn/btn.component';
-import { NgClass, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 
 declare const lang: any;
 
@@ -8,7 +8,7 @@ declare const lang: any;
     selector: 'app-modal',
     templateUrl: './modal.component.html',
     standalone: true,
-    imports: [NgClass, NgIf, BtnComponent]
+    imports: [NgClass, BtnComponent]
 })
 export class ModalComponent implements OnInit {
 

@@ -1,43 +1,59 @@
 <nav class="navbar navbar-expand-md navbar-light sticky-top">
-    <a class="navbar-brand">
-        <img [src]="urlHttpServer + '/img/logo.png'" width="150" class="d-inline-block align-top" alt="">
-    </a>
-    <div class="collapse navbar-collapse">
-        <ul class="navbar-nav mr-auto">
-            <li *ngFor="let item of items" class="nav-item dropdown" [ngClass]="{ active: (select == item.id) }">
-                <button *ngIf="app.hasRight(store, item.right)" class="nav-link" (click)="gotoPage(item)" [ngClass]="{ 'dropdown-button': (item.subItems != null) }">
-                    {{ lang.nav[item.id] }}
-                </button>
-                <div *ngIf="item.subItems != null" class="dropdown-content">
-                    <ng-container *ngFor="let subItem of item.subItems">
-                        <a href="" *ngIf="app.hasRight(store, subItem.right)" (click)="gotoPage(subItem, $event)">{{ lang.nav[subItem.id] }}
-                        </a>
-                    </ng-container>
-                </div>
-            </li>
-        </ul>
-        <ul class="navbar-nav">
-            <li class="nav-item dropdown">
-                <button class="nav-link">
-                    <i class="fa fa-user-circle"></i>
-                </button>
-                <div class="dropdown-content dropdown-menu-right">
-                    <span *ngIf="user" class="dropdown-item-text p-3 text-center">{{ user.firstname }} {{ user.lastname }}</span>
-                    <a *ngIf="app.getCurrentLang() != 'fr'" href="" (click)="changeLanguage('fr')">
-                        <i class="fas fa-globe mr-3"></i>{{ lang.nav.langFrench }}
-                    </a>
-                    <a *ngIf="app.getCurrentLang() != 'en'" href="" (click)="changeLanguage('en')">
-                        <i class="fas fa-globe mr-3"></i>{{ lang.nav.langEnglish }}
-                    </a>
-                    <div *ngIf="roleUser === 'RA'" class="py-3 pl-1">
-                        <i class="fas fa-info mr-3 pl-3 pr-1"></i>
-                        <span>V 1.0.20241204</span>
-                    </div>
-                    <a href="" (click)="logout($event)">
-                        <i class="fas fa-sign-out-alt mr-3"></i>{{ lang.nav.logout }}
-                    </a>
-                </div>
-            </li>
-        </ul>
-    </div>
+  <a class="navbar-brand">
+    <img [src]="urlHttpServer + '/img/logo.png'" width="150" class="d-inline-block align-top" alt="">
+  </a>
+  <div class="collapse navbar-collapse">
+    <ul class="navbar-nav mr-auto">
+      @for (item of items; track item) {
+        <li class="nav-item dropdown" [ngClass]="{ active: (select == item.id) }">
+          @if (app.hasRight(store, item.right)) {
+            <button class="nav-link" (click)="gotoPage(item)" [ngClass]="{ 'dropdown-button': (item.subItems != null) }">
+              {{ lang.nav[item.id] }}
+            </button>
+          }
+          @if (item.subItems != null) {
+            <div class="dropdown-content">
+              @for (subItem of item.subItems; track subItem) {
+                @if (app.hasRight(store, subItem.right)) {
+                  <a href="" (click)="gotoPage(subItem, $event)">{{ lang.nav[subItem.id] }}
+                  </a>
+                }
+              }
+            </div>
+          }
+        </li>
+      }
+    </ul>
+    <ul class="navbar-nav">
+      <li class="nav-item dropdown">
+        <button class="nav-link">
+          <i class="fa fa-user-circle"></i>
+        </button>
+        <div class="dropdown-content dropdown-menu-right">
+          @if (user) {
+            <span class="dropdown-item-text p-3 text-center">{{ user.firstname }} {{ user.lastname }}</span>
+          }
+          @if (app.getCurrentLang() != 'fr') {
+            <a href="" (click)="changeLanguage('fr')">
+              <i class="fas fa-globe mr-3"></i>{{ lang.nav.langFrench }}
+            </a>
+          }
+          @if (app.getCurrentLang() != 'en') {
+            <a href="" (click)="changeLanguage('en')">
+              <i class="fas fa-globe mr-3"></i>{{ lang.nav.langEnglish }}
+            </a>
+          }
+          @if (roleUser === 'RA') {
+            <div class="py-3 pl-1">
+              <i class="fas fa-info mr-3 pl-3 pr-1"></i>
+              <span>V 1.0.20241204</span>
+            </div>
+          }
+          <a href="" (click)="logout($event)">
+            <i class="fas fa-sign-out-alt mr-3"></i>{{ lang.nav.logout }}
+          </a>
+        </div>
+      </li>
+    </ul>
+  </div>
 </nav>

@@ -2,7 +2,7 @@ import { Component, OnInit, input, output, viewChild } from '@angular/core';
 import { StoreService } from '../../services/store.service';
 import { ModalComponent } from '../modal/modal.component';
 import { FormsModule } from '@angular/forms';
-import { NgIf } from '@angular/common';
+
 
 declare const app: any;
 declare const appFormio: any;
@@ -15,7 +15,7 @@ declare const tachesRedirect: any;
     selector: 'app-notification',
     templateUrl: './notification.component.html',
     standalone: true,
-    imports: [ModalComponent, NgIf, FormsModule]
+    imports: [ModalComponent, FormsModule]
 })
 export class NotificationComponent implements OnInit {
 

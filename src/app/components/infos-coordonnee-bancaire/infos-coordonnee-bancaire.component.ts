@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { StoreService } from '../../services/store.service';
 import { FormsModule } from '@angular/forms';
-import { NgIf, NgFor } from '@angular/common';
+
 
 declare const app: any;
 declare const lang: any;
@@ -10,7 +10,7 @@ declare const lang: any;
     selector: 'app-infos-coordonnee-bancaire',
     templateUrl: './infos-coordonnee-bancaire.component.html',
     standalone: true,
-    imports: [NgIf, FormsModule, NgFor]
+    imports: [FormsModule]
 })
 export class InfosCoordonneBancaireComponent implements OnInit {
 

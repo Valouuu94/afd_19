@@ -9,7 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { SelectBeneficiaireComponent } from '../select-beneficiaire/select-beneficiaire.component';
 import { SpinnerComponent } from '../spinner/spinner.component';
 import { TableComponent } from '../table/table.component';
-import { NgIf, NgClass } from '@angular/common';
+import { NgClass } from '@angular/common';
 
 declare const app: any;
 declare const appFormio: any;
@@ -21,7 +21,7 @@ declare const formFields: any;
     selector: 'app-infos-versement',
     templateUrl: './infos-versement.component.html',
     standalone: true,
-    imports: [NgIf, TableComponent, ModalComponent, SpinnerComponent, NgClass, TeleportComponent, InfosBeneficiaireComponent, AutreDeviseComponent, SelectBeneficiaireComponent]
+    imports: [TableComponent, ModalComponent, SpinnerComponent, NgClass, TeleportComponent, InfosBeneficiaireComponent, AutreDeviseComponent, SelectBeneficiaireComponent]
 })
 export class InfosVersementComponent implements OnInit {
 

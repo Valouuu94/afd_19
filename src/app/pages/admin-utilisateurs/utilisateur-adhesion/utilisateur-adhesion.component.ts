@@ -1,5 +1,5 @@
 import { Component, OnInit, input, output } from '@angular/core';
-import { NgFor, NgIf } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 
 declare const app: any;
@@ -9,7 +9,7 @@ declare const lang: any;
     selector: 'app-utilisateur-adhesion',
     templateUrl: './utilisateur-adhesion.component.html',
     standalone: true,
-    imports: [FormsModule, NgFor, NgIf]
+    imports: [FormsModule]
 })
 export class UtilisateurAdhesionComponent implements OnInit {
 

@@ -1,6 +1,6 @@
 import { Component, OnInit, viewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Location, NgIf, NgFor } from '@angular/common';
+import { Location } from '@angular/common';
 import { NotificationComponent } from '../../components/notification/notification.component';
 import { TableComponent } from '../../components/table/table.component';
 import { ControlesComponent } from '../../components/controles/controles.component';
@@ -22,7 +22,7 @@ declare const $: any;
     selector: 'app-avance-contractuel-controles',
     templateUrl: './avance-contractuel-controles.component.html',
     standalone: true,
-    imports: [NavActionsComponent, NgIf, BtnComponent, ContentComponent, CardComponent, InfosContextComponent, SpinnerComponent, NgFor, ControlesComponent, TableComponent, NotificationComponent]
+    imports: [NavActionsComponent, BtnComponent, ContentComponent, CardComponent, InfosContextComponent, SpinnerComponent, ControlesComponent, TableComponent, NotificationComponent]
 })
 export class AvanceContractuelControlesComponent implements OnInit {
 

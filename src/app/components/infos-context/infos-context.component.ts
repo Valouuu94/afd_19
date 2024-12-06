@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, input } from '@angular/core';
 import { StoreService } from '../../services/store.service';
 import { Router } from '@angular/router';
 import { SpinnerComponent } from '../spinner/spinner.component';
-import { NgIf, NgFor } from '@angular/common';
+
 
 declare const app: any;
 declare const lang: any;
@@ -13,7 +13,7 @@ declare const crossVars: any;
     selector: 'app-infos-context',
     templateUrl: './infos-context.component.html',
     standalone: true,
-    imports: [NgIf, SpinnerComponent, NgFor]
+    imports: [SpinnerComponent]
 })
 export class InfosContextComponent implements OnInit {
 

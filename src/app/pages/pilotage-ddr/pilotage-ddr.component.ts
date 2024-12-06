@@ -4,7 +4,7 @@ import { ModalComponent } from '../../components/modal/modal.component';
 import { ExportExcelComponent } from '../../components/export-excel/export-excel.component';
 import { TableComponent } from '../../components/table/table.component';
 import { BtnComponent } from '../../components/btn/btn.component';
-import { NgIf } from '@angular/common';
+
 import { ContentComponent } from '../../components/content/content.component';
 
 declare const app: any;
@@ -17,7 +17,7 @@ declare const crossVars: any;
     selector: 'app-pilotage-ddr',
     templateUrl: './pilotage-ddr.component.html',
     standalone: true,
-    imports: [ContentComponent, NgIf, BtnComponent, TableComponent, ExportExcelComponent, ModalComponent]
+    imports: [ContentComponent, BtnComponent, TableComponent, ExportExcelComponent, ModalComponent]
 })
 export class PilotageDDRComponent implements OnInit {
 

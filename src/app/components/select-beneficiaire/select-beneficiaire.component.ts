@@ -3,7 +3,7 @@ import { TableComponent } from '../table/table.component';
 import { StoreService } from '../../services/store.service';
 import { ModalComponent } from '../modal/modal.component';
 import { FormsModule } from '@angular/forms';
-import { NgIf, NgFor } from '@angular/common';
+
 
 declare const app: any;
 declare const lang: any;
@@ -12,7 +12,7 @@ declare const lang: any;
     selector: 'app-select-beneficiaire',
     templateUrl: './select-beneficiaire.component.html',
     standalone: true,
-    imports: [NgIf, FormsModule, NgFor, ModalComponent, TableComponent]
+    imports: [FormsModule, ModalComponent, TableComponent]
 })
 export class SelectBeneficiaireComponent implements OnInit {
 	readonly tableTiers = viewChild.required<TableComponent>('tableTiers');

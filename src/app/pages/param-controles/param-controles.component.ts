@@ -3,7 +3,7 @@ import { StoreService } from '../../services/store.service';
 import { FormsModule } from '@angular/forms';
 import { ModalComponent } from '../../components/modal/modal.component';
 import { TableComponent } from '../../components/table/table.component';
-import { NgIf, NgClass, NgFor } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { ContentComponent } from '../../components/content/content.component';
 
 declare const app: any;
@@ -16,7 +16,7 @@ declare const $: any;
     selector: 'app-param-controles',
     templateUrl: './param-controles.component.html',
     standalone: true,
-    imports: [ContentComponent, NgIf, NgClass, TableComponent, ModalComponent, FormsModule, NgFor]
+    imports: [ContentComponent, NgClass, TableComponent, ModalComponent, FormsModule]
 })
 export class ParamControlesComponent implements OnInit {
 

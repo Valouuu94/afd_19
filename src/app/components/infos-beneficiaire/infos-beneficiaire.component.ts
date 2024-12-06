@@ -1,6 +1,6 @@
 import { Component, OnInit, input } from '@angular/core';
 import { StoreService } from '../../services/store.service';
-import { NgIf } from '@angular/common';
+
 
 declare const app: any;
 declare const appFormio: any;
@@ -11,7 +11,7 @@ declare const lang: any;
     selector: 'app-infos-beneficiaire',
     templateUrl: './infos-beneficiaire.component.html',
     standalone: true,
-    imports: [NgIf]
+    imports: []
 })
 export class InfosBeneficiaireComponent implements OnInit {
 

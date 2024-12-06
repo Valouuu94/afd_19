@@ -9,7 +9,7 @@ import { CardComponent } from '../../components/card/card.component';
 import { ContentComponent } from '../../components/content/content.component';
 import { BtnComponent } from '../../components/btn/btn.component';
 import { NavActionsComponent } from '../../components/nav-actions/nav-actions.component';
-import { NgIf, NgClass } from '@angular/common';
+import { NgClass } from '@angular/common';
 
 declare const app: any;
 declare const lang: any;
@@ -18,7 +18,7 @@ declare const lang: any;
     selector: 'app-projets',
     templateUrl: './projets.component.html',
     standalone: true,
-    imports: [NgIf, NavActionsComponent, BtnComponent, ContentComponent, CardComponent, NgClass, SpinnerComponent, CommentsComponent, TableComponent, ModalComponent]
+    imports: [NavActionsComponent, BtnComponent, ContentComponent, CardComponent, NgClass, SpinnerComponent, CommentsComponent, TableComponent, ModalComponent]
 })
 export class ProjetsComponent implements OnInit {
 

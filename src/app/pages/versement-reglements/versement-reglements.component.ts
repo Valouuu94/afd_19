@@ -12,7 +12,7 @@ import { CardComponent } from '../../components/card/card.component';
 import { ContentComponent } from '../../components/content/content.component';
 import { BtnComponent  } from '../../components/btn/btn.component';
 import { BtnMenuComponent } from '../../components/btnMenu/btnMenu.component';
-import { NgIf, NgClass } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { NavActionsComponent } from '../../components/nav-actions/nav-actions.component';
 
 declare const $: any;
@@ -23,8 +23,7 @@ declare const lang: any;
     selector: 'app-versement-reglements',
     templateUrl: './versement-reglements.component.html',
     standalone: true,
-    imports: [NavActionsComponent, NgIf, BtnMenuComponent, BtnComponent, ContentComponent, NgClass, CardComponent, InfosContextComponent, SpinnerComponent, InfosDossierComponent,
-		 InfosVersementComponent, TableComponent, InfosReglementComponent, NotificationComponent]
+    imports: [NavActionsComponent, BtnMenuComponent, BtnComponent, ContentComponent, NgClass, CardComponent, InfosContextComponent, SpinnerComponent, InfosDossierComponent, InfosVersementComponent, TableComponent, InfosReglementComponent, NotificationComponent]
 })
 export class VersementReglementsComponent implements OnInit {
 

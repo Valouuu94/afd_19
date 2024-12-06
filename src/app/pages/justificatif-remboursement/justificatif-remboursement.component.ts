@@ -8,7 +8,7 @@ import { SpinnerComponent } from '../../components/spinner/spinner.component';
 import { InfosContextComponent } from '../../components/infos-context/infos-context.component';
 import { CardComponent } from '../../components/card/card.component';
 import { ContentComponent } from '../../components/content/content.component';
-import { NgIf, NgClass } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { BtnComponent } from '../../components/btn/btn.component';
 import { NavActionsComponent } from '../../components/nav-actions/nav-actions.component';
 
@@ -21,7 +21,7 @@ declare const lang: any;
     selector: 'app-justificatif-remboursement',
     templateUrl: './justificatif-remboursement.component.html',
     standalone: true,
-    imports: [NavActionsComponent, BtnComponent, NgIf, ContentComponent, CardComponent, InfosContextComponent, SpinnerComponent, NgClass, TeleportComponent, TableComponent, RubriquesComponent]
+    imports: [NavActionsComponent, BtnComponent, ContentComponent, CardComponent, InfosContextComponent, SpinnerComponent, NgClass, TeleportComponent, TableComponent, RubriquesComponent]
 })
 export class JustificatifRemboursementComponent implements OnInit {
 

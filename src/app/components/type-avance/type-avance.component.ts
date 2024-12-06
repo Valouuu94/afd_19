@@ -2,7 +2,7 @@ import { Component, OnInit, viewChild } from '@angular/core';
 import { ModalComponent } from '../modal/modal.component';
 import { TableComponent } from '../table/table.component';
 import { FormsModule } from '@angular/forms';
-import { NgIf } from '@angular/common';
+
 
 declare const app: any;
 declare const lang: any;
@@ -11,7 +11,7 @@ declare const lang: any;
     selector: 'app-type-avance',
     templateUrl: './type-avance.component.html',
     standalone: true,
-    imports: [NgIf, TableComponent, ModalComponent, FormsModule]
+    imports: [TableComponent, ModalComponent, FormsModule]
 })
 export class TypeAvanceComponent implements OnInit {
 

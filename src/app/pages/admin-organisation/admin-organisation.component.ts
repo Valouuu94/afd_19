@@ -2,7 +2,7 @@ import { Component, OnInit, viewChild } from '@angular/core';
 import { ModalComponent  } from '../../components/modal/modal.component';
 import { TableComponent  } from '../../components/table/table.component';
 import { CardComponent } from '../../components/card/card.component';
-import { NgIf, NgFor, NgClass } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { ContentComponent } from '../../components/content/content.component';
 
 declare const app: any;
@@ -14,7 +14,7 @@ declare const crossVars: any;
     selector: 'app-admin-organisation',
     templateUrl: './admin-organisation.component.html',
     standalone: true,
-    imports: [ContentComponent, NgIf, CardComponent, NgFor, NgClass, TableComponent, ModalComponent]
+    imports: [ContentComponent, CardComponent, NgClass, TableComponent, ModalComponent]
 })
 export class AdminOrganisationComponent implements OnInit {
 

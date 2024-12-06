@@ -3,7 +3,7 @@ import { StoreService } from '../../services/store.service';
 import { FormatNumberInput } from '../../directives/format-number/formatNumberInput';
 import { SpinnerComponent } from '../spinner/spinner.component';
 import { FormsModule } from '@angular/forms';
-import { NgIf, NgClass, NgFor } from '@angular/common';
+import { NgClass } from '@angular/common';
 
 declare const app: any;
 declare const lang: any;
@@ -13,7 +13,7 @@ declare const columns: any;
     selector: 'app-table',
     templateUrl: './table.component.html',
     standalone: true,
-    imports: [NgIf, NgClass, FormsModule, NgFor, SpinnerComponent, FormatNumberInput]
+    imports: [NgClass, FormsModule, SpinnerComponent, FormatNumberInput]
 })
 export class TableComponent implements OnInit {
 

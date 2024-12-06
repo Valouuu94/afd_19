@@ -1,14 +1,16 @@
-<ng-container *ngIf="loaded">
-    <app-nav></app-nav>
-    <router-outlet></router-outlet>
-</ng-container>
+@if (loaded) {
+  <app-nav></app-nav>
+  <router-outlet></router-outlet>
+}
 <!-- SPINNER -->
-<div *ngIf="!loaded" class="vh-100 d-flex align-items-center justify-content-center">
+@if (!loaded) {
+  <div class="vh-100 d-flex align-items-center justify-content-center">
     <div class="app-title mr-4">
-        {{ lang.applicationName }}
+      {{ lang.applicationName }}
     </div>
     <app-spinner></app-spinner>
     <div class="ml-4">
-        {{ lang.applicationLoading }}
+      {{ lang.applicationLoading }}
     </div>
-</div>
+  </div>
+}

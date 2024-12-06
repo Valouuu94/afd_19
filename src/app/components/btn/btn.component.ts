@@ -1,11 +1,11 @@
 import { Component, OnInit, input, output } from '@angular/core';
-import { NgClass, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 
 @Component({
     selector: 'app-btn',
     templateUrl: './btn.component.html',
     standalone: true,
-    imports: [NgClass, NgIf]
+    imports: [NgClass]
 })
 export class BtnComponent implements OnInit {
 

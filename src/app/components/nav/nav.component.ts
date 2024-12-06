@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { StoreService } from '../../services/store.service';
-import { NgFor, NgClass, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 
 declare const app: any;
 declare const navItems: any;
@@ -11,7 +11,7 @@ declare const lang: any;
     selector: 'app-nav',
     templateUrl: './nav.component.html',
     standalone: true,
-    imports: [NgFor, NgClass, NgIf]
+    imports: [NgClass]
 })
 export class NavComponent implements OnInit {
 
