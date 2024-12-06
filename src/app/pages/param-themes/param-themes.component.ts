@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, viewChild } from '@angular/core';
 import { StoreService } from '../../services/store.service';
 import { ModalComponent } from '../../components/modal/modal.component';
 import { TableComponent } from '../../components/table/table.component';
@@ -17,9 +17,9 @@ declare const appFormio: any;
 })
 export class ParamThemesComponent implements OnInit {
 
-	@ViewChild('tableParamThemes') tableParamThemes!: TableComponent;
-	@ViewChild('modalTheme') modalTheme!: ModalComponent;
-	@ViewChild('modalConfirmationTheme') modalConfirmationTheme!: ModalComponent;
+	readonly tableParamThemes = viewChild.required<TableComponent>('tableParamThemes');
+	readonly modalTheme = viewChild.required<ModalComponent>('modalTheme');
+	readonly modalConfirmationTheme = viewChild.required<ModalComponent>('modalConfirmationTheme');
 
 	app: any = app;
 	create: boolean = true;
@@ -49,7 +49,7 @@ export class ParamThemesComponent implements OnInit {
 	}
 
 	getParamThemes() {
-		this.tableParamThemes.getItems();
+		this.tableParamThemes().getItems();
 	}
 
 	addTheme() {
@@ -84,12 +84,12 @@ export class ParamThemesComponent implements OnInit {
 		if (!this.hasNoRight) {
 			if (!app.isValidForm('formio_theme')) {
 				app.showToast('toastThemeSaveError');
-				this.modalTheme.setLoadingBtn();
+				this.modalTheme().setLoadingBtn();
 				return;
 			}
 
 			if (this.create) {
-				this.modalTheme.setLoadingBtn();
+				this.modalTheme().setLoadingBtn();
 				app.showModal('modalConfirmationTheme');
 			} else
 				this.saveTheme();
@@ -106,14 +106,14 @@ export class ParamThemesComponent implements OnInit {
 		else
 			await app.setExternalData(app.getUrl('urlUpdateTheme', DO.idTheme), DO, 'PUT');
 
-		this.tableParamThemes.getItems();
+		this.tableParamThemes().getItems();
 
 		if (this.create) {
-			this.modalConfirmationTheme.setLoadingBtn();
+			this.modalConfirmationTheme().setLoadingBtn();
 			app.hideModal('modalConfirmationTheme');
 		}
 
-		this.modalTheme.setLoadingBtn();
+		this.modalTheme().setLoadingBtn();
 
 		await app.sleep(150);
 		app.showToast('toastSaveSuccessThemes');

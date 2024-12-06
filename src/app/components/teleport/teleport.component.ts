@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit, input } from '@angular/core';
 
 declare const app: any;
 
@@ -9,19 +9,19 @@ declare const app: any;
 })
 export class TeleportComponent implements OnInit {
 
-	@Input() to: any;
+	readonly to = input<any>();
 
 	constructor() { }
 
 	ngOnInit() { }
 
 	teleport(reverse?: boolean) {
-		var teleportSource = document.querySelector('[to="' + this.to + '"]');
-		var teleportDestination = document.querySelector(this.to);
+		var teleportSource = document.querySelector('[to="' + this.to() + '"]');
+		var teleportDestination = document.querySelector(this.to());
 
 		if (reverse != null && reverse) {
-			teleportSource = document.querySelector(this.to);
-			teleportDestination = document.querySelector('[to="' + this.to + '"]');
+			teleportSource = document.querySelector(this.to());
+			teleportDestination = document.querySelector('[to="' + this.to() + '"]');
 		}
 
 		if (teleportSource != null && teleportDestination != null) {
@@ -31,9 +31,9 @@ export class TeleportComponent implements OnInit {
 
 			teleportSource.innerHTML = '';
 
-			app.log('cmp-teleport - to (ok)' + ((reverse != null && reverse) ? ' REVERSE' : ''), this.to);
+			app.log('cmp-teleport - to (ok)' + ((reverse != null && reverse) ? ' REVERSE' : ''), this.to());
 		} else
-			console.warn('cmp-teleport - to NULL' + ((reverse != null && reverse) ? ' REVERSE' : ''), this.to);
+			console.warn('cmp-teleport - to NULL' + ((reverse != null && reverse) ? ' REVERSE' : ''), this.to());
 	}
 
 	unteleport() {
@@ -41,13 +41,13 @@ export class TeleportComponent implements OnInit {
 	}
 	
 	show() {
-		var teleport = document.getElementsByClassName('element-' + this.to.substring(1));
+		var teleport = document.getElementsByClassName('element-' + this.to().substring(1));
 
 		if (teleport != null && teleport.length > 0) {
 			teleport[0].setAttribute('style', 'display: inline-block; width: 100%;');
 
-			app.log('cmp-teleport - show (ok)', this.to);
+			app.log('cmp-teleport - show (ok)', this.to());
 		} else
-			console.warn('cmp-teleport - show NULL', this.to);
+			console.warn('cmp-teleport - show NULL', this.to());
 	}
 }

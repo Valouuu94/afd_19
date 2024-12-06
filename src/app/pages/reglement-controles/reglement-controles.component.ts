@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, Input, viewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StoreService } from '../../services/store.service';
 import { Location, NgIf, NgClass, NgFor } from '@angular/common';
@@ -40,25 +40,25 @@ declare const refs: any;
 })
 export class ReglementControlesComponent implements OnInit {
 
-    @ViewChild('btnSaveControles') btnSaveControles!: BtnComponent;
-    @ViewChild('btnRemboursement') btnRemboursement!: BtnComponent;
-    @ViewChild('reglementControles') reglementControles!: ControlesComponent;
-    @ViewChild('detailsReglement') detailsReglement!: InfosReglementComponent;
-    @ViewChild('detailsVersement') detailsVersement!: InfosVersementComponent;
-    @ViewChild('tableVersements') tableVersements!: TableComponent;
-    @ViewChild('tableReglements') tableReglements!: TableComponent;
-    @ViewChild('notification') notification!: NotificationComponent;
-    @ViewChild('infosDossier') infosDossier!: InfosDossierComponent;
-    @ViewChild('btnAnnulerDossier') btnAnnulerDossier!: BtnComponent;
-    @ViewChild('btnHistoriqueDossierAbandonne') btnHistoriqueDossierAbandonne!: BtnComponent;
-    @ViewChild('infosAvance') infosAvance!: InfosAvanceComponent;
-    @ViewChild('tableAnomalies') tableAnomalies!: TableComponent;
-    @ViewChild('exportBan') exportBan!: ExportPdfBanComponent;
-    @ViewChild('exportControleSecondNiveau') exportControleSecondNiveau!: ExportPdfControleComponent;
-    @ViewChild('modalConfirmDdrDefinitif') modalConfirmDdrDefinitif!: ModalComponent;
-    @ViewChild('modalConfirmationAddJustificatifRemboursement') modalConfirmationAddJustificatifRemboursement!: ModalComponent;
-    @ViewChild('btnSaveDdrDefinif') btnSaveDdrDefinif!: BtnComponent;
-    @ViewChild('btnExportFicheBan') btnExportFicheBan!: BtnComponent;
+    readonly btnSaveControles = viewChild.required<BtnComponent>('btnSaveControles');
+    readonly btnRemboursement = viewChild.required<BtnComponent>('btnRemboursement');
+    readonly reglementControles = viewChild.required<ControlesComponent>('reglementControles');
+    readonly detailsReglement = viewChild.required<InfosReglementComponent>('detailsReglement');
+    readonly detailsVersement = viewChild.required<InfosVersementComponent>('detailsVersement');
+    readonly tableVersements = viewChild.required<TableComponent>('tableVersements');
+    readonly tableReglements = viewChild.required<TableComponent>('tableReglements');
+    readonly notification = viewChild.required<NotificationComponent>('notification');
+    readonly infosDossier = viewChild.required<InfosDossierComponent>('infosDossier');
+    readonly btnAnnulerDossier = viewChild.required<BtnComponent>('btnAnnulerDossier');
+    readonly btnHistoriqueDossierAbandonne = viewChild.required<BtnComponent>('btnHistoriqueDossierAbandonne');
+    readonly infosAvance = viewChild.required<InfosAvanceComponent>('infosAvance');
+    readonly tableAnomalies = viewChild.required<TableComponent>('tableAnomalies');
+    readonly exportBan = viewChild.required<ExportPdfBanComponent>('exportBan');
+    readonly exportControleSecondNiveau = viewChild.required<ExportPdfControleComponent>('exportControleSecondNiveau');
+    readonly modalConfirmDdrDefinitif = viewChild.required<ModalComponent>('modalConfirmDdrDefinitif');
+    readonly modalConfirmationAddJustificatifRemboursement = viewChild.required<ModalComponent>('modalConfirmationAddJustificatifRemboursement');
+    readonly btnSaveDdrDefinif = viewChild.required<BtnComponent>('btnSaveDdrDefinif');
+    readonly btnExportFicheBan = viewChild.required<BtnComponent>('btnExportFicheBan');
 
     newTab: any;
     disableRemboursement: boolean = false;
@@ -144,13 +144,13 @@ export class ReglementControlesComponent implements OnInit {
     }
 
     async validerControles() {
-        var controles = await this.reglementControles.saveControles(true);
+        var controles = await this.reglementControles().saveControles(true);
 
         return !(controles == null);
     }
 
     async autoSave() {
-        if (this.reglementControles.updatedValue) {
+        if (this.reglementControles().updatedValue) {
             app.showToast('toastControlesAutoSave');
 
             await app.sleep(5000);
@@ -165,17 +165,17 @@ export class ReglementControlesComponent implements OnInit {
         if (!active) {
             app.showToast('toastControlesNotActiveTaskError');
             if (validate && this.notification != null) {
-                this.notification.setLoadingBtn();
-                this.notification.hideModal();
+                this.notification().setLoadingBtn();
+                this.notification().hideModal();
             } else
-                this.btnSaveControles.setLoading(false);
+                this.btnSaveControles().setLoading(false);
             return;
         }
 
-        var controles = await this.reglementControles.saveControles(verifControle);
+        var controles = await this.reglementControles().saveControles(verifControle);
 
         if (controles == null) {
-            this.btnSaveControles.setLoading(false);
+            this.btnSaveControles().setLoading(false);
             return;
         }
 
@@ -200,8 +200,8 @@ export class ReglementControlesComponent implements OnInit {
             if (app.isDirecteur(this.role) && DO.decision == "")
                 await this.validerReglement();
 
-            this.notification.setLoadingBtn();
-            this.notification.hideModal();
+            this.notification().setLoadingBtn();
+            this.notification().hideModal();
 
             //afficher le taost de confirmation indiquant que le dossier a �t� bien transmis
             if (app.isEmpty(DO.decision)) {
@@ -230,34 +230,35 @@ export class ReglementControlesComponent implements OnInit {
 
             app.redirect(this.router, app.getUrl('urlGotoTaches'));
         } else {
-            this.btnSaveControles.setLoading(false);
+            this.btnSaveControles().setLoading(false);
             if (this.isDCV)
                 await this.getReglement();
 
-            this.notification.setLoadingBtn();
-            this.notification.hideModal();
+            this.notification().setLoadingBtn();
+            this.notification().hideModal();
 
             app.showToast('toastControlesSave');
         }
 
         //AVANCE-FIGEE
-        if (this.infosAvance && this.reglement.id_avance_contractuel != null)
-            await this.infosAvance.getAvance(this.reglement.id_avance_contractuel, this.entite, this.versement.persistenceId, (this.reglement != null ? this.reglement.persistenceId : null));
+        const infosAvance = this.infosAvance();
+        if (infosAvance && this.reglement.id_avance_contractuel != null)
+            await infosAvance.getAvance(this.reglement.id_avance_contractuel, this.entite, this.versement.persistenceId, (this.reglement != null ? this.reglement.persistenceId : null));
 
         //capture(add) Avance Figee
         //si role agent de versement ou charge d'appui => save copy => faire photo (si y a des AR entre les autres agents la photo ne change jamais mais si elle est retourn� )
         if (this.reglement.id_avance_contractuel != null && (app.isAgentVersement(this.role) || app.isChargeAppui(this.role))) {
             var avanceFigeeDO = app.getDO('avanceFigee');
             avanceFigeeDO.id_avance_contractuel = this.reglement.id_avance_contractuel;
-            avanceFigeeDO.reste_justifier_decaisser_dossier_copy = (!this.infosAvance.acRepris ? this.infosAvance.resteJustifierDecaisserDossier : 0);
-            avanceFigeeDO.reste_justifier_copy = this.infosAvance.resteJustifier;
-            avanceFigeeDO.montant_total_justificatifs_avance_copy = this.infosAvance.montantTotalJustificatifsAvance;
-            avanceFigeeDO.montant_verse_total_copy = this.infosAvance.montantVerseTotal;
+            avanceFigeeDO.reste_justifier_decaisser_dossier_copy = (!infosAvance.acRepris ? infosAvance.resteJustifierDecaisserDossier : 0);
+            avanceFigeeDO.reste_justifier_copy = infosAvance.resteJustifier;
+            avanceFigeeDO.montant_total_justificatifs_avance_copy = infosAvance.montantTotalJustificatifsAvance;
+            avanceFigeeDO.montant_verse_total_copy = infosAvance.montantVerseTotal;
             if (this.reglement != null)
                 avanceFigeeDO.id_dossier_reglement = this.reglement.persistenceId;
 
             // Assuming you have the JSON array in a variable named 'justificatifsAvanceFigee'
-            const justificatifsAvanceFigee = this.infosAvance.avanceContractuel.justificatifsAvance;
+            const justificatifsAvanceFigee = infosAvance.avanceContractuel.justificatifsAvance;
 
             // Create a new array by mapping the specified fields from 'justificatifsAvanceFigee'
             const justificatifsAvanceFigeeCopy = justificatifsAvanceFigee.map((item: any) => ({
@@ -274,7 +275,7 @@ export class ReglementControlesComponent implements OnInit {
 
             await app.saveFormData(app.getRootDO('avanceFigee'), null, app.getUrl('urlProcessInstanciation'), app.getUrl('urlProcessGererAvanceFigee'));
 
-            await app.getExternalData(app.getUrl('urlGetAvanceFigeeByIdDrAndIdAvance', this.reglement.persistenceId, this.infosAvance.avanceContractuel.persistenceId), true);
+            await app.getExternalData(app.getUrl('urlGetAvanceFigeeByIdDrAndIdAvance', this.reglement.persistenceId, infosAvance.avanceContractuel.persistenceId), true);
         }
     }
 
@@ -352,10 +353,11 @@ export class ReglementControlesComponent implements OnInit {
 
             //si acces DCV niveau 1, on force en mode niveau 1
             await app.sleep(50);
+            const reglementControles = this.reglementControles();
             if (secondToFirstLevel)
-                this.reglementControles.isDCV = false;
+                reglementControles.isDCV = false;
 
-            await this.reglementControles.loadControles(caseId, this.tache);
+            await reglementControles.loadControles(caseId, this.tache);
 
             //deploiement des commentaires automatique si acces DCV niveau 1
             if (secondToFirstLevel) {
@@ -391,7 +393,7 @@ export class ReglementControlesComponent implements OnInit {
 
             await app.sleep(50);
             if (secondToFirstLevel)
-                this.infosDossier.isDCV = false;
+                this.infosDossier().isDCV = false;
         }
         console.timeEnd('reglement-controles');
     }
@@ -401,7 +403,7 @@ export class ReglementControlesComponent implements OnInit {
 
         await app.sleep(100);
 
-        this.tableReglements.getItems();
+        this.tableReglements().getItems();
     }
 
     async executeAction(action: any) {
@@ -431,17 +433,17 @@ export class ReglementControlesComponent implements OnInit {
 
         await app.sleep(150);
 
-        await this.detailsReglement.gotoReglement(item, this.versement, update);
+        await this.detailsReglement().gotoReglement(item, this.versement, update);
 
-        this.tableReglements.setClickInProgress(false);
+        this.tableReglements().setClickInProgress(false);
     }
 
     async getAutresDevises() {
-        await this.detailsVersement.getAutresDevises();
+        await this.detailsVersement().getAutresDevises();
     }
 
     async getBeneficiaireVersement() {
-        await this.detailsVersement.getBeneficiaire();
+        await this.detailsVersement().getBeneficiaire();
     }
 
     async showValiderReglement() {
@@ -461,8 +463,8 @@ export class ReglementControlesComponent implements OnInit {
         await app.generateFile(DO, 'urlProcessExportPdfDDR', false);
 
         if (!this.isDCV) {
-            this.tableReglements.setUrlParam(this.versement.numero_dossier_versement);
-            this.tableReglements.getItems();
+            this.tableReglements().setUrlParam(this.versement.numero_dossier_versement);
+            this.tableReglements().getItems();
         }
     }
 
@@ -471,7 +473,7 @@ export class ReglementControlesComponent implements OnInit {
     }
 
     toggleComments() {
-        var controles = this.reglementControles.controles;
+        var controles = this.reglementControles().controles;
 
         if (controles != null) {
             for (var i = 0; i < controles.length; i++) {
@@ -496,8 +498,8 @@ export class ReglementControlesComponent implements OnInit {
 		app.resetRootDO('notification');
 
         if (codeStatut) {
-            this.notification.setLoadingBtn();
-            this.notification.hideModal();
+            this.notification().setLoadingBtn();
+            this.notification().hideModal();
 
             if (!this.isDCV)
                 app.showToast('toastReglementAnnulerOk');
@@ -508,9 +510,9 @@ export class ReglementControlesComponent implements OnInit {
 
             await this.getReglement();
 
-            await this.infosDossier.getNotifications();
+            await this.infosDossier().getNotifications();
 
-            await this.infosDossier.updateDossier(this.reglement);
+            await this.infosDossier().updateDossier(this.reglement);
         }
         else
             app.showToast('toastReglementAnnulerKo');
@@ -518,7 +520,7 @@ export class ReglementControlesComponent implements OnInit {
 
     annulerAction(action: any) {
         if (action == '-1')
-            this.btnAnnulerDossier.setLoading(false);
+            this.btnAnnulerDossier().setLoading(false);
     }
 
     async validerTacheDir() {
@@ -527,18 +529,18 @@ export class ReglementControlesComponent implements OnInit {
         if (app.isDirecteur(this.role)) {
             var valideControle = await this.validerControles();
             if (!valideControle) {
-                this.btnSaveControles.setLoading(false);
+                this.btnSaveControles().setLoading(false);
                 return;
             }
 
-            for (var controle of this.reglementControles.controles) {
+            for (var controle of this.reglementControles().controles) {
                 var valueControle = controle.value;
                 if (valueControle == '0' && controle.show)
                     isControlesOk = false;
             }
         }
 
-        await this.notification.validerTache(isControlesOk);
+        await this.notification().validerTache(isControlesOk);
     }
 
     async getAnomalies() {
@@ -550,7 +552,7 @@ export class ReglementControlesComponent implements OnInit {
 
         await app.sleep(100);
 
-        this.tableAnomalies.getItems();
+        this.tableAnomalies().getItems();
     }
 
     async gotoAnomalie(item: any) {
@@ -561,8 +563,9 @@ export class ReglementControlesComponent implements OnInit {
         let listeControl: any[] = [];
         var table: any[] = [];
 
-        if (Array.isArray(this.reglementControles.controles))
-            for (var element of this.reglementControles.controles)
+        const reglementControles = this.reglementControles();
+        if (Array.isArray(reglementControles.controles))
+            for (var element of reglementControles.controles)
                 listeControl.push(element);
 
         for (var element of listeControl) {
@@ -616,16 +619,17 @@ export class ReglementControlesComponent implements OnInit {
         this.versement.emetteurDV = app.getRefLabel('refBeneficiaires', this.versement.id_emetteur_demande, true);
         this.reglement.beneficiaireVersement = app.getRefLabel('refBeneficiaires', this.reglement.id_beneficiaire_reglement, true);
         this.versement.modalitePaiement = app.getRefLabel('refModalitesPaiement', this.versement.modalite_paiement, true);
-        this.exportBan.generate(table, this.reglement, this.versement, this.ControleParThemes, this.isAFD);
+        this.exportBan().generate(table, this.reglement, this.versement, this.ControleParThemes, this.isAFD);
 
-        this.btnExportFicheBan.setLoading(false);
+        this.btnExportFicheBan().setLoading(false);
     }
 
     async exportControleToPDF() {
         let listeDesControl: any[] = [];
 
-        if (Array.isArray(this.reglementControles.controles))
-            for (var element of this.reglementControles.controles)
+        const reglementControles = this.reglementControles();
+        if (Array.isArray(reglementControles.controles))
+            for (var element of reglementControles.controles)
                 listeDesControl.push(element);
 
         // On rajoute les commentaires assocés à un point de controle PC = point de controle
@@ -656,7 +660,7 @@ export class ReglementControlesComponent implements OnInit {
         }
 
         // Afficher le tableau de codes uniques
-        this.exportControleSecondNiveau.generate(this.reglement, this.ControleGroupeParPC, listeDesControl);
+        this.exportControleSecondNiveau().generate(this.reglement, this.ControleGroupeParPC, listeDesControl);
     }
 
     //verifier que le dossier de reglement est en status paiement confirmé
@@ -672,11 +676,11 @@ export class ReglementControlesComponent implements OnInit {
     historiqueDossierAbandonne() {
         app.showModal('modalHistoriqueDossierAbandonne' + this.reglement.persistenceId);
 
-        this.btnHistoriqueDossierAbandonne.setLoading(false);
+        this.btnHistoriqueDossierAbandonne().setLoading(false);
     }
 
     async verifDDRDefinitif() {
-        this.btnSaveDdrDefinif.setLoading(false);
+        this.btnSaveDdrDefinif().setLoading(false);
 
         if (!app.isValidForm('formio_reglementDefinitifAFD')) {
             app.showToast('toastErrorSaveDdrDefinitif');
@@ -724,7 +728,7 @@ export class ReglementControlesComponent implements OnInit {
     async confirmAddJustifRemboursement() {
         app.showModal('modalConfirmationAddJustificatifRemboursement');
 
-        this.btnRemboursement.setLoading(false);
+        this.btnRemboursement().setLoading(false);
     }
     async addJustificatifRemboursement() {
         app.setStorageItem('idReglement', this.reglement.persistenceId);

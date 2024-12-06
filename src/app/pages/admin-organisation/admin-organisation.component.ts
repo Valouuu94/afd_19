@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, viewChild } from '@angular/core';
 import { ModalComponent  } from '../../components/modal/modal.component';
 import { TableComponent  } from '../../components/table/table.component';
 import { CardComponent } from '../../components/card/card.component';
@@ -18,8 +18,8 @@ declare const crossVars: any;
 })
 export class AdminOrganisationComponent implements OnInit {
 
-	@ViewChild('tableEntites') tableEntites!: TableComponent;
-	@ViewChild('modalUpdateEntite') modalUpdateEntite!: ModalComponent;
+	readonly tableEntites = viewChild.required<TableComponent>('tableEntites');
+	readonly modalUpdateEntite = viewChild.required<ModalComponent>('modalUpdateEntite');
 
 	app: any = app;
 	lang: any = lang;
@@ -66,7 +66,7 @@ export class AdminOrganisationComponent implements OnInit {
 
 		await app.sleep(250);
 
-		this.tableEntites.getItems();
+		this.tableEntites().getItems();
 	}
 
 	async setEntite(item: any, level?: any) {
@@ -129,7 +129,7 @@ export class AdminOrganisationComponent implements OnInit {
 
 	async saveEntite() {
 		if (!app.isValidForm('formio_entiteOrga')) {
-			this.modalUpdateEntite.setLoadingBtn();
+			this.modalUpdateEntite().setLoadingBtn();
 			this.errorMessage = lang.failedFormSave;
 			app.showToast('toastEntiteSaveError');
 			return;
@@ -155,7 +155,7 @@ export class AdminOrganisationComponent implements OnInit {
 
 		var result = await app.setExternalDataWithResult(app.getUrl('urlSetEntiteOrga'), DO, (this.editEntite == null) ? 'POST' : 'PUT');
 
-		this.modalUpdateEntite.setLoadingBtn();
+		this.modalUpdateEntite().setLoadingBtn();
 
 		if (result.status >= 300) {
 			this.errorMessage = result.detail;

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, viewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { StoreService } from '../../services/store.service';
 import { TableComponent } from '../../components/table/table.component';
@@ -16,7 +16,7 @@ declare const lang: any;
 })
 export class HistoriqueAnomaliesRajComponent implements OnInit {
 
-	@ViewChild('tableAnomaliesRaj') tableAnomaliesRaj!: TableComponent;
+	readonly tableAnomaliesRaj = viewChild.required<TableComponent>('tableAnomaliesRaj');
 
 	app: any = app;
 	lang: any = lang;
@@ -33,7 +33,7 @@ export class HistoriqueAnomaliesRajComponent implements OnInit {
 	}
 
 	async getAnomalies() {
-		this.tableAnomaliesRaj.setLoading(true);
+		this.tableAnomaliesRaj().setLoading(true);
 
 		this.anomalies = await app.getExternalData(app.getUrl('urlGetHistoriqueAnomaliesRaj'), 'page > historique-anomalies-raj > getAnomalies');
 
@@ -41,7 +41,7 @@ export class HistoriqueAnomaliesRajComponent implements OnInit {
 
 		await app.sleep(150);
 
-		this.tableAnomaliesRaj.getItems();
+		this.tableAnomaliesRaj().getItems();
 	}
 
 	async gotoAnomalie(item: any) {
@@ -60,7 +60,7 @@ export class HistoriqueAnomaliesRajComponent implements OnInit {
 
 		await app.sleep(50);
 
-		this.tableAnomaliesRaj.getItems();
+		this.tableAnomaliesRaj().getItems();
 	}
 
 	async filterRajReset() {
@@ -70,10 +70,10 @@ export class HistoriqueAnomaliesRajComponent implements OnInit {
 
 		await app.sleep(150);
 
-		this.tableAnomaliesRaj.resetPage();
-		this.tableAnomaliesRaj.filterItems();
-		this.tableAnomaliesRaj.sortByDefault();
-		this.tableAnomaliesRaj.getItems();
+		this.tableAnomaliesRaj().resetPage();
+		this.tableAnomaliesRaj().filterItems();
+		this.tableAnomaliesRaj().sortByDefault();
+		this.tableAnomaliesRaj().getItems();
 	}
 
 	filterRajSelected(value: any) {

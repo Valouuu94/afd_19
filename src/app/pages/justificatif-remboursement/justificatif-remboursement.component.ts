@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, Input, viewChild } from '@angular/core';
 import { StoreService } from '../../services/store.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RubriquesComponent   } from '../../components/rubriques/rubriques.component';
@@ -25,11 +25,11 @@ declare const lang: any;
 })
 export class JustificatifRemboursementComponent implements OnInit {
 
-	@ViewChild('btnSaveJustifRemboursement') btnSaveJustifRemboursement!: BtnComponent;
-	@ViewChild('teleportDcJustifRemboursement') teleportDcJustifRemboursement!: TeleportComponent;
-	@ViewChild('teleportJustifRemboursementRubriques') teleportJustifRemboursementRubriques!: TeleportComponent;
-	@ViewChild('rubriquesComponent') rubriquesComponent!: RubriquesComponent;
-	@ViewChild('tableRubriques') tableRubriques!: TableComponent;
+	readonly btnSaveJustifRemboursement = viewChild.required<BtnComponent>('btnSaveJustifRemboursement');
+	readonly teleportDcJustifRemboursement = viewChild.required<TeleportComponent>('teleportDcJustifRemboursement');
+	readonly teleportJustifRemboursementRubriques = viewChild.required<TeleportComponent>('teleportJustifRemboursementRubriques');
+	readonly rubriquesComponent = viewChild.required<RubriquesComponent>('rubriquesComponent');
+	readonly tableRubriques = viewChild.required<TableComponent>('tableRubriques');
 
 	role: any;
 	entite: any;
@@ -128,8 +128,8 @@ export class JustificatifRemboursementComponent implements OnInit {
 
 		//unteleports et reset form
 		if (this.reglement != null && this.reglement.id_document_contractuel != null && this.isAFD) {
-			this.teleportDcJustifRemboursement.unteleport();
-			this.teleportJustifRemboursementRubriques.unteleport();
+			this.teleportDcJustifRemboursement().unteleport();
+			this.teleportJustifRemboursementRubriques().unteleport();
 		}
 		app.cleanDiv('formio_' + formName);
 
@@ -204,7 +204,7 @@ export class JustificatifRemboursementComponent implements OnInit {
 
 	async getRubriques() {
 		if (this.reglement != null && this.reglement.id_document_contractuel != null && this.dc != null) {
-			this.rubriquesComponent.setIsJustifRembIntegral(this.isIntegral);
+			this.rubriquesComponent().setIsJustifRembIntegral(this.isIntegral);
 
 			this.typeTableRubriquesRemboursement = "rubriquesRemboursement";
 			this.rubriques = await app.getExternalData(app.getUrl('urlGetVentilationRubrique', this.reglement.persistenceId), 'justificatif-remboursement > getRubriques - rubriques');
@@ -213,9 +213,10 @@ export class JustificatifRemboursementComponent implements OnInit {
 
 			await app.sleep(250);
 
-			this.tableRubriques.getItems();
+			this.tableRubriques().getItems();
 
-			if (this.tableRubriques) {
+			const tableRubriques = this.tableRubriques();
+   if (tableRubriques) {
 				this.ventilationRubriques = [];
 
 				for (var rub of this.rubriques) {
@@ -244,7 +245,7 @@ export class JustificatifRemboursementComponent implements OnInit {
 
 				await app.sleep(500);
 
-				this.tableRubriques.getItems();
+				tableRubriques.getItems();
 			}
 
 
@@ -274,10 +275,10 @@ export class JustificatifRemboursementComponent implements OnInit {
 			}
 
 			if (this.isAFD) {
-				this.teleportDcJustifRemboursement.teleport();
-				this.teleportDcJustifRemboursement.show();
-				this.teleportJustifRemboursementRubriques.teleport();
-				this.teleportJustifRemboursementRubriques.show();
+				this.teleportDcJustifRemboursement().teleport();
+				this.teleportDcJustifRemboursement().show();
+				this.teleportJustifRemboursementRubriques().teleport();
+				this.teleportJustifRemboursementRubriques().show();
 			}
 		}
 	}
@@ -299,7 +300,7 @@ export class JustificatifRemboursementComponent implements OnInit {
 
 		//verif form
 		if (!app.isValidForm(this.formioFormName)) {
-			this.btnSaveJustifRemboursement.setLoading(false);
+			this.btnSaveJustifRemboursement().setLoading(false);
 			app.showToast('toastJustificatifsReglementSaveError');
 			return;
 		}
@@ -308,14 +309,14 @@ export class JustificatifRemboursementComponent implements OnInit {
 		if (!this.isIntegral && this.reglement.id_document_contractuel != null && this.dc != null
 			&& this.sommeVentilation() != appFormio.getDataValue(crossVars.forms[this.formioFormName], 'montant_remboursement')) {
 			app.showToast('toastMontantsVentilationError');
-			this.btnSaveJustifRemboursement.setLoading(false);
+			this.btnSaveJustifRemboursement().setLoading(false);
 			return;
 		}
 
 		//verif montant remboursement
 		if (!this.isIntegral && this.reglement.montant_reglement < appFormio.getDataValue(crossVars.forms[this.formioFormName], 'montant_remboursement')) {
 			app.showToast('toastMontantsRembSupReglementError');
-			this.btnSaveJustifRemboursement.setLoading(false);
+			this.btnSaveJustifRemboursement().setLoading(false);
 			return;
 		}
 
@@ -383,9 +384,10 @@ export class JustificatifRemboursementComponent implements OnInit {
 		var sommeMntARembourser = 0;
 
 		//TODO : somme des rubs level 0 
-		for (var i = 0; i < this.tableRubriques.items.length; i++)
-			if (this.tableRubriques.items[i].rubriqueLevel == "0")
-				sommeMntARembourser += app.convertStringToFloat(this.tableRubriques.items[i].mntARembourser);
+		const tableRubriques = this.tableRubriques();
+  for (var i = 0; i < this.tableRubriques().items.length; i++)
+			if (tableRubriques.items[i].rubriqueLevel == "0")
+				sommeMntARembourser += app.convertStringToFloat(tableRubriques.items[i].mntARembourser);
 
 		app.log("< sommeVentilation() >> sommeMntARembourser", sommeMntARembourser);
 		return sommeMntARembourser;
@@ -394,8 +396,8 @@ export class JustificatifRemboursementComponent implements OnInit {
 	getListeMontantsJustificatifRemboursement() {
 		var result = [];
 
-		if (this.tableRubriques.items.length > 0) {
-			for (var item of this.tableRubriques.items)
+		if (this.tableRubriques().items.length > 0) {
+			for (var item of this.tableRubriques().items)
 				if (!app.isEmpty(item.mntARembourser))
 					result.push({
 						'id_rubrique': item.rubriqueId,
@@ -408,24 +410,25 @@ export class JustificatifRemboursementComponent implements OnInit {
 	}
 	//methode pour mettre a jour le MAR lors de la ventilation des rubriques
 	updateMarRubrique(item: any) {
-		var indexParent = app.getIndexElementInArrayByValue(this.tableRubriques.items, "rubriqueId", item.parentId, false);
+		var indexParent = app.getIndexElementInArrayByValue(this.tableRubriques().items, "rubriqueId", item.parentId, false);
 		var parentId = item.parentId;
 
 		//on boucle jusqu'à remonter au level root 0
 		while (indexParent != null) {
 			//on recalcule la somme pour le parent
-			this.tableRubriques.items[indexParent]["mntARembourser"] = this.getSommeMntsParent(parentId);
+			const tableRubriques = this.tableRubriques();
+   tableRubriques.items[indexParent]["mntARembourser"] = this.getSommeMntsParent(parentId);
 
 			//on recupere le parent suivant
-			parentId = this.tableRubriques.items[indexParent].parentId;
-			indexParent = app.getIndexElementInArrayByValue(this.tableRubriques.items, "rubriqueId", parentId, false);
+			parentId = tableRubriques.items[indexParent].parentId;
+			indexParent = app.getIndexElementInArrayByValue(tableRubriques.items, "rubriqueId", parentId, false);
 		}
 	}
 
 	getSommeMntsParent(parentId: any) {
 		var sommeMAR = 0;
 
-		for (var rubrique of this.tableRubriques.items)
+		for (var rubrique of this.tableRubriques().items)
 			if (rubrique.parentId == parentId)
 				sommeMAR += app.convertStringToFloat(rubrique.mntARembourser);
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, input } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgIf, NgFor } from '@angular/common';
 import { StoreService } from '../../services/store.service';
@@ -32,9 +32,9 @@ export class InfosAvanceComponent implements OnInit {
     deviseAvance: any;
     acRepris: any;
 
-    @Input() displayButtonAvance: boolean = false;
-    @Input() enableCollapse: boolean = false;
-    @Input() role: any;
+    readonly displayButtonAvance = input<boolean>(false);
+    readonly enableCollapse = input<boolean>(false);
+    readonly role = input<any>();
 
     constructor(private router: Router, public store: StoreService) { }
 
@@ -78,7 +78,8 @@ export class InfosAvanceComponent implements OnInit {
                     this.reglement = await app.getExternalData(app.getUrl('urlGetReglement', this.idReglement), 'cmp-infos-avance > getAvance - reglement', true);
 
                 //TODO : isFixed dépend de anavcefg et le role de l'acteur (si c'est AGV ou CHGP la photo est créée/màj)
-                this.isFixed = (this.avanceFig != null && (!(app.isAgentVersement(this.role) || app.isChargeAppui(this.role)) || (this.reglement.code_statut_dossier == 'DDR5' || this.reglement.code_statut_dossier == 'DDR5B' || this.reglement.code_statut_dossier == 'DDR14' || this.reglement.code_statut_dossier == 'DDR7' || this.reglement.code_statut_dossier == 'DDR8')));
+                const role = this.role();
+                this.isFixed = (this.avanceFig != null && (!(app.isAgentVersement(role) || app.isChargeAppui(role)) || (this.reglement.code_statut_dossier == 'DDR5' || this.reglement.code_statut_dossier == 'DDR5B' || this.reglement.code_statut_dossier == 'DDR14' || this.reglement.code_statut_dossier == 'DDR7' || this.reglement.code_statut_dossier == 'DDR8')));
             }
         } else
             this.avanceContractuel = null;

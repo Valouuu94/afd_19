@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, viewChild } from '@angular/core';
 import { ModalComponent } from '../modal/modal.component';
 import { TableComponent } from '../table/table.component';
 import { FormsModule } from '@angular/forms';
@@ -15,8 +15,8 @@ declare const lang: any;
 })
 export class TypeAvanceComponent implements OnInit {
 
-	@ViewChild('tableTypesAvance') tableTypesAvance!: TableComponent;
-	@ViewChild('modalSaveTypeAvance') modalSaveTypeAvance!: ModalComponent;
+	readonly tableTypesAvance = viewChild.required<TableComponent>('tableTypesAvance');
+	readonly modalSaveTypeAvance = viewChild.required<ModalComponent>('modalSaveTypeAvance');
 
 	type: string = '';
 	typesAvance: any = [];
@@ -71,7 +71,7 @@ export class TypeAvanceComponent implements OnInit {
 
 		await app.sleep(250);
 		
-		this.tableTypesAvance.getItems();
+		this.tableTypesAvance().getItems();
 	}
 
 	addTypeAvance(item: any) {
@@ -106,7 +106,7 @@ export class TypeAvanceComponent implements OnInit {
 
 		this.getTypesAvance(this.type);
 
-		this.modalSaveTypeAvance.setLoadingBtn();
+		this.modalSaveTypeAvance().setLoadingBtn();
 
 		app.hideModal('modalAddTypeAvance');
 	}

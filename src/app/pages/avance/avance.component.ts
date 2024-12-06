@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild, Input } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, input, viewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalComponent  } from '../../components/modal/modal.component';
 import { SelectBeneficiaireComponent  } from '../../components/select-beneficiaire/select-beneficiaire.component';
@@ -32,28 +32,28 @@ declare const refs: any;
 })
 export class AvanceComponent implements OnInit {
 
-	@ViewChild('infosContext') infosContext!: InfosContextComponent;
-	@ViewChild('typeAvance') typeAvance!: TypeAvanceComponent;
-	@ViewChild('btnValidateAvance') btnValidateAvance!: BtnComponent;
-	@ViewChild('btnSaveAvance') btnSaveAvance!: BtnComponent;
-	@ViewChild('modalSaveAvenant') modalSaveAvenant!: ModalComponent;
-	@ViewChild('teleportTypeAvance') teleportTypeAvance!: TeleportComponent;
-	@ViewChild('saveJustificatif') saveJustificatif!: ModalComponent;
-	@ViewChild('tableJustificatifsAvance') tableJustificatifsAvance!: TableComponent;
-	@ViewChild('teleportJustificatifAvance') teleportJustificatifAvance!: TeleportComponent
-	@ViewChild('tableTypesAvance') tableTypesAvance!: TableComponent;
-	@ViewChild('modalSaveTypeAvance') modalSaveTypeAvance!: ModalComponent;
-	@ViewChild('modalDeleteTypeAvance') modalDeleteTypeAvance!: ModalComponent;
-	@ViewChild('modalDeleteJustificatif') modalDeleteJustificatif!: ModalComponent;
-	@ViewChild('modalConfirmationAddJustificatifAvance') modalConfirmationAddJustificatifAvance!: ModalComponent;
-	@ViewChild('teleportAudit') teleportAudit!: TeleportComponent;
-	@ViewChild('selectEmetteurAvance') selectEmetteurAvance!: SelectBeneficiaireComponent;
-	@ViewChild('infosEmetteurJustificatifAvance') infosEmetteurJustificatifAvance!: InfosBeneficiaireComponent;
-	@ViewChild('teleportEmetteurJustificatifAvance') teleportEmetteurJustificatifAvance!: TeleportComponent;
-	@ViewChild('teleportSelectEmetteurJustificatifAvance') teleportSelectEmetteurJustificatifAvance!: TeleportComponent;
+	readonly infosContext = viewChild.required<InfosContextComponent>('infosContext');
+	readonly typeAvance = viewChild.required<TypeAvanceComponent>('typeAvance');
+	readonly btnValidateAvance = viewChild.required<BtnComponent>('btnValidateAvance');
+	readonly btnSaveAvance = viewChild.required<BtnComponent>('btnSaveAvance');
+	readonly modalSaveAvenant = viewChild.required<ModalComponent>('modalSaveAvenant');
+	readonly teleportTypeAvance = viewChild.required<TeleportComponent>('teleportTypeAvance');
+	readonly saveJustificatif = viewChild.required<ModalComponent>('saveJustificatif');
+	readonly tableJustificatifsAvance = viewChild.required<TableComponent>('tableJustificatifsAvance');
+	readonly teleportJustificatifAvance = viewChild.required<TeleportComponent>('teleportJustificatifAvance');
+	readonly tableTypesAvance = viewChild.required<TableComponent>('tableTypesAvance');
+	readonly modalSaveTypeAvance = viewChild.required<ModalComponent>('modalSaveTypeAvance');
+	readonly modalDeleteTypeAvance = viewChild.required<ModalComponent>('modalDeleteTypeAvance');
+	readonly modalDeleteJustificatif = viewChild.required<ModalComponent>('modalDeleteJustificatif');
+	readonly modalConfirmationAddJustificatifAvance = viewChild.required<ModalComponent>('modalConfirmationAddJustificatifAvance');
+	readonly teleportAudit = viewChild.required<TeleportComponent>('teleportAudit');
+	readonly selectEmetteurAvance = viewChild.required<SelectBeneficiaireComponent>('selectEmetteurAvance');
+	readonly infosEmetteurJustificatifAvance = viewChild.required<InfosBeneficiaireComponent>('infosEmetteurJustificatifAvance');
+	readonly teleportEmetteurJustificatifAvance = viewChild.required<TeleportComponent>('teleportEmetteurJustificatifAvance');
+	readonly teleportSelectEmetteurJustificatifAvance = viewChild.required<TeleportComponent>('teleportSelectEmetteurJustificatifAvance');
 
-	@Input() paramAC: any;
-	@Input() paramDR: any;
+	readonly paramAC = input<any>();
+	readonly paramDR = input<any>();
 
 	showTypeAvance: boolean = false;
 	avanceContractuel: any = null;
@@ -121,6 +121,7 @@ export class AvanceComponent implements OnInit {
 	loading: boolean = true;
 	idVersement: any;
 	acRepris: boolean = false;
+	objectParentRepris: boolean;
 
 	constructor(private router: Router, private route: ActivatedRoute, private cdr: ChangeDetectorRef, public store: StoreService) { }
 
@@ -137,7 +138,7 @@ export class AvanceComponent implements OnInit {
 	}
 
 	async ngAfterViewInit() {
-		if (this.paramAC == null)
+		if (this.paramAC() == null)
 			await this.getAvance();
 		else {
 			//si accès depuis modal, on vide les forms pour eviter les doubles chargements de teleports
@@ -164,10 +165,11 @@ export class AvanceComponent implements OnInit {
 		//recup de l'avance contractuelle
 		this.avanceContractuel = null;
 		var id = this.route.snapshot.paramMap.get('id');
-		if (id != null && this.paramAC == null)
+		const paramAC = this.paramAC();
+  if (id != null && paramAC == null)
 			this.avanceContractuel = await app.getExternalData(app.getUrl('urlGetAvanceContractuel', id), 'page-avance > getAvance', true);
 		else if (this.paramAC != null) {
-			this.avanceContractuel = this.paramAC;
+			this.avanceContractuel = paramAC;
 			this.read = true;
 		}
 
@@ -206,12 +208,13 @@ export class AvanceComponent implements OnInit {
 		}
 
 		this.idReglement = app.getStorageItem('idReglement');
-		if (this.idReglement != null && this.paramDR == null) {
+		const paramDR = this.paramDR();
+  if (this.idReglement != null && paramDR == null) {
 			this.reglement = await app.getExternalData(app.getUrl('urlGetReglement', this.idReglement), 'page-avance > getAvance - reglement', true);
 			this.versement = await app.getExternalData(app.getUrl('urlGetVersementByNumero', this.reglement.numero_dossier_versement), 'page-avance > getAvance- versement', true);
 			this.deviseVersement = this.versement.devise;
 		} else if (this.paramDR != null)
-			this.reglement = this.paramDR;
+			this.reglement = paramDR;
 
 		this.caseId = (this.idReglement == null) ? 0 : this.reglement.case_id;
 
@@ -267,10 +270,10 @@ export class AvanceComponent implements OnInit {
 
 		app.setRef(concoursByProjet, 'concoursByProjet', 'numeroConcours', 'numeroConcours');
 
-		this.teleportTypeAvance.unteleport();
-		this.teleportJustificatifAvance.unteleport();
+		this.teleportTypeAvance().unteleport();
+		this.teleportJustificatifAvance().unteleport();
 		if (!app.isAFD(this.entite))
-			this.teleportAudit.unteleport();
+			this.teleportAudit().unteleport();
 
 		app.cleanDiv('formio_avanceContractuel' + this.entite);
 		app.cleanDiv('formio_avanceContractuelAFDFinal');
@@ -310,15 +313,15 @@ export class AvanceComponent implements OnInit {
 		if (this.formioToBeLoaded == 'formio_avanceContractuelPROPARCOFinal' && this.avanceContractuel != null)
 			appFormio.setDataValue(crossVars.forms[this.formioToBeLoaded], 'date_limite_utilisation_fond_final', this.avanceContractuel.date_limite_utilisation_fond_final);
 
-		this.teleportTypeAvance.teleport();
-		this.teleportTypeAvance.show();
-		this.teleportJustificatifAvance.teleport();
-		this.teleportJustificatifAvance.show();
+		this.teleportTypeAvance().teleport();
+		this.teleportTypeAvance().show();
+		this.teleportJustificatifAvance().teleport();
+		this.teleportJustificatifAvance().show();
 
 		//NOUR + ARNAUD : audit formio in teleport
 		if (!app.isAFD(this.entite)) {
-			this.teleportAudit.teleport();
-			this.teleportAudit.show();
+			this.teleportAudit().teleport();
+			this.teleportAudit().show();
 
 			if (this.avanceContractuel != null && this.avanceContractuel.audit.length > 0) {
 				for (var i = 0; i < this.avanceContractuel.audit.length; i++) {
@@ -333,7 +336,7 @@ export class AvanceComponent implements OnInit {
 				await this.addAudit();
 		}
 		if (this.avanceContractuel != null) {
-			this.tableJustificatifsAvance.getItems();
+			this.tableJustificatifsAvance().getItems();
 			if (DO.choix_type_avance != null && DO.choix_type_avance.length != 0) {
 				appFormio.selectToggle(crossVars.forms[this.formioToBeLoaded], 'choix_type_avance', DO.choix_type_avance);
 
@@ -411,19 +414,19 @@ export class AvanceComponent implements OnInit {
 			appFormio.setDataValue(crossVars.forms[this.formioToBeLoaded], 'choix_plafond', '');
 		}
 
-		this.tableTypesAvance.getItems();
+		this.tableTypesAvance().getItems();
 	}
 
 	async saveAvance(back: any) {
 		if (!app.isValidForm(this.formioToBeLoaded)) {
-			this.btnSaveAvance.setLoading(false);
+			this.btnSaveAvance().setLoading(false);
 
 			app.showToast('toastAvanceSaveError');
 			return;
 		}
 
 		if (this.tableAvanceError()) {
-			this.btnSaveAvance.setLoading(false);
+			this.btnSaveAvance().setLoading(false);
 
 			app.showToast('toastAvanceSaveError');
 			return;
@@ -526,14 +529,14 @@ export class AvanceComponent implements OnInit {
 			}
 		}
 		else if (this.btnSaveAvance != null)
-			this.btnSaveAvance.setLoading(false);
+			this.btnSaveAvance().setLoading(false);
 	}
 
 	verifAvance(concours: any) {
 		var errorSave = false;
 
 		if (!this.checkAudits()) {
-			this.btnSaveAvance.setLoading(false);
+			this.btnSaveAvance().setLoading(false);
 			app.showToast('toastAvanceSaveError');
 			errorSave = true;
 		}
@@ -566,7 +569,7 @@ export class AvanceComponent implements OnInit {
 
 	async saveAvenant() {
 		if (!app.isValidForm('formio_avenant')) {
-			this.modalSaveAvenant.setLoadingBtn();
+			this.modalSaveAvenant().setLoadingBtn();
 			app.showToast('toastJAvenantSaveError');
 			return;
 		}
@@ -588,7 +591,7 @@ export class AvanceComponent implements OnInit {
 
 		await this.getAvance();
 
-		this.modalSaveAvenant.setLoadingBtn();
+		this.modalSaveAvenant().setLoadingBtn();
 
 		app.hideModal('modalAddAvenant');
 	}
@@ -630,7 +633,7 @@ export class AvanceComponent implements OnInit {
 			await this.save(false);
 			await app.sleep(150);
 			app.hideModal('modalConfirmationAddJustificatifAvance');
-			this.modalConfirmationAddJustificatifAvance.setLoadingBtn();
+			this.modalConfirmationAddJustificatifAvance().setLoadingBtn();
 		}
 
 		app.resetDO('justificatifAvance');
@@ -647,7 +650,8 @@ export class AvanceComponent implements OnInit {
 
 			app.mapDO(DO, item);
 			DO.persistence_id = item.persistenceId;
-			DO.emetteur = (this.selectEmetteurAvance != null && this.selectEmetteurAvance.tiersSelected != null) ? this.selectEmetteurAvance.tiersSelected.idTiers : "";
+			const selectEmetteurAvance = this.selectEmetteurAvance();
+   DO.emetteur = (this.selectEmetteurAvance != null && selectEmetteurAvance.tiersSelected != null) ? selectEmetteurAvance.tiersSelected.idTiers : "";
 
 			if (DO.dernier_justificatif == "Y")
 				this.dernierJustifValue = true;
@@ -661,8 +665,8 @@ export class AvanceComponent implements OnInit {
 			DO.devise = this.avanceContractuel.devise_avance;
 		}
 
-		this.teleportEmetteurJustificatifAvance.unteleport();
-		this.teleportSelectEmetteurJustificatifAvance.unteleport();
+		this.teleportEmetteurJustificatifAvance().unteleport();
+		this.teleportSelectEmetteurJustificatifAvance().unteleport();
 
 		app.cleanDiv('formio_justificatifAvance' + this.entite);
 
@@ -690,10 +694,10 @@ export class AvanceComponent implements OnInit {
 
 		await app.sleep(500);
 
-		this.teleportEmetteurJustificatifAvance.teleport();
-		this.teleportEmetteurJustificatifAvance.show();
-		this.teleportSelectEmetteurJustificatifAvance.teleport();
-		this.teleportSelectEmetteurJustificatifAvance.show();
+		this.teleportEmetteurJustificatifAvance().teleport();
+		this.teleportEmetteurJustificatifAvance().show();
+		this.teleportSelectEmetteurJustificatifAvance().teleport();
+		this.teleportSelectEmetteurJustificatifAvance().show();
 
 		await app.sleep(250);
 		if (!app.isAFD(this.entite) && item != null && this.justificatifUpdate != null)
@@ -703,13 +707,14 @@ export class AvanceComponent implements OnInit {
 
 		app.showModal('modalAddJustificatifAvance');
 
-		this.tableJustificatifsAvance.setClickInProgress(false);
+		this.tableJustificatifsAvance().setClickInProgress(false);
 	}
 
 	async saveJustificatifAvance() {
-		if (!app.isValidForm('formio_justificatifAvance' + this.entite) ||
-			(this.selectEmetteurAvance != null && this.selectEmetteurAvance.tiersSelected == null)) {
-			this.saveJustificatif.setLoadingBtn();
+		const selectEmetteurAvance = this.selectEmetteurAvance();
+  if (!app.isValidForm('formio_justificatifAvance' + this.entite) ||
+			(this.selectEmetteurAvance != null && selectEmetteurAvance.tiersSelected == null)) {
+			this.saveJustificatif().setLoadingBtn();
 			app.showToast('toastJustificatifAvanceSaveError');
 			return;
 		}
@@ -720,7 +725,7 @@ export class AvanceComponent implements OnInit {
 
 		DO.id_avance_contractuel = this.avanceContractuel.persistenceId;
 		DO.dernier_justificatif = this.dernierJustifValue;
-		DO.emetteur = (this.selectEmetteurAvance != null && this.selectEmetteurAvance.tiersSelected != null) ? this.selectEmetteurAvance.tiersSelected.idTiers : "";
+		DO.emetteur = (this.selectEmetteurAvance != null && selectEmetteurAvance.tiersSelected != null) ? selectEmetteurAvance.tiersSelected.idTiers : "";
 
 		if (this.justificatifUpdate != null) { //lors de la validation au niv de createJustif
 			DO.persistence_id = this.justificatifUpdate.persistenceId;
@@ -751,9 +756,9 @@ export class AvanceComponent implements OnInit {
 
 		await app.sleep(100);
 
-		this.tableJustificatifsAvance.getItems();
+		this.tableJustificatifsAvance().getItems();
 
-		this.saveJustificatif.setLoadingBtn();
+		this.saveJustificatif().setLoadingBtn();
 
 		await this.getAvance();
 
@@ -767,14 +772,14 @@ export class AvanceComponent implements OnInit {
 	/* JUSTIFICATIF / EMETTEUR */
 	async initSelectEmetteurAV(emetteurJustificatifAV?: any) {
 		if (this.selectEmetteurAvance != null)
-			await this.selectEmetteurAvance.initSelectBeneficaire(this.listEmetteursAvanceByCr, this.read, 'JA', emetteurJustificatifAV, 'modalAddJustificatifAvance');
+			await this.selectEmetteurAvance().initSelectBeneficaire(this.listEmetteursAvanceByCr, this.read, 'JA', emetteurJustificatifAV, 'modalAddJustificatifAvance');
 	}
 
 	async getEmetteurJustificatifAV(idEmetteurJustifAvance?: any) {
 		var numeroConcours = appFormio.getDataValue(crossVars.forms[this.formioToBeLoaded], 'numero_concours');
-		var idEmetteurAV = !app.isEmpty(idEmetteurJustifAvance) ? idEmetteurJustifAvance : this.selectEmetteurAvance?.tiersSelected?.idTiers;
+		var idEmetteurAV = !app.isEmpty(idEmetteurJustifAvance) ? idEmetteurJustifAvance : this.selectEmetteurAvance()?.tiersSelected?.idTiers;
 		if (!app.isEmpty(idEmetteurAV))
-			await this.infosEmetteurJustificatifAvance.getBeneficiaire(null, null, idEmetteurAV, numeroConcours, 'JA');
+			await this.infosEmetteurJustificatifAvance().getBeneficiaire(null, null, idEmetteurAV, numeroConcours, 'JA');
 	}
 
 	tableAvanceError() {
@@ -808,7 +813,7 @@ export class AvanceComponent implements OnInit {
 	async saveTypeAvance() {
 		if (!app.isValidForm('formio_typeAvance')) {
 			app.showToast('toastTypeAvanceSaveSaveError');
-			this.modalSaveTypeAvance.setLoadingBtn();
+			this.modalSaveTypeAvance().setLoadingBtn();
 			return;
 		}
 		var DO = app.getRootDO('typeAvance');
@@ -828,7 +833,7 @@ export class AvanceComponent implements OnInit {
 
 		await this.getTypesAvance(this.type, true);
 
-		this.modalSaveTypeAvance.setLoadingBtn();
+		this.modalSaveTypeAvance().setLoadingBtn();
 
 		app.hideModal('modalAddTypeAvance');
 	}
@@ -854,9 +859,9 @@ export class AvanceComponent implements OnInit {
 
 		await app.sleep(1000);
 
-		this.tableTypesAvance.getItems();
+		this.tableTypesAvance().getItems();
 
-		this.modalDeleteTypeAvance.setLoadingBtn();
+		this.modalDeleteTypeAvance().setLoadingBtn();
 
 		app.showToast('toastTypeAvanceDeleteSuccess');
 
@@ -896,11 +901,11 @@ export class AvanceComponent implements OnInit {
 
 		await app.sleep(700);
 
-		this.tableJustificatifsAvance.getItems();
+		this.tableJustificatifsAvance().getItems();
 
 		app.resetRootDO('justificatifAvance');
 
-		this.modalDeleteJustificatif.setLoadingBtn();
+		this.modalDeleteJustificatif().setLoadingBtn();
 
 		app.showToast('toastJustificatifDeleteSuccess');
 
@@ -973,7 +978,7 @@ export class AvanceComponent implements OnInit {
 
 			for (var i = 0; i < this.audits.length; i++) {
 				if (!app.isValidForm('formio_avanceAudit_' + i)) {
-					this.btnSaveAvance.setLoading(false);
+					this.btnSaveAvance().setLoading(false);
 					isCheckedFormAudit = false;
 				}
 			}
@@ -1035,7 +1040,7 @@ export class AvanceComponent implements OnInit {
 
 	async save(redirect: any) {
 		if (!app.isValidForm(this.formioToBeLoaded)) {
-			this.btnSaveAvance.setLoading(false);
+			this.btnSaveAvance().setLoading(false);
 
 			app.showToast('toastAvanceSaveError');
 			return;
@@ -1157,7 +1162,8 @@ export class AvanceComponent implements OnInit {
 
 		var numeroConcours = appFormio.getDataValue(crossVars.forms[this.formioToBeLoaded], 'numero_concours');
 
-		if (this.infosContext)
-			this.infosContext.setInfosConcours(numeroConcours);
+		const infosContext = this.infosContext();
+  if (infosContext)
+			infosContext.setInfosConcours(numeroConcours);
 	}
 }

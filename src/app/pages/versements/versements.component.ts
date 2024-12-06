@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, viewChild } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { ModalComponent  } from '../../components/modal/modal.component';
@@ -23,9 +23,9 @@ declare const lang: any;
 })
 export class VersementsComponent implements OnInit {
 
-	@ViewChild('tableVersements') tableVersements!: TableComponent;
-	@ViewChild('modalAddVersement') modalAddVersement!: ModalComponent;
-	@ViewChild('exportDV') exportDV!: ExportExcelComponent;
+	readonly tableVersements = viewChild.required<TableComponent>('tableVersements');
+	readonly modalAddVersement = viewChild.required<ModalComponent>('modalAddVersement');
+	readonly exportDV = viewChild.required<ExportExcelComponent>('exportDV');
 
 	entite: string = '';
 	role: string = '';
@@ -52,11 +52,11 @@ export class VersementsComponent implements OnInit {
 	async ngAfterViewInit() {
 		await this.getVersements();
 
-		this.tableVersements.filterItemsBy('hasTask', 'true');
+		this.tableVersements().filterItemsBy('hasTask', 'true');
 	}
 
 	async getVersements() {
-		this.tableVersements.setLoading(true);
+		this.tableVersements().setLoading(true);
 
 		this.versements = await app.getExternalData(app.getUrl('urlGetVersementsByEntite'), 'page > versements > getVersements');
 
@@ -73,7 +73,7 @@ export class VersementsComponent implements OnInit {
 
 		await app.sleep(150);
 
-		this.tableVersements.getItems();
+		this.tableVersements().getItems();
 	}
 
 	async getConcours() {
@@ -132,7 +132,7 @@ export class VersementsComponent implements OnInit {
 	async saveVersement() {
 		if (!app.isValidForm('formio_versementInit' + this.entite)) {
 			app.showToast('toastVersementSaveError');
-			this.modalAddVersement.setLoadingBtn();
+			this.modalAddVersement().setLoadingBtn();
 			return;
 		}
 
@@ -182,7 +182,7 @@ export class VersementsComponent implements OnInit {
 
 		var caseContext = await app.getCaseContext(app.isAFD(this.entite), caseId, 'page-versements > saveVersement - get caseContext');
 
-		this.modalAddVersement.setLoadingBtn();
+		this.modalAddVersement().setLoadingBtn();
 
 		app.hideModal('modalAddVersement');
 
@@ -190,9 +190,10 @@ export class VersementsComponent implements OnInit {
 	}
 
 	async exportExcel() {
-		this.tableVersements.loadingExport = true;
+		const tableVersements = this.tableVersements();
+  tableVersements.loadingExport = true;
 
-		var items = this.tableVersements.itemsFiltered.map((item: any) => {
+		var items = tableVersements.itemsFiltered.map((item: any) => {
 			item.date_reception = app.formatDate(item.date_reception, true);
 
 			app.log(item);
@@ -204,9 +205,9 @@ export class VersementsComponent implements OnInit {
 
 		await app.sleep(2000);
 
-		this.exportDV.exportExcel('dossierVersementexport' + ((this.isAFD) ? '' : 'pro'), items, null, null);
+		this.exportDV().exportExcel('dossierVersementexport' + ((this.isAFD) ? '' : 'pro'), items, null, null);
 
-		this.tableVersements.loadingExport = false;
+		tableVersements.loadingExport = false;
 	}
 
 	checkOtherDevise(items: any) {

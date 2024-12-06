@@ -1,4 +1,4 @@
-<ng-container *ngIf="paramAC == null">
+<ng-container *ngIf="paramAC() == null">
     <app-nav-actions>
         <div class="col">
             <app-btn [label]="lang.cancel" type="secondary" ico="arrow-left" (action)="annuler()"></app-btn>
@@ -61,11 +61,11 @@
     <div *ngIf="tableAvanceError() && showTypeAvance" class="error">
         {{ lang.avance.remplirTable }}
     </div>
-    <app-table #tableTypesAvance *ngIf="showTypeAvance" [type]="typesAvances" [parentItems]="typesAvanceByTypeSelected" [itemsByPage]="itemsByPage" [manualLoading]=true [hideFilters]=true [enableAdd]="!read" (add)="addTypeAvance($event)" (goto)="addTypeAvance($event)" highlightIf="deleted" [highlightIfValue]=true highlightMode="deleted" [disabledEditAndDelete]="paramAC != null"></app-table>
+    <app-table #tableTypesAvance *ngIf="showTypeAvance" [type]="typesAvances" [parentItems]="typesAvanceByTypeSelected" [itemsByPage]="itemsByPage" [manualLoading]=true [hideFilters]=true [enableAdd]="!read" (add)="addTypeAvance($event)" (goto)="addTypeAvance($event)" highlightIf="deleted" [highlightIfValue]=true highlightMode="deleted" [disabledEditAndDelete]="paramAC() != null"></app-table>
 </app-teleport>
 <app-teleport #teleportJustificatifAvance to=".teleport-justificatifs-avance">
     <h6 *ngIf="avanceContractuel != null" class="mt-4">{{ lang.avanceContractuel.listJustificatifs }}</h6>
-    <app-table *ngIf="avanceContractuel != null" #tableJustificatifsAvance [type]="'justificatifsAvance' + entite" [parentItems]="justificatifsAvance" [manualLoading]=true [hideFilters]=true [enableAdd]="!read && !checkDernierJustif" (goto)="addJustificatifAvance($event)" (add)="confirmerAddJustificatifAvance($event)" [itemsByPage]="app.isAFD(this.entite) ? 5 : 20" highlightIf="deleted" [highlightIfValue]=true highlightMode="deleted" [disabledEditAndDelete]="paramAC != null"></app-table>
+    <app-table *ngIf="avanceContractuel != null" #tableJustificatifsAvance [type]="'justificatifsAvance' + entite" [parentItems]="justificatifsAvance" [manualLoading]=true [hideFilters]=true [enableAdd]="!read && !checkDernierJustif" (goto)="addJustificatifAvance($event)" (add)="confirmerAddJustificatifAvance($event)" [itemsByPage]="app.isAFD(this.entite) ? 5 : 20" highlightIf="deleted" [highlightIfValue]=true highlightMode="deleted" [disabledEditAndDelete]="paramAC() != null"></app-table>
 </app-teleport>
 <app-teleport #teleportEmetteurJustificatifAvance to=".teleport-emetteur-justificatif-avance">
     <app-infos-beneficiaire #infosEmetteurJustificatifAvance [showTiersUsedByConcours]="false" [objectParentRepris]="acRepris"></app-infos-beneficiaire>

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, QueryList, ViewChildren, input } from '@angular/core';
 import { StoreService } from '../../services/store.service';
 import { CommentsComponent } from '../comments/comments.component';
 import { BtnComponent } from '../btn/btn.component';
@@ -35,7 +35,7 @@ export class ControlesComponent implements OnInit {
 	typeControles: any = [];
 	refCriticite: any = refs['refCriticite'];
 
-	@Input() role: any;
+	readonly role = input<any>();
 
 	constructor(private store: StoreService, public cdr: ChangeDetectorRef) {
 		this.cdr.detach();

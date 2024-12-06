@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, viewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ExportExcelComponent } from '../../components/export-excel/export-excel.component';
 import { TableComponent } from '../../components/table/table.component';
@@ -18,8 +18,8 @@ declare const lang: any;
 })
 export class HistoriqueDossiersRajComponent implements OnInit {
 
-	@ViewChild('tableDossiersRaj') tableDossiersRaj!: TableComponent;
-	@ViewChild('exportDossiersRaj') exportDossiersRaj!: ExportExcelComponent;
+	readonly tableDossiersRaj = viewChild.required<TableComponent>('tableDossiersRaj');
+	readonly exportDossiersRaj = viewChild.required<ExportExcelComponent>('exportDossiersRaj');
 
 	app: any = app;
 	lang: any = lang;
@@ -36,14 +36,14 @@ export class HistoriqueDossiersRajComponent implements OnInit {
 	}
 
 	async getDossiersRaj() {
-		this.tableDossiersRaj.setLoading(true);
+		this.tableDossiersRaj().setLoading(true);
 
 		this.dossiersRaj = await app.getExternalData(app.getUrl('urlGetDossiersControlesRAJByProjet', ''), 'historique-dossiers-raj > getDossiersRaj');
 		this.dossiersRajCopy = app.copy(this.dossiersRaj);
 
 		await app.sleep(150);
 
-		this.tableDossiersRaj.getItems();
+		this.tableDossiersRaj().getItems();
 	}
 
 	async gotoDossierRaj(item: any) {
@@ -62,7 +62,7 @@ export class HistoriqueDossiersRajComponent implements OnInit {
 
 		await app.sleep(50);
 
-		this.tableDossiersRaj.getItems();
+		this.tableDossiersRaj().getItems();
 	}
 
 	async filterRajReset() {
@@ -72,10 +72,10 @@ export class HistoriqueDossiersRajComponent implements OnInit {
 
 		await app.sleep(150);
 
-		this.tableDossiersRaj.resetPage();
-		this.tableDossiersRaj.filterItems();
-		this.tableDossiersRaj.sortByDefault();
-		this.tableDossiersRaj.getItems();
+		this.tableDossiersRaj().resetPage();
+		this.tableDossiersRaj().filterItems();
+		this.tableDossiersRaj().sortByDefault();
+		this.tableDossiersRaj().getItems();
 	}
 
 	filterRajSelected(value: any) {
@@ -83,9 +83,10 @@ export class HistoriqueDossiersRajComponent implements OnInit {
 	}
 
 	async exportExcel() {
-		this.tableDossiersRaj.loadingExport = true;
+		const tableDossiersRaj = this.tableDossiersRaj();
+  tableDossiersRaj.loadingExport = true;
 
-		var items = this.tableDossiersRaj.itemsFiltered;
+		var items = tableDossiersRaj.itemsFiltered;
 
 		for (var item of items) {
 			item.agenceGestion = app.getRefLabel('refAgencesGestions', item.agenceGestion);
@@ -95,8 +96,8 @@ export class HistoriqueDossiersRajComponent implements OnInit {
 			item.infosDatesMaj = app.formatDate(item.dateModification) + " (crée le " + app.formatDate(item.dateCreation) + ")";
 		}
 
-		this.exportDossiersRaj.exportExcel('histoRAJ', items, null, null);
+		this.exportDossiersRaj().exportExcel('histoRAJ', items, null, null);
 
-		this.tableDossiersRaj.loadingExport = false;
+		tableDossiersRaj.loadingExport = false;
 	}
 }

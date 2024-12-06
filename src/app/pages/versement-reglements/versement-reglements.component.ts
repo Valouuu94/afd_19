@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, viewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StoreService } from '../../services/store.service';
 import { NotificationComponent } from '../../components/notification/notification.component';
@@ -28,14 +28,14 @@ declare const lang: any;
 })
 export class VersementReglementsComponent implements OnInit {
 
-	@ViewChild('btnSaveControles') btnSaveControles!: BtnComponent;
-	@ViewChild('tableReglements') tableReglements!: TableComponent;
-	@ViewChild('tableVersements') tableVersements!: TableComponent;
-	@ViewChild('detailsReglement') detailsReglement!: InfosReglementComponent;
-	@ViewChild('detailsVersement') detailsVersement!: InfosVersementComponent;
-	@ViewChild('notification') notification!: NotificationComponent;
-	@ViewChild('infosDossier') infosDossier!: InfosDossierComponent;
-	@ViewChild('btnAnnulerDossier') btnAnnulerDossier!: BtnComponent;
+	readonly btnSaveControles = viewChild.required<BtnComponent>('btnSaveControles');
+	readonly tableReglements = viewChild.required<TableComponent>('tableReglements');
+	readonly tableVersements = viewChild.required<TableComponent>('tableVersements');
+	readonly detailsReglement = viewChild.required<InfosReglementComponent>('detailsReglement');
+	readonly detailsVersement = viewChild.required<InfosVersementComponent>('detailsVersement');
+	readonly notification = viewChild.required<NotificationComponent>('notification');
+	readonly infosDossier = viewChild.required<InfosDossierComponent>('infosDossier');
+	readonly btnAnnulerDossier = viewChild.required<BtnComponent>('btnAnnulerDossier');
 
 	versement: any = null;
 	entite: any;
@@ -164,7 +164,7 @@ export class VersementReglementsComponent implements OnInit {
 
 		await app.sleep(500);
 
-		this.tableReglements.getItems();
+		this.tableReglements().getItems();
 	}
 
 	async gotoReglement(item?: any) {
@@ -191,9 +191,9 @@ export class VersementReglementsComponent implements OnInit {
 
 					await app.sleep(150);
 
-					await this.detailsReglement.gotoReglement(item, this.versement, update);
+					await this.detailsReglement().gotoReglement(item, this.versement, update);
 
-					this.tableReglements.setClickInProgress(false);
+					this.tableReglements().setClickInProgress(false);
 				}
 			}
 		}
@@ -204,11 +204,11 @@ export class VersementReglementsComponent implements OnInit {
 	}
 
 	async getAutresDevises() {
-		await this.detailsVersement.getAutresDevises();
+		await this.detailsVersement().getAutresDevises();
 	}
 
 	async getBeneficiaireVersement() {
-		await this.detailsVersement.getBeneficiaire();
+		await this.detailsVersement().getBeneficiaire();
 	}
 
 	async annulerDossier(DONotification?: any) {
@@ -236,8 +236,8 @@ export class VersementReglementsComponent implements OnInit {
 
 			await app.sleep(1000);
 
-			this.notification.setLoadingBtn();
-			this.notification.hideModal();
+			this.notification().setLoadingBtn();
+			this.notification().hideModal();
 			//ANOMALIE 3079 LIDIA
 			app.resetDO('notification');
 			app.resetDO('versementUpdate');
@@ -248,12 +248,12 @@ export class VersementReglementsComponent implements OnInit {
 
 			await this.getVersement();
 
-			await this.infosDossier.getNotifications();
+			await this.infosDossier().getNotifications();
 		}
 	}
 
 	annulerAction(action: any) {
 		if (action == '-1')
-			this.btnAnnulerDossier.setLoading(false);
+			this.btnAnnulerDossier().setLoading(false);
 	}
 }

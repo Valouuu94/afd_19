@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, viewChild } from '@angular/core';
 import { ExportExcelComponent } from '../../components/export-excel/export-excel.component';
 import { BtnComponent } from '../../components/btn/btn.component';
 import { SpinnerComponent } from '../../components/spinner/spinner.component';
@@ -18,8 +18,8 @@ declare const lang: any;
 })
 export class AuditComponent implements OnInit {
 
-	@ViewChild('exportExcelAudit') exportExcelAudit!: ExportExcelComponent;
-	@ViewChild('btnExportExcel') btnExportExcel!: BtnComponent;
+	readonly exportExcelAudit = viewChild.required<ExportExcelComponent>('exportExcelAudit');
+	readonly btnExportExcel = viewChild.required<BtnComponent>('btnExportExcel');
 
 	lang: any = lang;
 	loading: boolean = false;
@@ -58,7 +58,7 @@ export class AuditComponent implements OnInit {
 		if (app.isEmpty(dossier) && app.isEmpty(anomalie) && app.isEmpty(projet) && app.isEmpty(concours) &&
 			app.isEmpty(user) && app.isEmpty(role)) {
 			app.showToast('toastAuditOneFilterRequired');
-			this.btnExportExcel.setLoading(false);
+			this.btnExportExcel().setLoading(false);
 			return;
 		}
 
@@ -76,7 +76,7 @@ export class AuditComponent implements OnInit {
 
 		if (this.items == null || this.items.length == 0) {
 			app.showToast('toastAuditNoResult');
-			this.btnExportExcel.setLoading(false);
+			this.btnExportExcel().setLoading(false);
 			return;
 		}
 
@@ -98,10 +98,10 @@ export class AuditComponent implements OnInit {
 			[lang.reporting.audit.filterEntitePerimetre, entitePerimetre],
 		];
 
-		this.exportExcelAudit.exportExcel('audit', this.items, filtersForSheet, cols);
+		this.exportExcelAudit().exportExcel('audit', this.items, filtersForSheet, cols);
 
 		app.showToast('toastAuditNbResults');
 
-		this.btnExportExcel.setLoading(false);
+		this.btnExportExcel().setLoading(false);
 	}
 }

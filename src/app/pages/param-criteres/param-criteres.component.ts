@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, viewChild } from '@angular/core';
 import { StoreService } from '../../services/store.service';
 import { ModalComponent } from '../../components/modal/modal.component';
 import { ExportExcelComponent } from '../../components/export-excel/export-excel.component';
@@ -19,10 +19,10 @@ declare const refs: any;
 })
 export class ParamCriteresComponent implements OnInit {
 
-	@ViewChild('tableParamCriteres') tableParamCriteres!: TableComponent;
-	@ViewChild('tableParamCriteresRef') tableParamCriteresRef!: TableComponent;
-	@ViewChild('modalDeleteCritere') modalDeleteCritere!: ModalComponent;
-	@ViewChild('exportCritereRisque') exportCritereRisque!: ExportExcelComponent;
+	readonly tableParamCriteres = viewChild.required<TableComponent>('tableParamCriteres');
+	readonly tableParamCriteresRef = viewChild.required<TableComponent>('tableParamCriteresRef');
+	readonly modalDeleteCritere = viewChild.required<ModalComponent>('modalDeleteCritere');
+	readonly exportCritereRisque = viewChild.required<ExportExcelComponent>('exportCritereRisque');
 
 	paramCriteres: any = null;
 	criteres: any = [];
@@ -71,11 +71,11 @@ export class ParamCriteresComponent implements OnInit {
 			if (this.paramCriteres[i].dateCritere != null)
 				this.paramCriteres[i].dateCritere = this.paramCriteres[i].dateCritere.substring(0, 10);
 
-		this.tableParamCriteres.reset();
+		this.tableParamCriteres().reset();
 
 		await app.sleep(250);
 
-		this.tableParamCriteres.getItems();
+		this.tableParamCriteres().getItems();
 	}
 
 	async addCritere() {
@@ -95,7 +95,7 @@ export class ParamCriteresComponent implements OnInit {
 
 			await app.sleep(250);
 
-			this.tableParamCriteresRef.reset();
+			this.tableParamCriteresRef().reset();
 
 			app.showModal('modalAddCritere');
 
@@ -122,7 +122,7 @@ export class ParamCriteresComponent implements OnInit {
 			// 	this.paramCriteresRef = await app.getExternalData(app.getUrl('urlGetCritresRisquesConcours'));
 			await app.sleep(500);
 
-			this.tableParamCriteresRef.getItems();
+			this.tableParamCriteresRef().getItems();
 		}
 	}
 
@@ -154,7 +154,7 @@ export class ParamCriteresComponent implements OnInit {
 
 			await this.getParamCriteres();
 
-			this.modalDeleteCritere.setLoadingBtn();
+			this.modalDeleteCritere().setLoadingBtn();
 
 			app.hideModal('modalConfirmSuppressionCritere');
 		}
@@ -234,9 +234,10 @@ export class ParamCriteresComponent implements OnInit {
 	}
 
 	async exportExcel() {
-		this.tableParamCriteres.loadingExport = true;
+		const tableParamCriteres = this.tableParamCriteres();
+  tableParamCriteres.loadingExport = true;
 		let codecritere;
-		var items = this.tableParamCriteres.itemsFiltered;
+		var items = tableParamCriteres.itemsFiltered;
 
 		for (var item of items) {
 			item.objectcritere = app.getRefLabel('refParamTypeCritere', item.object);
@@ -252,8 +253,8 @@ export class ParamCriteresComponent implements OnInit {
 			[lang.exportCritereRisque.critere, app.getRefLabel('refParamCritere', codecritere)]
 		];
 
-		this.exportCritereRisque.exportExcel('exportCriteresRisque', this.rows, filtresCritereRisque, null);
+		this.exportCritereRisque().exportExcel('exportCriteresRisque', this.rows, filtresCritereRisque, null);
 
-		this.tableParamCriteres.loadingExport = false;
+		tableParamCriteres.loadingExport = false;
 	}
 }

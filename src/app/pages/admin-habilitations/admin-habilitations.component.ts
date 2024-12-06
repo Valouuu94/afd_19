@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, viewChild } from '@angular/core';
 import { StoreService } from '../../services/store.service';
 import { TableComponent } from '../../components/table/table.component';
 import { ContentComponent } from '../../components/content/content.component';
@@ -14,7 +14,7 @@ declare const lang: any;
 })
 export class AdminHabilitationsComponent implements OnInit {
 
-	@ViewChild('tableHabilitations') tableHabilitations!: TableComponent;
+	readonly tableHabilitations = viewChild.required<TableComponent>('tableHabilitations');
 
 	app: any = app;
 	lang: any = lang;
@@ -59,6 +59,6 @@ export class AdminHabilitationsComponent implements OnInit {
 
 		await app.sleep(250);
 
-		this.tableHabilitations.getItems();
+		this.tableHabilitations().getItems();
 	}
 }

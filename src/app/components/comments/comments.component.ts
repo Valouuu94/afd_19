@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, input, output } from '@angular/core';
 import { NgFor, NgIf, NgClass } from '@angular/common';
 import { StoreService } from '../../services/store.service';
 
@@ -26,14 +26,14 @@ export class CommentsComponent implements OnInit {
 	isDCV: any;
 	disableSave: boolean = false;
 
-	@Input() DO: any;
-	@Input() numero: any;
-	@Input() type: any;
-	@Input() read: any;
-	@Input() currentUserRole: any = null; //envoyé depuis reglement-controles et recupéré de la tache
+	readonly DO = input<any>();
+	readonly numero = input<any>();
+	readonly type = input<any>();
+	readonly read = input<any>();
+	readonly currentUserRole = input<any>(null); //envoyé depuis reglement-controles et recupéré de la tache
 
-	@Output() save = new EventEmitter();
-	@Output() detectChanges = new EventEmitter();
+	readonly save = output();
+	readonly detectChanges = output();
 
 	constructor(public store: StoreService, private cdr: ChangeDetectorRef) {
 		this.cdr.detach();
@@ -68,10 +68,11 @@ export class CommentsComponent implements OnInit {
 		this.disableSave = false;
 
 		var commentaires;
-		if (this.numero != null)
-			commentaires = await app.getExternalData(app.getUrl('urlGetCommentairesByNumero', this.type + '-' + this.numero));
+		const DO = this.DO();
+  if (this.numero != null)
+			commentaires = await app.getExternalData(app.getUrl('urlGetCommentairesByNumero', this.type() + '-' + this.numero()));
 		else
-			commentaires = await app.getExternalData(app.getUrl('urlGetCommentaires', ((this.DO.firstStepPersistenceId != null) ? this.DO.firstStepPersistenceId : this.DO.persistenceId)));
+			commentaires = await app.getExternalData(app.getUrl('urlGetCommentaires', ((DO.firstStepPersistenceId != null) ? DO.firstStepPersistenceId : DO.persistenceId)));
 
 		this.commentaires = [];
 		this.existMyComment = false;
@@ -133,16 +134,17 @@ export class CommentsComponent implements OnInit {
 		}
 
 		if (this.DO != null) {
-			this.DO.commentCount = commentsCount;
-			this.DO.commentTextCount = commentsTextCount;
-			this.DO.linksCount = linksCount;
+			const DOValue = this.DO();
+   DOValue.commentCount = commentsCount;
+			DOValue.commentTextCount = commentsTextCount;
+			DOValue.linksCount = linksCount;
 
 			this.detectChanges.emit();
 		}
 	}
 
 	getCommentaireId() {
-		return 'commentaire-controle-' + this.DO?.id;
+		return 'commentaire-controle-' + this.DO()?.id;
 	}
 
 	async editCommentaire(item: any) {
@@ -180,16 +182,18 @@ export class CommentsComponent implements OnInit {
 		DO.persistenceId = null;
 		DO.commentaireAnnule = false;
 		DO.userName = this.store.getUserName();
-		DO.roleUser = (app.isEmpty(this.currentUserRole) ? '' : this.currentUserRole);
+		const currentUserRole = this.currentUserRole();
+  DO.roleUser = (app.isEmpty(currentUserRole) ? '' : currentUserRole);
 
 		if (this.numero != null) {
-			DO.typePartentObject = this.type + '-' + this.numero;
+			DO.typePartentObject = this.type() + '-' + this.numero();
 			DO.persistanceIdParentObject = null;
 			DO.caseIdParentObject = null;
 		} else {
-			DO.typePartentObject = this.type;
-			DO.persistanceIdParentObject = ((this.DO.firstStepPersistenceId != null) ? this.DO.firstStepPersistenceId : this.DO.persistenceId);
-			DO.caseIdParentObject = this.DO.caseId;
+			DO.typePartentObject = this.type();
+			const DOValue = this.DO();
+   DO.persistanceIdParentObject = ((DOValue.firstStepPersistenceId != null) ? DOValue.firstStepPersistenceId : DOValue.persistenceId);
+			DO.caseIdParentObject = this.DO().caseId;
 		}
 
 		var liens: any = [];
@@ -225,14 +229,16 @@ export class CommentsComponent implements OnInit {
 		DO.persistenceId = item.persistenceId;
 
 		if (this.numero != null) {
-			DO.typePartentObject = this.type + '-' + this.numero;
+			DO.typePartentObject = this.type() + '-' + this.numero();
 			DO.persistanceIdParentObject = null;
 			DO.caseIdParentObject = null;
 		} else {
-			DO.typePartentObject = this.type;
-			DO.persistanceIdParentObject = ((this.DO.firstStepPersistenceId != null) ? this.DO.firstStepPersistenceId : this.DO.persistenceId);
-			DO.caseIdParentObject = this.DO.caseId;
-			DO.roleUser = (app.isEmpty(this.currentUserRole) ? '' : this.currentUserRole);
+			DO.typePartentObject = this.type();
+			const DOValue = this.DO();
+   DO.persistanceIdParentObject = ((DOValue.firstStepPersistenceId != null) ? DOValue.firstStepPersistenceId : DOValue.persistenceId);
+			DO.caseIdParentObject = this.DO().caseId;
+			const currentUserRole = this.currentUserRole();
+   DO.roleUser = (app.isEmpty(currentUserRole) ? '' : currentUserRole);
 		}
 
 		var liens: any = [];

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, input, output, viewChild } from '@angular/core';
 import { StoreService } from '../../services/store.service';
 import { ModalComponent } from '../modal/modal.component';
 import { FormsModule } from '@angular/forms';
@@ -19,8 +19,8 @@ declare const tachesRedirect: any;
 })
 export class NotificationComponent implements OnInit {
 
-	@ViewChild('sendNotification') sendNotification!: ModalComponent;
-	@ViewChild('modalDCV') modalDCV!: ModalComponent;
+	readonly sendNotification = viewChild.required<ModalComponent>('sendNotification');
+	readonly modalDCV = viewChild.required<ModalComponent>('modalDCV');
 
 	step: string = '';
 	typeAction: string = '';
@@ -40,21 +40,21 @@ export class NotificationComponent implements OnInit {
 	isDirecteur: any;
 	isControlesOk: any;
 
-	@Input() typeDossier: any;
-	@Input() tache: any;
-	@Input() dossier: any;
-	@Input() persistenceIdParent: any;
-	@Input() checkReglementsAnnule: boolean = false;
-	@Input() isAvance: boolean = false;
+	readonly typeDossier = input<any>();
+	readonly tache = input<any>();
+	readonly dossier = input<any>();
+	readonly persistenceIdParent = input<any>();
+	readonly checkReglementsAnnule = input<boolean>(false);
+	readonly isAvance = input<boolean>(false);
 
-	@Output() annulerDossier = new EventEmitter();
-	@Output() annulerAction = new EventEmitter();
+	readonly annulerDossier = output();
+	readonly annulerAction = output();
 
 	constructor(private store: StoreService) { }
 
 	ngOnInit() {
 		this.entite = this.store.getUserEntite();
-		this.role = app.getRoleTache(this.tache);
+		this.role = app.getRoleTache(this.tache());
 		this.perimetre = this.store.getUserPerimetre();
 
 		app.setCurrentCmp('notification', this);
@@ -87,19 +87,19 @@ export class NotificationComponent implements OnInit {
 	}
 	get messageHeaderModal() {
 		if (this.dossier != null && this.dossier != null) {
-			if (this.typeDossier == 'DR') {
+			if (this.typeDossier() == 'DR') {
 				if (this.typeAction == '0')
 					return lang.reglement.envoiDossierMessage;
 				else if (this.typeAction == '1')
 					return lang.reglement.renvoiDossierMessage;
-				return lang.reglement.annulerDossierMessage + this.dossier.code_fonctionnel;
+				return lang.reglement.annulerDossierMessage + this.dossier().code_fonctionnel;
 			}
 			else {
 				if (this.typeAction == '0')
 					return lang.versement.envoiDossierMessage;
 				else if (this.typeAction == '1')
 					return lang.versement.renvoiDossierMessage;
-				return lang.versement.annulerDossierMessage + this.dossier.code_fonctionnel;
+				return lang.versement.annulerDossierMessage + this.dossier().code_fonctionnel;
 			}
 		}
 	}
@@ -128,8 +128,8 @@ export class NotificationComponent implements OnInit {
 	}
 
 	async showModalNotification(typeAction: any) {
-		if (!this.isDCV && this.checkReglementsAnnule && typeAction == '-1') {
-			var reglementsIsAnnule = await app.checkDDRsIsAnnule(this.dossier.numero_dossier_versement);
+		if (!this.isDCV && this.checkReglementsAnnule() && typeAction == '-1') {
+			var reglementsIsAnnule = await app.checkDDRsIsAnnule(this.dossier().numero_dossier_versement);
 			if (!reglementsIsAnnule) {
 				this.annulerDossier.emit(null);
 				return;
@@ -145,7 +145,7 @@ export class NotificationComponent implements OnInit {
 
 		if (valideControle) {
 			this.typeAction = typeAction;
-			this.step = app.getEtapeTache(this.tache);
+			this.step = app.getEtapeTache(this.tache());
 			this.dataObjectName = (this.isDCV ? 'notificationDCV' : 'notification');
 
 			var DO = app.getDO(this.dataObjectName);
@@ -176,7 +176,7 @@ export class NotificationComponent implements OnInit {
 
 	async validerNotification() {
 		if (!app.isValidForm('formio_notification')) {
-			this.sendNotification.setLoadingBtn();
+			this.sendNotification().setLoadingBtn();
 			app.showToast('toastSendNotificationError');
 			return;
 		}
@@ -186,26 +186,26 @@ export class NotificationComponent implements OnInit {
 		var firstJson = DO[app.getFirstJsonKey(DO)];
 
 		if (!this.isDCV) {
-			firstJson.persistanceIdParentObject = this.dossier.persistenceId;
-			firstJson.caseIdParentObject = this.dossier.case_id;
+			firstJson.persistanceIdParentObject = this.dossier().persistenceId;
+			firstJson.caseIdParentObject = this.dossier().case_id;
 			DO.urlDossier = this.hrefDossier;
 		}
 		firstJson.corpNotification = "<pre>" + firstJson.corpNotification + "</pre>";
 
 		if (this.typeAction == '-1') {
 			if (!this.isDCV)
-				DO.decision = actions['annulerDossier'][this.typeDossier].action;
+				DO.decision = actions['annulerDossier'][this.typeDossier()].action;
 			else
-				firstJson.decision = actions['annulerDossier'][this.typeDossier].action;
+				firstJson.decision = actions['annulerDossier'][this.typeDossier()].action;
 
 			this.annulerDossier.emit(DO);
 		}
 		else {
 			if (this.typeAction == '1') {
 				if (this.typeDestinataire != '')
-					DO.decision = this.actions(this.typeDossier)[0].action[this.roleDestination];
+					DO.decision = this.actions(this.typeDossier())[0].action[this.roleDestination];
 				else
-					DO.decision = this.actions(this.typeDossier)[0].action;
+					DO.decision = this.actions(this.typeDossier())[0].action;
 			}
 			else
 				DO.decision = '';
@@ -215,7 +215,7 @@ export class NotificationComponent implements OnInit {
 	}
 
 	setLoadingBtn() {
-		this.sendNotification.setLoadingBtn();
+		this.sendNotification().setLoadingBtn();
 	}
 
 	hideModal() {
@@ -246,7 +246,8 @@ export class NotificationComponent implements OnInit {
 		if (userContext != null && userContext.utilisateurEntites != null && userContext.utilisateurEntites.length > 0) {
 			var userEntite = userContext.utilisateurEntites[0];
 
-			if (destination != null)
+			const dossier = this.dossier();
+   if (destination != null)
 				this.roleDestination = destination;
 			else if (this.typeAction == '1') {
 				if (this.role == 'MANAGER')
@@ -269,9 +270,9 @@ export class NotificationComponent implements OnInit {
 				else {
 					if (this.role == 'CHGAFF')
 						this.roleDestination = 'MODAF';
-					else if (this.role == 'CHGAPPUI' && this.dossier.decision == 'RETOUR_MODAF_CG')
+					else if (this.role == 'CHGAPPUI' && dossier.decision == 'RETOUR_MODAF_CG')
 						this.roleDestination = 'MODAF';
-					else if (this.role == 'CHGAPPUI' && this.dossier.decision != 'RETOUR_MODAF_CG')
+					else if (this.role == 'CHGAPPUI' && dossier.decision != 'RETOUR_MODAF_CG')
 						this.roleDestination = 'CHGAFF';
 					else if (this.role == 'MODAF')
 						this.roleDestination = 'DIRVALID';
@@ -282,7 +283,7 @@ export class NotificationComponent implements OnInit {
 			app.log('notification > getDestinataires - userEntite', userEntite);
 			app.log('notification > getDestinataires - roleDestination', this.roleDestination);
 
-			var url = (this.isAFD ? app.getUrl('urlGetDestinataires' + this.entite, userContext.idUtilisateur, this.roleDestination, this.dossier.numero_projet) : app.getUrl('urlGetDestinataires' + this.entite, userContext.idUtilisateur, this.roleDestination, this.dossier.numero_projet));
+			var url = (this.isAFD ? app.getUrl('urlGetDestinataires' + this.entite, userContext.idUtilisateur, this.roleDestination, dossier.numero_projet) : app.getUrl('urlGetDestinataires' + this.entite, userContext.idUtilisateur, this.roleDestination, dossier.numero_projet));
 
 			var destinataires = await app.getExternalData(url, 'notification > getDestinataires');
 
@@ -299,7 +300,7 @@ export class NotificationComponent implements OnInit {
 				}
 			}
 
-			var projet = await app.getExternalData(app.getUrl('urlGetProjetByNum', this.dossier.numero_projet), 'notification > getProjet - projet', true);
+			var projet = await app.getExternalData(app.getUrl('urlGetProjetByNum', dossier.numero_projet), 'notification > getProjet - projet', true);
 			if (!this.isAFD && ((app.isChargeAffaire(this.role) && this.typeAction == '0' && projet.flgProjetConfidentiel == '0') || (this.isDirecteur && this.typeAction == '0')))
 				users.push({ code: 'Groupe_MODAF', label: 'Groupe MODAF' });
 		}
@@ -354,7 +355,7 @@ export class NotificationComponent implements OnInit {
 				windowsUser = user.mail.replace('@afd.fr', '').replace('@proparco.fr', '').replace('.ext', '');
 			else {
 				console.error('notification > validerDossier - inwebo : user not found');
-				this.modalDCV.setLoadingBtn();
+				this.modalDCV().setLoadingBtn();
 				app.showToast('toastAuthentificationInweboError', true);
 				return;
 			}
@@ -364,7 +365,7 @@ export class NotificationComponent implements OnInit {
 			console.warn('notification > validerDossier - inwebo result', inwebo);
 
 			if (inwebo == null || (inwebo != null && inwebo.title != 'OK')) {
-				this.modalDCV.setLoadingBtn();
+				this.modalDCV().setLoadingBtn();
 				app.showToast('toastAuthentificationInweboError', true);
 				return;
 			}
@@ -378,7 +379,7 @@ export class NotificationComponent implements OnInit {
 		if (this.isDCV) {
 			var valideControle = await app.getCurrentCmp('controles').validerControles();
 			if (!valideControle) {
-				this.modalDCV.setLoadingBtn();
+				this.modalDCV().setLoadingBtn();
 				this.hideModal();
 				return;
 			}
@@ -419,14 +420,15 @@ export class NotificationComponent implements OnInit {
 			urlD = window.location.href;
 
 		//l'url a envoyer dans le cas d'annulation de dossier reglement pour AFD
-		var ctrls = await app.getExternalData(app.getUrl('urlGetControles', this.dossier.case_id), 'cmp-controles > loadControles');
+		var ctrls = await app.getExternalData(app.getUrl('urlGetControles', this.dossier().case_id), 'cmp-controles > loadControles');
 
 		await app.sleep(250);
 
-		if (this.typeDossier == 'DR' && this.typeAction == '-1' && this.isAFD && ctrls.length == 0)
-			urlD = this.hrefDossier.substring(0, this.hrefDossier.lastIndexOf('#') + 1).concat('/reglement/', this.dossier.persistenceId);
-		else if (this.typeDossier == 'DR' && this.typeAction == '-1' && !this.isAFD)
-			urlD = this.hrefDossier.substring(0, this.hrefDossier.lastIndexOf('#') + 1).concat('', app.getUrl(tachesRedirect[app.getTypeTache(this.tache)][app.getEtapeTache(this.tache)], this.persistenceIdParent));
+		const typeDossier = this.typeDossier();
+  if (typeDossier == 'DR' && this.typeAction == '-1' && this.isAFD && ctrls.length == 0)
+			urlD = this.hrefDossier.substring(0, this.hrefDossier.lastIndexOf('#') + 1).concat('/reglement/', this.dossier().persistenceId);
+		else if (typeDossier == 'DR' && this.typeAction == '-1' && !this.isAFD)
+			urlD = this.hrefDossier.substring(0, this.hrefDossier.lastIndexOf('#') + 1).concat('', app.getUrl(tachesRedirect[app.getTypeTache(this.tache())][app.getEtapeTache(this.tache())], this.persistenceIdParent()));
 
 		return urlD;
 	}

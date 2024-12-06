@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit, input } from '@angular/core';
 import { StoreService } from '../../services/store.service';
 import { ModalComponent } from '../modal/modal.component';
 import { NgIf, NgFor } from '@angular/common';
@@ -23,38 +23,38 @@ export class InfosDossierComponent implements OnInit {
 	lang: any = lang;
 	isDCV: boolean = false;
 
-	@Input() dossier: any;
-	@Input() type: any;
-	@Input() versement: any;
+	readonly dossier = input<any>();
+	readonly type = input<any>();
+	readonly versement = input<any>();
 
 	constructor(private store: StoreService) { }
 
 	async ngOnInit() {
 		this.getLibelleModalite();
 
-		this.isDCV = app.isDCV(this.dossier.entite, this.store.getUserPerimetre());
+		this.isDCV = app.isDCV(this.dossier().entite, this.store.getUserPerimetre());
 
 		await this.getNotifications();
 	}
 
 	get dossierAnnule() {
-		return app.isDossierAnnule((this.isDCV) ? this.dossier.code_statut_dossier_2nd : this.dossier.code_statut_dossier);
+		return app.isDossierAnnule((this.isDCV) ? this.dossier().code_statut_dossier_2nd : this.dossier().code_statut_dossier);
 	}
 	get dossierRembourse() {
-		return app.isDossierRembourse(this.dossier.code_statut_dossier);
+		return app.isDossierRembourse(this.dossier().code_statut_dossier);
 	}
 	get statutDossier() {
-		if (this.type == 'DDR')
-			return (this.isDCV ? this.dossier.lib_statut_dossier_2nd : this.dossier.lib_statut_dossier);
+		if (this.type() == 'DDR')
+			return (this.isDCV ? this.dossier().lib_statut_dossier_2nd : this.dossier().lib_statut_dossier);
 		else
-			return this.dossier.lib_statut_dossier;
+			return this.dossier().lib_statut_dossier;
 	}
 
 	getLibelleModalite() {
-		this.modalitePaiement = app.getRefLabel('refModalitesPaiement' + this.dossier.entite, this.dossier.modalite_paiement);
-		this.typeVersement = app.getRefLabel('refTypesVersement', this.dossier.type_versement);
+		this.modalitePaiement = app.getRefLabel('refModalitesPaiement' + this.dossier().entite, this.dossier().modalite_paiement);
+		this.typeVersement = app.getRefLabel('refTypesVersement', this.dossier().type_versement);
 
-		if (this.type == 'DDR')
+		if (this.type() == 'DDR')
 			this.typeDossier = 'reglement';
 		else
 			this.typeDossier = 'versement';
@@ -65,7 +65,7 @@ export class InfosDossierComponent implements OnInit {
 	}
 
 	async getNotifications() {
-		this.notifications = await app.getExternalData(app.getUrl('urlGetNotifications', this.dossier.persistenceId));
+		this.notifications = await app.getExternalData(app.getUrl('urlGetNotifications', this.dossier().persistenceId));
 
 		var notifs = [];
 		for (var ntf of this.notifications) {
@@ -73,17 +73,19 @@ export class InfosDossierComponent implements OnInit {
 
 			if (ntf.typeNotification != '-1')
 				ntf.renderDestinataire = ntf.destinataireNameFirstName;
-			if (ntf.typeNotification == '-1' && app.isAFD(this.dossier.entite) && ntf.typeDossier == 'reglement' && !this.isDCV)
+			const dossier = this.dossier();
+   if (ntf.typeNotification == '-1' && app.isAFD(dossier.entite) && ntf.typeDossier == 'reglement' && !this.isDCV)
 				ntf.corpNotification = lang.reglement.libelleAnnulerDossier + ' : ' + ntf.corpNotification;
 			else if (ntf.typeNotification == '-1' && ntf.typeDossier == 'versement')
-				ntf.corpNotification = (!app.isAFD(this.dossier.entite) ? lang.versementPROPARCO.libelleAnnulerDossier : lang.versementAFD.libelleAnnulerDossier) + ' : ' + ntf.corpNotification;
+				ntf.corpNotification = (!app.isAFD(dossier.entite) ? lang.versementPROPARCO.libelleAnnulerDossier : lang.versementAFD.libelleAnnulerDossier) + ' : ' + ntf.corpNotification;
 
 			notifs.push(ntf);
 		}
 
 		//recuperer les mails d'annulation des reglements PROPARCO
-		if (!app.isEmpty(this.versement) && !app.isAFD(this.versement.entite)) {
-			for (var reglement of this.versement.dossier_reglement) {
+		const versement = this.versement();
+  if (!app.isEmpty(versement) && !app.isAFD(versement.entite)) {
+			for (var reglement of versement.dossier_reglement) {
 				var notifisReglementBdd = await app.getExternalData(app.getUrl('urlGetNotificationsByTypeAndPersistanceIdParentObject', reglement.persistenceId, '-1'));
 
 				for (var ntfReglement of notifisReglementBdd) {
@@ -108,6 +110,6 @@ export class InfosDossierComponent implements OnInit {
 	}
 
 	async showNotifications() {
-		app.showModal('modalAddItem' + this.dossier.id);
+		app.showModal('modalAddItem' + this.dossier().id);
 	}
 }

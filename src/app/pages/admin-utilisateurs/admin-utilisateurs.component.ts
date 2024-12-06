@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, viewChild } from '@angular/core';
 import { UtilisateurAdhesionComponent } from './utilisateur-adhesion/utilisateur-adhesion.component';
 import { NgIf } from '@angular/common';
 import { TeleportComponent } from '../../components/teleport/teleport.component';
@@ -22,12 +22,12 @@ declare const appFormio: any;
 })
 export class AdminUtilisateursComponent implements OnInit {
 
-	@ViewChild('tableUtilisateurs') tableUtilisateurs!: TableComponent;
-	@ViewChild('modalUser') modalUser!: ModalComponent;
-	@ViewChild('modalConfirmationUser') modalConfirmationUser!: ModalComponent;
-	@ViewChild('exportUser') exportUser!: ExportExcelComponent;
-	@ViewChild('teleportCheckBox') teleportCheckBox!: TeleportComponent;
-	@ViewChild('utilisateurAdhesion') utilisateurAdhesion!: UtilisateurAdhesionComponent;
+	readonly tableUtilisateurs = viewChild.required<TableComponent>('tableUtilisateurs');
+	readonly modalUser = viewChild.required<ModalComponent>('modalUser');
+	readonly modalConfirmationUser = viewChild.required<ModalComponent>('modalConfirmationUser');
+	readonly exportUser = viewChild.required<ExportExcelComponent>('exportUser');
+	readonly teleportCheckBox = viewChild.required<TeleportComponent>('teleportCheckBox');
+	readonly utilisateurAdhesion = viewChild.required<UtilisateurAdhesionComponent>('utilisateurAdhesion');
 
 	app: any = app;
 	lang: any = lang;
@@ -82,7 +82,7 @@ export class AdminUtilisateursComponent implements OnInit {
 
 		await app.sleep(250);
 
-		this.tableUtilisateurs.getItems();
+		this.tableUtilisateurs().getItems();
 	}
 
 	async updateUtilisateur(item: any) {
@@ -92,9 +92,9 @@ export class AdminUtilisateursComponent implements OnInit {
 		//mise à jour de la liste des entites
 		app.removeStorageItem('refAFDEntites');
 		await app.loadRefs();
-		this.utilisateurAdhesion.entites = app.getRef('refAFDEntites');
+		this.utilisateurAdhesion().entites = app.getRef('refAFDEntites');
 
-		this.teleportCheckBox.unteleport();
+		this.teleportCheckBox().unteleport();
 		this.utilisateur = item;
 		this.enableAddRole = false;
 		this.create = false;
@@ -137,10 +137,10 @@ export class AdminUtilisateursComponent implements OnInit {
 
 		await app.sleep(100);
 
-		this.teleportCheckBox.teleport();
-		this.teleportCheckBox.show();
+		this.teleportCheckBox().teleport();
+		this.teleportCheckBox().show();
 
-		this.modalUser.setLoadingBtn();
+		this.modalUser().setLoadingBtn();
 
 		app.showModal('modalUser');
 	}
@@ -149,13 +149,13 @@ export class AdminUtilisateursComponent implements OnInit {
 		if (!this.hasNoRight) {
 			if (!app.isValidForm('formio_typeUser')) {
 				app.showToast('toastTypeUserSaveError');
-				this.modalUser.setLoadingBtn();
+				this.modalUser().setLoadingBtn();
 				return;
 			}
 
 			if (this.create) {
-				this.modalUser.setLoadingBtn();
-				this.modalConfirmationUser.setLoadingBtn();
+				this.modalUser().setLoadingBtn();
+				this.modalConfirmationUser().setLoadingBtn();
 				app.showModal('modalConfirmationUser');
 			} else
 				this.saveUtilisateur();
@@ -311,9 +311,10 @@ export class AdminUtilisateursComponent implements OnInit {
 	}
 
 	async exportExcelUser() {
-		this.tableUtilisateurs.loadingExport = true;
+		const tableUtilisateurs = this.tableUtilisateurs();
+  tableUtilisateurs.loadingExport = true;
 
-		var items = this.tableUtilisateurs.itemsFiltered;
+		var items = tableUtilisateurs.itemsFiltered;
 
 		for (var item of items) {
 			item.actif = app.getRefLabel('refBoolean', item.actif);
@@ -327,9 +328,9 @@ export class AdminUtilisateursComponent implements OnInit {
 
 		await app.sleep(2000);
 
-		this.exportUser.exportExcel('exportUtilisateur', this.rows, null, null);
+		this.exportUser().exportExcel('exportUtilisateur', this.rows, null, null);
 
-		this.tableUtilisateurs.loadingExport = false;
+		tableUtilisateurs.loadingExport = false;
 	}
 
 	enableToEdit() {

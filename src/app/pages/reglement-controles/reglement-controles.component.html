@@ -14,7 +14,7 @@
     </div>
     <div class="col-md-auto d-flex">
         <app-btnMenu *ngIf="showBtnMenu()" icon="fas fa-ellipsis-h" side="right">
-            <app-btn *ngIf="tache != null && !app.taskIsMisePaiement(tache)" #btnAnnulerDossier [inMenu]=true colorLabel="text-danger" [label]="isDCV ? lang.reglement.annulerDossier2ndNivBtn : lang.reglement.annulerDossierbtn" (action)="notification.showModalNotification(-1)"></app-btn>
+            <app-btn *ngIf="tache != null && !app.taskIsMisePaiement(tache)" #btnAnnulerDossier [inMenu]=true colorLabel="text-danger" [label]="isDCV ? lang.reglement.annulerDossier2ndNivBtn : lang.reglement.annulerDossierbtn" (action)="notification().showModalNotification(-1)"></app-btn>
             <app-btn *ngIf="app.enableShowBtnRemboursement(reglement) && !disableRemboursement" #btnRemboursement [inMenu]=true [label]="lang.versement.remb" [disabled]="reglement.code_statut_dossier =='DDR12' || reglement.code_statut_dossier =='DDR11'" (action)="confirmAddJustifRemboursement()"></app-btn>
             <app-btn *ngIf="ddrIsValide()" #btnExportFicheBan [inMenu]=true [label]="lang.reglement.extractBAN" (action)="exportBanToPDF()"></app-btn>
             <app-btn *ngIf="verifExportDdrNiv2()" #btnExportPDFBan [inMenu]=true [label]="lang.reglement.extractControles" (action)="exportControleToPDF()"></app-btn>
@@ -22,10 +22,10 @@
         </app-btnMenu>
         <app-btn #btnSaveControles *ngIf="!read && !app.isEmpty(reglement) && !app.isDossierAnnule(reglement.code_statut_dossier) && !app.isMiseEnPaiementTask(tache)" [label]="lang.save" type="secondary" ico="save" (action)="validerTache(false, false)"></app-btn>
         <app-btn #btnSaveDdrDefinif *ngIf="tache != null && app.isMiseEnPaiementTask(tache) && isDefinitifDDR && !readDdrDefinitif" [label]="lang.validate" type="secondary" ico="check" (action)="verifDDRDefinitif()"></app-btn>
-        <button *ngIf="tache != null && !app.isAgentVersement(role) && !app.isChargeAppui(role) && !isDCV" class="btn btn-secondary ml-2 float-right" (click)="notification.showModalNotification(1)">
+        <button *ngIf="tache != null && !app.isAgentVersement(role) && !app.isChargeAppui(role) && !isDCV" class="btn btn-secondary ml-2 float-right" (click)="notification().showModalNotification(1)">
             <i class="fas fa-reply"></i> {{ lang.resend }}
         </button>
-        <button *ngIf="tache != null && !app.isDirecteur(role) && !isDCV && !app.isMiseEnPaiementTask(tache)" class="btn btn-new ml-2 float-right" (click)="notification.showModalNotification(0)">
+        <button *ngIf="tache != null && !app.isDirecteur(role) && !isDCV && !app.isMiseEnPaiementTask(tache)" class="btn btn-new ml-2 float-right" (click)="notification().showModalNotification(0)">
             <i class="fas fa-arrow-right"></i> {{ lang.reglementControles.validateControls }}
         </button>
         <button *ngIf="tache != null && (app.isDirecteur(role) || isDCV)" class="btn btn-new ml-2 float-right" (click)="validerTacheDir()">

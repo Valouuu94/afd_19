@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, OnInit, input, output } from '@angular/core';
 import { NgClass, NgIf } from '@angular/common';
 
 @Component({
@@ -11,15 +11,15 @@ export class BtnComponent implements OnInit {
 
 	loading: boolean = false;
 
-	@Input() label: any;
-	@Input() ico: any;
-	@Input() type: any;
-	@Input() colorLabel: any;
-	@Input() noLoading: boolean;
-	@Input() disabled: boolean = false;
-	@Input() inMenu: boolean = false;
+	readonly label = input<any>();
+	readonly ico = input<any>();
+	readonly type = input<any>();
+	readonly colorLabel = input<any>();
+	readonly noLoading = input<boolean>();
+	readonly disabled = input<boolean>(false);
+	readonly inMenu = input<boolean>(false);
 
-	@Output() action = new EventEmitter();
+	readonly action = output();
 
 	constructor() {
 		this.noLoading = false;
@@ -28,10 +28,10 @@ export class BtnComponent implements OnInit {
 	ngOnInit() { }
 
 	emitAction() {
-		if (this.disabled)
+		if (this.disabled())
 			return; // If disabled, do not emit the action
 
-		if (!this.noLoading)
+		if (!this.noLoading())
 			this.setLoading(true);
 
 		this.action.emit();

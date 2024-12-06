@@ -63,8 +63,8 @@
     <div *ngIf="isDCV || (isAFD && !isControlesOk)" class="bg-light rounded p-3">
         <i class="fa fa-exclamation-circle text-warning"></i>
         <!-- TODO à ravoir lidia lundi 27/10/2023 : enlever le style et optimiser cette partie-->
-        <span *ngIf="isDCV && isAvance" class="ml-4" style="margin-top:-20px">{{ lang.avanceContractuel.controleDCV.messageValidationDCV }}</span>
-        <span *ngIf="isDCV && !isAvance" class="ml-4" style="margin-top:-20px">{{ lang.reglement.controleDCV.messageValidationDCV }}</span>
+        <span *ngIf="isDCV && isAvance()" class="ml-4" style="margin-top:-20px">{{ lang.avanceContractuel.controleDCV.messageValidationDCV }}</span>
+        <span *ngIf="isDCV && !isAvance()" class="ml-4" style="margin-top:-20px">{{ lang.reglement.controleDCV.messageValidationDCV }}</span>
         <span *ngIf="isAFD && !isDCV && !isControlesOk" class="ml-4" style="margin-top:-20px">
             {{ lang.reglement.warningValideReglementDir }}
             <br><br>

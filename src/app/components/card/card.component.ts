@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit, input } from '@angular/core';
 
 @Component({
     selector: 'app-card',
@@ -7,8 +7,8 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class CardComponent implements OnInit {
 
-	@Input() className: any;
-	@Input() autoHeight: boolean;
+	readonly className = input<any>();
+	readonly autoHeight = input<boolean>();
 
 	constructor() {
 		this.autoHeight = true;

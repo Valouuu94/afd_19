@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, viewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ExportExcelComponent} from '../../components/export-excel/export-excel.component';
 import { TableComponent } from '../../components/table/table.component';
@@ -17,8 +17,8 @@ declare const lang: any;
 })
 export class HistoriqueDossiersComponent implements OnInit {
 
-	@ViewChild('tableDossiers') tableDossiers!: TableComponent;
-	@ViewChild('exportDossiers') exportDossiers!: ExportExcelComponent;
+	readonly tableDossiers = viewChild.required<TableComponent>('tableDossiers');
+	readonly exportDossiers = viewChild.required<ExportExcelComponent>('exportDossiers');
 
 	app: any = app;
 	lang: any = lang;
@@ -33,13 +33,13 @@ export class HistoriqueDossiersComponent implements OnInit {
 	}
 
 	async getDossiers() {
-		this.tableDossiers.setLoading(true);
+		this.tableDossiers().setLoading(true);
 
 		this.dossiers = await app.getExternalData(app.getUrl('urlGetHistoriqueDossiers'), 'historique-dossiers > getDossiers');
 
 		await app.sleep(150);
 
-		this.tableDossiers.getItems();
+		this.tableDossiers().getItems();
 	}
 
 	async gotoDossier(item: any) {
@@ -47,9 +47,10 @@ export class HistoriqueDossiersComponent implements OnInit {
 	}
 
 	async exportExcel() {
-		this.tableDossiers.loadingExport = true;
+		const tableDossiers = this.tableDossiers();
+  tableDossiers.loadingExport = true;
 
-		var items = this.tableDossiers.itemsFiltered;
+		var items = tableDossiers.itemsFiltered;
 
 		for (var item of items) {
 			item.lib_agence = app.getRefLabel('refAgencesGestions', item.agence_gestion);
@@ -59,8 +60,8 @@ export class HistoriqueDossiersComponent implements OnInit {
 			item.infosDatesMaj = app.formatDate(item.date_modification_2nd_niv) + " (crée le " + app.formatDate(item.date_creation_dossier_2nd_niv) + ")";
 		}
 
-		this.exportDossiers.exportExcel('histoDC', items, null, null);
+		this.exportDossiers().exportExcel('histoDC', items, null, null);
 
-		this.tableDossiers.loadingExport = false;
+		tableDossiers.loadingExport = false;
 	}
 }

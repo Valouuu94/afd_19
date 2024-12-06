@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, input, viewChild } from '@angular/core';
 import { StoreService } from '../../services/store.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ContreValeurComponent  } from '../../components/contre-valeur/contre-valeur.component';
@@ -32,26 +32,26 @@ declare const lang: any;
 })
 export class DocumentContractuelComponent implements OnInit {
 
-	@ViewChild('btnValidateDocumentContractuel') btnValidateDocumentContractuel!: BtnComponent;
-	@ViewChild('tableRubriques') tableRubriques!: TableComponent;
-	@ViewChild('rubriquesComponent') rubriquesComponent!: RubriquesComponent;
-	@ViewChild('modalConfirmationRubrique') modalConfirmationRubrique!: ModalComponent;
-	@ViewChild('cmpAutresDevises') cmpAutresDevises!: AutreDeviseComponent;
-	@ViewChild('teleportRubriquesDC') teleportRubriquesDC!: TeleportComponent;
-	@ViewChild('teleportAutresDevises') teleportAutresDevises!: TeleportComponent;
-	@ViewChild('modalDeleteRubrique') modalDeleteRubrique!: ModalComponent;
-	@ViewChild('contreValeurAFD') contreValeurAFD!: ContreValeurComponent;
-	@ViewChild('contreValeurHT') contreValeurHT!: ContreValeurComponent;
-	@ViewChild('teleportContrevaleurAFD') teleportContrevaleurAFD!: TeleportComponent;
-	@ViewChild('teleportContrevaleurHT') teleportContrevaleurHT!: TeleportComponent;
-	@ViewChild('teleportFournisseur') teleportFournisseur!: TeleportComponent;
-	@ViewChild('infosFournisseurDC') infosFournisseurDC!: InfosBeneficiaireComponent;
-	@ViewChild('selectbeneficaire') selectFournisseurDC!: SelectBeneficiaireComponent;
-	@ViewChild('teleportSelectFournisseur') teleportSelectFournisseur!: TeleportComponent;
+	readonly btnValidateDocumentContractuel = viewChild.required<BtnComponent>('btnValidateDocumentContractuel');
+	readonly tableRubriques = viewChild.required<TableComponent>('tableRubriques');
+	readonly rubriquesComponent = viewChild.required<RubriquesComponent>('rubriquesComponent');
+	readonly modalConfirmationRubrique = viewChild.required<ModalComponent>('modalConfirmationRubrique');
+	readonly cmpAutresDevises = viewChild.required<AutreDeviseComponent>('cmpAutresDevises');
+	readonly teleportRubriquesDC = viewChild.required<TeleportComponent>('teleportRubriquesDC');
+	readonly teleportAutresDevises = viewChild.required<TeleportComponent>('teleportAutresDevises');
+	readonly modalDeleteRubrique = viewChild.required<ModalComponent>('modalDeleteRubrique');
+	readonly contreValeurAFD = viewChild.required<ContreValeurComponent>('contreValeurAFD');
+	readonly contreValeurHT = viewChild.required<ContreValeurComponent>('contreValeurHT');
+	readonly teleportContrevaleurAFD = viewChild.required<TeleportComponent>('teleportContrevaleurAFD');
+	readonly teleportContrevaleurHT = viewChild.required<TeleportComponent>('teleportContrevaleurHT');
+	readonly teleportFournisseur = viewChild.required<TeleportComponent>('teleportFournisseur');
+	readonly infosFournisseurDC = viewChild.required<InfosBeneficiaireComponent>('infosFournisseurDC');
+	readonly selectFournisseurDC = viewChild.required<SelectBeneficiaireComponent>('selectbeneficaire');
+	readonly teleportSelectFournisseur = viewChild.required<TeleportComponent>('teleportSelectFournisseur');
 
-	@Input() paramDC: any;
-	@Input() paramDR: any;
-	@Input() isInsideModal: boolean = false;
+	readonly paramDC = input<any>();
+	readonly paramDR = input<any>();
+	readonly isInsideModal = input<boolean>(false);
 
 	app: any = app;
 	lang: any = lang;
@@ -104,7 +104,7 @@ export class DocumentContractuelComponent implements OnInit {
 	}
 
 	async ngAfterViewInit() {
-		if (this.paramDC == null) {
+		if (this.paramDC() == null) {
 			await this.getDC();
 
 			window.scrollTo(0, 0);
@@ -130,10 +130,11 @@ export class DocumentContractuelComponent implements OnInit {
 		//recup du document contractuel
 		this.DC = null;
 		var idDC = this.route.snapshot.paramMap.get('id');
-		if (idDC != null && this.paramDC == null)
+		const paramDC = this.paramDC();
+  if (idDC != null && paramDC == null)
 			this.DC = await app.getExternalData(app.getUrl('urlGetDoContractuelById', idDC), 'page-documentContractuel > getDocumentContractuel', true);
 		else if (this.paramDC != null) {
-			this.DC = this.paramDC;
+			this.DC = paramDC;
 			this.read = true;
 		}
 
@@ -144,10 +145,11 @@ export class DocumentContractuelComponent implements OnInit {
 
 		//recup du reglement
 		this.idReglement = app.getStorageItem('idReglement');
-		if (this.idReglement != null && this.paramDR == null)
+		const paramDR = this.paramDR();
+  if (this.idReglement != null && paramDR == null)
 			this.reglement = await app.getExternalData(app.getUrl('urlGetReglement', this.idReglement), 'page-documentContractuel > getDocumentContractuel - reglement', true);
 		else if (this.paramDR != null)
-			this.reglement = this.paramDR;
+			this.reglement = paramDR;
 
 		this.caseId = (this.reglement == null) ? 0 : this.reglement.case_id;
 
@@ -165,12 +167,12 @@ export class DocumentContractuelComponent implements OnInit {
 		DO.show_avance_remboursable = '1';
 
 		//lancement des reverses teleports avant le formio (pour eviter le bug du 2e chargement)
-		this.teleportFournisseur.unteleport();
-		this.teleportSelectFournisseur.unteleport();
-		this.teleportRubriquesDC.unteleport();
-		this.teleportAutresDevises.unteleport();
-		this.teleportContrevaleurAFD.unteleport();
-		this.teleportContrevaleurHT.unteleport();
+		this.teleportFournisseur().unteleport();
+		this.teleportSelectFournisseur().unteleport();
+		this.teleportRubriquesDC().unteleport();
+		this.teleportAutresDevises().unteleport();
+		this.teleportContrevaleurAFD().unteleport();
+		this.teleportContrevaleurHT().unteleport();
 
 		app.cleanDiv('formio_documentContractuel');
 
@@ -188,18 +190,18 @@ export class DocumentContractuelComponent implements OnInit {
 		await app.sleep(250);
 
 		//lancement des teleports apres le formio
-		this.teleportSelectFournisseur.teleport();
-		this.teleportSelectFournisseur.show();
-		this.teleportRubriquesDC.teleport();
-		this.teleportRubriquesDC.show();
-		this.teleportAutresDevises.teleport();
-		this.teleportAutresDevises.show();
-		this.teleportContrevaleurAFD.teleport();
-		this.teleportContrevaleurAFD.show();
-		this.teleportContrevaleurHT.teleport();
-		this.teleportContrevaleurHT.show();
-		this.teleportFournisseur.teleport();
-		this.teleportFournisseur.show();
+		this.teleportSelectFournisseur().teleport();
+		this.teleportSelectFournisseur().show();
+		this.teleportRubriquesDC().teleport();
+		this.teleportRubriquesDC().show();
+		this.teleportAutresDevises().teleport();
+		this.teleportAutresDevises().show();
+		this.teleportContrevaleurAFD().teleport();
+		this.teleportContrevaleurAFD().show();
+		this.teleportContrevaleurHT().teleport();
+		this.teleportContrevaleurHT().show();
+		this.teleportFournisseur().teleport();
+		this.teleportFournisseur().show();
 
 		//init des données des teleports apres leurs chargements
 		this.autresDevises = [];
@@ -210,7 +212,7 @@ export class DocumentContractuelComponent implements OnInit {
 			if (this.DC.id_fournisseur != null) {
 				var fournisseur = await app.getTiers(this.DC.id_fournisseur);
 
-				if (!this.isInsideModal)
+				if (!this.isInsideModal())
 					await this.initSelectFournisseur(fournisseur);
 
 				await this.getFournisseur(this.DC.id_fournisseur);
@@ -230,7 +232,7 @@ export class DocumentContractuelComponent implements OnInit {
 		this.updateContrevaleurAFD(true);
 		this.updateContrevaleurHT();
 
-		await this.rubriquesComponent.getRubriques(this.autresDevises != null ? this.autresDevises : [], this.DC, false, true, false, false, false, (this.DC != null ? this.DC.rubriques : null));
+		await this.rubriquesComponent().getRubriques(this.autresDevises != null ? this.autresDevises : [], this.DC, false, true, false, false, false, (this.DC != null ? this.DC.rubriques : null));
 
 		//avance remboursable
 		this.avanceRemboursable = (DO != null && DO.avance_remboursable == '1');
@@ -272,25 +274,25 @@ export class DocumentContractuelComponent implements OnInit {
 		else
 			DO.dc_persistenceid = this.DC.persistenceId;
 
-		DO.id_fournisseur = this.selectFournisseurDC?.tiersSelected?.idTiers;
+		DO.id_fournisseur = this.selectFournisseurDC()?.tiersSelected?.idTiers;
 
 		//formatte les rubriques avant sauvegarde
-		DO.rubriques = this.rubriquesComponent.getRubriquesFormated();
-		DO.sous_rubriques = this.rubriquesComponent.getSousRubriquesFormated();
+		DO.rubriques = this.rubriquesComponent().getRubriquesFormated();
+		DO.sous_rubriques = this.rubriquesComponent().getSousRubriquesFormated();
 
 		if (!this.avanceRemboursable)
 			DO.montant_avance_demarrage = null;
 
 		// SET MONTANTS AFD
-		var montantsDC = this.rubriquesComponent.getMontantsDC();
+		var montantsDC = this.rubriquesComponent().getMontantsDC();
 		DO.montant_initialAFD = montantsDC.montant_initialAFD;
 		DO.montant_finalAFD = montantsDC.montant_finalAFD;
 		DO.montant_enregistreAFD = montantsDC.montant_enregistreAFD;
 		DO.montant_reste_a_verserAFD = montantsDC.montant_reste_a_verserAFD;
 
 		if (this.autresDevises != null && app.isAFD(this.entite) && this.cmpAutresDevises != null) {
-			var autresDevisesVar = this.cmpAutresDevises.autresDevises;
-			DO.autre_devise = this.rubriquesComponent.getMontantsAutreDevise(autresDevisesVar);
+			var autresDevisesVar = this.cmpAutresDevises().autresDevises();
+			DO.autre_devise = this.rubriquesComponent().getMontantsAutreDevise(autresDevisesVar);
 		}
 		else
 			DO.autre_devise = [];
@@ -333,7 +335,7 @@ export class DocumentContractuelComponent implements OnInit {
 		await app.sleep(250);
 
 		//fin du save : stop chargement bouton et redirect si retour
-		this.btnValidateDocumentContractuel.setLoading(false);
+		this.btnValidateDocumentContractuel().setLoading(false);
 
 		var originGotoDC = app.getStorageItem('originGoto');
 		if (originGotoDC != null && originGotoDC == 'projet') {
@@ -354,21 +356,22 @@ export class DocumentContractuelComponent implements OnInit {
 	verifDC() {
 		var error = false;
 
-		var validForm = app.isValidForm('formio_documentContractuel') && !this.selectFournisseurDC.checkSelectedBeneficiaire();
+		var validForm = app.isValidForm('formio_documentContractuel') && !this.selectFournisseurDC().checkSelectedBeneficiaire();
 
-		if (this.cmpAutresDevises != null && !this.cmpAutresDevises.checkAutresDevises())
+		if (this.cmpAutresDevises != null && !this.cmpAutresDevises().checkAutresDevises())
 			validForm = false;
 
 		//verif global des champs du form
 		if (!validForm) {
-			this.btnValidateDocumentContractuel.setLoading(false);
+			this.btnValidateDocumentContractuel().setLoading(false);
 			app.showToast('toastDCSaveError');
 			error = true;
 		}
 
 		// verif si au moins une rubriques a été saisie
-		if (!this.rubriquesComponent.checkExistRubriques()) {
-			this.btnValidateDocumentContractuel.setLoading(false);
+		const rubriquesComponent = this.rubriquesComponent();
+  if (!rubriquesComponent.checkExistRubriques()) {
+			this.btnValidateDocumentContractuel().setLoading(false);
 			app.showToast('toastRubriquesDCError');
 			error = true;
 		}
@@ -377,20 +380,20 @@ export class DocumentContractuelComponent implements OnInit {
 		var montantTotal = appFormio.getDataValue(crossVars.forms['formio_documentContractuel'], 'montant_total_document');
 		var montantAFD = appFormio.getDataValue(crossVars.forms['formio_documentContractuel'], 'montant_afd');
 		if (montantAFD > montantTotal) {
-			this.btnValidateDocumentContractuel.setLoading(false);
+			this.btnValidateDocumentContractuel().setLoading(false);
 			app.showToast('toastDCMontantError');
 			error = true;
 		}
 
-		if (this.rubriquesComponent.getRubriquesByType().length > 0) {
+		if (rubriquesComponent.getRubriquesByType().length > 0) {
 			if (!this.checkCoherenceMultiDevisesDC()) {
-				this.btnValidateDocumentContractuel.setLoading(false);
+				this.btnValidateDocumentContractuel().setLoading(false);
 				app.showToast('toastDCMontantRubriqueError');
 				error = true;
 			}
 			//verifeir si une ligne des rubriques est vide (libelle vide + tous les montants sont vides) = > anomalie 2134
-			else if (!this.rubriquesComponent.ckeckLibelleAndMontant()) {
-				this.btnValidateDocumentContractuel.setLoading(false);
+			else if (!rubriquesComponent.ckeckLibelleAndMontant()) {
+				this.btnValidateDocumentContractuel().setLoading(false);
 				app.showToast('toastDCLibelleMontantRubriqueError');
 				error = true;
 			}
@@ -400,18 +403,18 @@ export class DocumentContractuelComponent implements OnInit {
 	}
 
 	async initSelectFournisseur(fournisseur?: any) {
-		await this.selectFournisseurDC.initSelectBeneficaire(((fournisseur != null) ? [fournisseur] : []), this.read, 'DC', fournisseur);
+		await this.selectFournisseurDC().initSelectBeneficaire(((fournisseur != null) ? [fournisseur] : []), this.read, 'DC', fournisseur);
 	}
 
 	async getFournisseur(fournisseur?: any) {
-		await this.infosFournisseurDC.getBeneficiaire(null, null, (fournisseur != null ? fournisseur : this.selectFournisseurDC?.tiersSelected?.idTiers), null, 'DC', null);
+		await this.infosFournisseurDC().getBeneficiaire(null, null, (fournisseur != null ? fournisseur : this.selectFournisseurDC()?.tiersSelected?.idTiers), null, 'DC', null);
 	}
 
 	getFilteredDevises() {
 		this.filteredDevises = [];
 		if (this.autresDevises != null && app.isAFD(this.entite)) {
 			if (this.cmpAutresDevises != null)
-				for (var autreDevise of this.cmpAutresDevises.autresDevises)
+				for (var autreDevise of this.cmpAutresDevises().autresDevises())
 					this.filteredDevises.push({ idDevise: autreDevise.devise, libelleCourtDevise: app.getRefLabel('refDevises', autreDevise.devise) });
 
 			//ajout de la devise afd à la liste des devises
@@ -422,14 +425,14 @@ export class DocumentContractuelComponent implements OnInit {
 
 	//building new rule pour controler la multidevise - DC
 	checkCoherenceMultiDevisesDC() {
-		var montantsDC = this.rubriquesComponent.getMontantsDC();
+		var montantsDC = this.rubriquesComponent().getMontantsDC();
 		var montantAFD = appFormio.getDataValue(crossVars.forms['formio_documentContractuel'], 'montant_afd');
 
 		if (montantsDC.montant_finalAFD != montantAFD)
 			return false;
 
 		if (!this.avanceRemboursable) {
-			var autresDevises = this.rubriquesComponent.getMontantsAutreDevise(this.cmpAutresDevises.autresDevises);
+			var autresDevises = this.rubriquesComponent().getMontantsAutreDevise(this.cmpAutresDevises().autresDevises());
 
 			for (var autreD of autresDevises) {
 				if (autreD.montant_final != app.convertStringToFloat(autreD.montant))
@@ -464,9 +467,9 @@ export class DocumentContractuelComponent implements OnInit {
 
 		await app.sleep(1000);
 
-		this.tableRubriques.getItems();
+		this.tableRubriques().getItems();
 
-		this.modalDeleteRubrique.setLoadingBtn();
+		this.modalDeleteRubrique().setLoadingBtn();
 
 		app.showToast('toastRubriqueDeleteSuccess');
 
@@ -480,7 +483,7 @@ export class DocumentContractuelComponent implements OnInit {
 		var montantAFD = appFormio.getDataValue(crossVars.forms['formio_documentContractuel'], 'montant_afd');
 
 		var deviseAFD = appFormio.getDataValue(crossVars.forms['formio_documentContractuel'], 'devise_afd');
-		var contrevaleurResultAFD = await this.contreValeurAFD.getContrevaleur(false, montantAFD, deviseAFD, this.projet);
+		var contrevaleurResultAFD = await this.contreValeurAFD().getContrevaleur(false, montantAFD, deviseAFD, this.projet);
 		var DO = app.getDO('documentContractuel');
 
 		DO.montant_contrevaleur_afd = contrevaleurResultAFD.contrevaleurMontant;
@@ -488,8 +491,9 @@ export class DocumentContractuelComponent implements OnInit {
 		DO.date_contrevaleur_afd = contrevaleurResultAFD.contrevaleurDate;
 
 		// condition pour ne pas appeler le composant ruubriques en cas de modification de montant LIDIA
-		if (!isNotGetRubriques && this.rubriquesComponent.deviseAFD != deviseAFD)
-			await this.rubriquesComponent.getRubriques(this.autresDevises, this.DC, false, false, false, true, false, null);
+		const rubriquesComponent = this.rubriquesComponent();
+  if (!isNotGetRubriques && rubriquesComponent.deviseAFD != deviseAFD)
+			await rubriquesComponent.getRubriques(this.autresDevises, this.DC, false, false, false, true, false, null);
 
 		this.displayToast(contrevaleurResultAFD);
 	}
@@ -507,7 +511,7 @@ export class DocumentContractuelComponent implements OnInit {
 		if (app.isEmpty(deviseAFD))
 			appFormio.setDataValue(crossVars.forms['formio_documentContractuel'], 'devise_afd', app.getRefLabel('refDevises', deviseTotal));
 
-		var contrevaleurResultTotal = await this.contreValeurHT.getContrevaleur(false, montantTotal, deviseTotal, this.projet);
+		var contrevaleurResultTotal = await this.contreValeurHT().getContrevaleur(false, montantTotal, deviseTotal, this.projet);
 
 		var DO = app.getDO('documentContractuel');
 
@@ -576,13 +580,13 @@ export class DocumentContractuelComponent implements OnInit {
 		await app.sleep(100);
 		appFormio.setDataValue(crossVars.forms['formio_documentContractuel'], 'montant_avance_demarrage', montant);
 
-		this.rubriquesComponent.updateMontantvanceRemboursable();
+		this.rubriquesComponent().updateMontantvanceRemboursable();
 	}
 
 	updateMontantAvanceRubrique() {
 		app.log('DC > updateMontantAvanceRubrique');
 
-		this.rubriquesComponent.updateMontantvanceRemboursable();
+		this.rubriquesComponent().updateMontantvanceRemboursable();
 	}
 
 	async checkAvanceRemboursable() {
@@ -592,7 +596,7 @@ export class DocumentContractuelComponent implements OnInit {
 		if (toggle == '1')
 			this.avanceRemboursable = true;
 
-		this.rubriquesComponent.getRubriques(this.autresDevises != null ? this.autresDevises : [], this.DC, false, false, false, false, false, null);
+		this.rubriquesComponent().getRubriques(this.autresDevises != null ? this.autresDevises : [], this.DC, false, false, false, false, false, null);
 	}
 
 	renderPourcentageAvance(value: any) {
@@ -667,12 +671,12 @@ export class DocumentContractuelComponent implements OnInit {
 	}
 
 	async libelleDocumentContractuel() {
-		await this.rubriquesComponent.getRubriques(this.autresDevises != null ? this.autresDevises : [], this.DC, false, false, false, false, true, null);
+		await this.rubriquesComponent().getRubriques(this.autresDevises != null ? this.autresDevises : [], this.DC, false, false, false, false, true, null);
 	}
 
 	async getRubriques(item: any, hasDuplicateDevise: any) {
-		this.rubriquesComponent.setHasDuplicateDevise(hasDuplicateDevise);
+		this.rubriquesComponent().setHasDuplicateDevise(hasDuplicateDevise);
 		if (!hasDuplicateDevise)
-			await this.rubriquesComponent.getRubriques(this.autresDevises, this.DC, false, false, true, false, false, null);
+			await this.rubriquesComponent().getRubriques(this.autresDevises, this.DC, false, false, true, false, false, null);
 	}
 }

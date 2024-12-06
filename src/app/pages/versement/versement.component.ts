@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, viewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StoreService } from '../../services/store.service';
 import { SelectBeneficiaireComponent } from '../../components/select-beneficiaire/select-beneficiaire.component';
@@ -32,17 +32,17 @@ declare const formFields: any;
 })
 export class VersementComponent implements OnInit {
 
-	@ViewChild('btnSaveVersement') btnSaveVersement!: BtnComponent;
-	@ViewChild('autreDevise') autreDevise!: AutreDeviseComponent;
-	@ViewChild('teleportAutreDevise') teleportAutreDevise!: TeleportComponent;
-	@ViewChild('teleportErrorDatePaiement') teleportErrorDatePaiement!: TeleportComponent;
-	@ViewChild('notification') notification!: NotificationComponent;
-	@ViewChild('infosDossier') infosDossier!: InfosDossierComponent;
-	@ViewChild('btnAnnulerDossier') btnAnnulerDossier!: BtnComponent;
-	@ViewChild('teleportBeneficiaireVersement') teleportBeneficiaireVersement!: TeleportComponent;
-	@ViewChild('infosBeneficiaire') infosBeneficiaire!: InfosBeneficiaireComponent;
-	@ViewChild('selectbeneficaire') selectbeneficaire!: SelectBeneficiaireComponent;
-	@ViewChild('teleportSelectBeneficiareVersement') teleportSelectBeneficiareVersement!: TeleportComponent;
+	readonly btnSaveVersement = viewChild.required<BtnComponent>('btnSaveVersement');
+	readonly autreDevise = viewChild.required<AutreDeviseComponent>('autreDevise');
+	readonly teleportAutreDevise = viewChild.required<TeleportComponent>('teleportAutreDevise');
+	readonly teleportErrorDatePaiement = viewChild.required<TeleportComponent>('teleportErrorDatePaiement');
+	readonly notification = viewChild.required<NotificationComponent>('notification');
+	readonly infosDossier = viewChild.required<InfosDossierComponent>('infosDossier');
+	readonly btnAnnulerDossier = viewChild.required<BtnComponent>('btnAnnulerDossier');
+	readonly teleportBeneficiaireVersement = viewChild.required<TeleportComponent>('teleportBeneficiaireVersement');
+	readonly infosBeneficiaire = viewChild.required<InfosBeneficiaireComponent>('infosBeneficiaire');
+	readonly selectbeneficaire = viewChild.required<SelectBeneficiaireComponent>('selectbeneficaire');
+	readonly teleportSelectBeneficiareVersement = viewChild.required<TeleportComponent>('teleportSelectBeneficiareVersement');
 
 	versement: any;
 	entite: string = '';
@@ -78,10 +78,10 @@ export class VersementComponent implements OnInit {
 	async ngAfterViewInit() {
 		await this.getVersement();
 
-		this.teleportAutreDevise.teleport();
-		this.teleportBeneficiaireVersement.teleport();
-		this.teleportErrorDatePaiement.teleport();
-		this.teleportErrorDatePaiement.show();
+		this.teleportAutreDevise().teleport();
+		this.teleportBeneficiaireVersement().teleport();
+		this.teleportErrorDatePaiement().teleport();
+		this.teleportErrorDatePaiement().show();
 	}
 
 	get titleSidebarToggle() {
@@ -196,11 +196,11 @@ export class VersementComponent implements OnInit {
 			app.setBDM(app.mapDO(DO, this.versement));
 
 			//reverse teleport avant formio
-			this.teleportAutreDevise.unteleport();
-			this.teleportBeneficiaireVersement.unteleport();
-			this.teleportErrorDatePaiement.unteleport();
+			this.teleportAutreDevise().unteleport();
+			this.teleportBeneficiaireVersement().unteleport();
+			this.teleportErrorDatePaiement().unteleport();
 			if (app.isAFD(this.entite) && this.versement != null)
-				this.teleportSelectBeneficiareVersement.unteleport();
+				this.teleportSelectBeneficiareVersement().unteleport();
 
 			appFormio.loadFormIO('versement' + this.entite, this.read);
 
@@ -217,8 +217,8 @@ export class VersementComponent implements OnInit {
 				} else
 					this.initSelectBeneficiaire();
 
-				this.teleportSelectBeneficiareVersement.teleport();
-				this.teleportSelectBeneficiareVersement.show();
+				this.teleportSelectBeneficiareVersement().teleport();
+				this.teleportSelectBeneficiareVersement().show();
 			}
 			this.loading = false;
 		}
@@ -226,13 +226,14 @@ export class VersementComponent implements OnInit {
 	}
 
 	async saveVersement(validate: any) {
-		var validForm = app.isValidForm('formio_versement' + this.entite) && this.autreDevise.checkAutresDevises();
+		var validForm = app.isValidForm('formio_versement' + this.entite) && this.autreDevise().checkAutresDevises();
 
-		if (app.isAFD(this.entite) && this.selectbeneficaire.checkSelectedBeneficiaire())
+		const selectbeneficaire = this.selectbeneficaire();
+  if (app.isAFD(this.entite) && selectbeneficaire.checkSelectedBeneficiaire())
 			validForm = false;
 
 		if (!validForm) {
-			this.btnSaveVersement.setLoading(false);
+			this.btnSaveVersement().setLoading(false);
 			app.showToast('toastVersementSaveError');
 			return;
 		}
@@ -244,10 +245,10 @@ export class VersementComponent implements OnInit {
 		DO.code_statut = ((validate && app.isAFD(this.entite)) ? 'reglements' : '');
 
 		if (app.isAFD(this.entite))
-			DO.id_emetteur_demande = this.selectbeneficaire?.tiersSelected?.idTiers;
+			DO.id_emetteur_demande = selectbeneficaire?.tiersSelected?.idTiers;
 
 		if (this.autreDevise != null && this.autreDevise != null && app.isAFD(this.entite))
-			DO.autresDevises = this.autreDevise.autresDevises;
+			DO.autresDevises = this.autreDevise().autresDevises();
 
 		await app.saveFormData(app.getRootDO(idDO), crossVars.forms['formio_versement' + this.entite], app.getUrl('urlProcessInstanciation'), app.getUrl('urlProcessUpdateVersement'));
 
@@ -255,7 +256,7 @@ export class VersementComponent implements OnInit {
 			this.autresDevises = app.getNumbersFormatList(DO.autresDevises, 'montant');
 
 		await app.sleep(1500);
-		this.btnSaveVersement.setLoading(false);
+		this.btnSaveVersement().setLoading(false);
 
 		app.showToast('toastVersementSave');
 
@@ -264,7 +265,7 @@ export class VersementComponent implements OnInit {
 
 	async annulerDossier(DONotification?: any) {
 		if (DONotification == null) {
-			this.btnAnnulerDossier.setLoading(false);
+			this.btnAnnulerDossier().setLoading(false);
 			app.showToast('toastImpossibleAnnulerDossier');
 		}
 		else {
@@ -292,14 +293,14 @@ export class VersementComponent implements OnInit {
 
 			await app.sleep(1000);
 
-			this.notification.setLoadingBtn();
-			this.notification.hideModal();
+			this.notification().setLoadingBtn();
+			this.notification().hideModal();
 
 			app.showToast('toastVersementAnnulerOk');
 
 			await this.getVersement();
 
-			await this.infosDossier.getNotifications();
+			await this.infosDossier().getNotifications();
 
 			await this.initSelectBeneficiaire(this.versement.id_emetteur_demande);
 		}
@@ -307,11 +308,11 @@ export class VersementComponent implements OnInit {
 
 	annulerAction(action: any) {
 		if (action == '-1')
-			this.btnAnnulerDossier.setLoading(false);
+			this.btnAnnulerDossier().setLoading(false);
 	}
 
 	async getAutresDevises() {
-		this.teleportAutreDevise.show();
+		this.teleportAutreDevise().show();
 
 		for (var autreDev of this.versement.autresDevises) {
 			var checkDevise = app.checkAutreDeviseUsedByDDR(this.versement, autreDev, false);
@@ -335,12 +336,12 @@ export class VersementComponent implements OnInit {
 	}
 
 	async getBeneficiaireVersement() {
-		this.teleportBeneficiaireVersement.show();
+		this.teleportBeneficiaireVersement().show();
 
-		await this.infosBeneficiaire.getBeneficiaire(null, null, this.selectbeneficaire.tiersSelected.idTiers, this.versement.numero_concours, 'DV');
+		await this.infosBeneficiaire().getBeneficiaire(null, null, this.selectbeneficaire().tiersSelected.idTiers, this.versement.numero_concours, 'DV');
 	}
 
 	async initSelectBeneficiaire(tierVersement?: any) {
-		await this.selectbeneficaire.initSelectBeneficaire(this.listTiersByConcours, this.read, 'DV', tierVersement);
+		await this.selectbeneficaire().initSelectBeneficaire(this.listTiersByConcours, this.read, 'DV', tierVersement);
 	}
 }

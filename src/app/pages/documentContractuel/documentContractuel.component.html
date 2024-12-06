@@ -1,4 +1,4 @@
-<ng-container *ngIf="paramDC == null">
+<ng-container *ngIf="paramDC() == null">
     <app-nav-actions>
         <div class="col">
             <app-btn [label]="lang.cancel" type="secondary" ico="arrow-left" (action)="annulerDC()"></app-btn>
@@ -50,10 +50,10 @@
     <app-infos-beneficiaire #infosFournisseurDC [showTiersUsedByConcours]="false" [objectParentRepris]="dcRepris"></app-infos-beneficiaire>
 </app-teleport>
 <app-teleport #teleportSelectFournisseur to=".teleport-select-fournisseur">
-    <app-select-beneficiaire *ngIf="!isInsideModal" #selectbeneficaire (change)="getFournisseur()"></app-select-beneficiaire>
+    <app-select-beneficiaire *ngIf="!isInsideModal()" #selectbeneficaire (change)="getFournisseur()"></app-select-beneficiaire>
 </app-teleport>
 <app-teleport #teleportRubriquesDC to=".teleport-rubriques-dc">
-    <app-rubriques #rubriquesComponent [enableAdd]="!isInsideModal && !read" [readOnly]="read || isInsideModal" [isInsideModal]="isInsideModal"></app-rubriques>
+    <app-rubriques #rubriquesComponent [enableAdd]="!isInsideModal() && !read" [readOnly]="read || isInsideModal()" [isInsideModal]="isInsideModal()"></app-rubriques>
 </app-teleport>
 <app-teleport #teleportAutresDevises to=".teleport-autresDevisesDC">
     <app-autre-devise *ngIf="autresDevises != null && !avanceRemboursable" #cmpAutresDevises [autresDevises]="autresDevises" [read]="read" [parentObject]="projet" maxDevises=2 typeObject="DC" [checkDuplicate]=true></app-autre-devise>

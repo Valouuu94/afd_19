@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, viewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StoreService } from '../../services/store.service';
 import { NgForm, FormsModule } from '@angular/forms';
@@ -35,23 +35,23 @@ declare const refs: any;
 })
 export class VersementControlesComponent implements OnInit {
 
-	@ViewChild('versementControles') versementControles!: ControlesComponent;
-	@ViewChild('btnSaveControles') btnSaveControles!: BtnComponent;
-	@ViewChild('tableReglements') tableReglements!: TableComponent;
-	@ViewChild('tableDDrsDefinitif') tableDDrsDefinitif!: TableComponent;
-	@ViewChild('tableConfirmationPaiment') tableConfirmationPaiment!: TableComponent;
-	@ViewChild('tableVersements') tableVersements!: TableComponent;
-	@ViewChild('detailsReglement') detailsReglement!: InfosReglementComponent;
-	@ViewChild('notification') notification!: NotificationComponent;
-	@ViewChild('modalValidateReglement') modalValidateReglement!: ModalComponent;
-	@ViewChild('infosDossier') infosDossier!: InfosDossierComponent;
-	@ViewChild('btnAnnulerDossier') btnAnnulerDossier!: BtnComponent;
-	@ViewChild('exportBan') exportBan!: ExportPdfBanComponent;
-	@ViewChild('btnSaveDdrDefinif') btnSaveDdrDefinif!: BtnComponent;
-	@ViewChild('btnRemboursement') btnRemboursement!: BtnComponent;
-	@ViewChild('modalConfirmDdrDefinitif') modalConfirmDdrDefinitif!: ModalComponent;
-	@ViewChild('myForm', { static: false }) myForm: NgForm | undefined;
-	@ViewChild('btnExportPDFBan') btnExportPDFBan!: BtnComponent;
+	readonly versementControles = viewChild.required<ControlesComponent>('versementControles');
+	readonly btnSaveControles = viewChild.required<BtnComponent>('btnSaveControles');
+	readonly tableReglements = viewChild.required<TableComponent>('tableReglements');
+	readonly tableDDrsDefinitif = viewChild.required<TableComponent>('tableDDrsDefinitif');
+	readonly tableConfirmationPaiment = viewChild.required<TableComponent>('tableConfirmationPaiment');
+	readonly tableVersements = viewChild.required<TableComponent>('tableVersements');
+	readonly detailsReglement = viewChild.required<InfosReglementComponent>('detailsReglement');
+	readonly notification = viewChild.required<NotificationComponent>('notification');
+	readonly modalValidateReglement = viewChild.required<ModalComponent>('modalValidateReglement');
+	readonly infosDossier = viewChild.required<InfosDossierComponent>('infosDossier');
+	readonly btnAnnulerDossier = viewChild.required<BtnComponent>('btnAnnulerDossier');
+	readonly exportBan = viewChild.required<ExportPdfBanComponent>('exportBan');
+	readonly btnSaveDdrDefinif = viewChild.required<BtnComponent>('btnSaveDdrDefinif');
+	readonly btnRemboursement = viewChild.required<BtnComponent>('btnRemboursement');
+	readonly modalConfirmDdrDefinitif = viewChild.required<ModalComponent>('modalConfirmDdrDefinitif');
+	readonly myForm = viewChild<NgForm>('myForm');
+	readonly btnExportPDFBan = viewChild.required<BtnComponent>('btnExportPDFBan');
 
 	versement: any;
 	entite: any;
@@ -110,13 +110,13 @@ export class VersementControlesComponent implements OnInit {
 	}
 
 	async validerControles() {
-		var controles = await this.versementControles.saveControles(true);
+		var controles = await this.versementControles().saveControles(true);
 
 		return !(controles == null);
 	}
 
 	async autoSave() {
-		if (this.versementControles.updatedValue) {
+		if (this.versementControles().updatedValue) {
 			app.showToast('toastControlesAutoSave');
 
 			await app.sleep(5000);
@@ -131,17 +131,17 @@ export class VersementControlesComponent implements OnInit {
 		if (!active) {
 			app.showToast('toastControlesNotActiveTaskError');
 			if (validate && this.notification != null) {
-				this.notification.setLoadingBtn();
-				this.notification.hideModal();
+				this.notification().setLoadingBtn();
+				this.notification().hideModal();
 			} else
-				this.btnSaveControles.setLoading(false);
+				this.btnSaveControles().setLoading(false);
 			return;
 		}
 
-		var controles = await this.versementControles.saveControles(verifControle);
+		var controles = await this.versementControles().saveControles(verifControle);
 
 		if (controles == null) {
-			this.btnSaveControles.setLoading(false);
+			this.btnSaveControles().setLoading(false);
 			return;
 		}
 
@@ -159,8 +159,8 @@ export class VersementControlesComponent implements OnInit {
 			await app.setExternalData(app.getUrl('urlTaskExecute', this.tache.id), DO);
 
 			if (this.notification != null) {
-				this.notification.setLoadingBtn(); //TODO notification object
-				this.notification.hideModal();
+				this.notification().setLoadingBtn(); //TODO notification object
+				this.notification().hideModal();
 			}
 
 			if (app.isEmpty(DO.decision)) {
@@ -190,7 +190,7 @@ export class VersementControlesComponent implements OnInit {
 
 			app.redirect(this.router, app.getUrl('urlGotoTaches'));
 		} else {
-			this.btnSaveControles.setLoading(false);
+			this.btnSaveControles().setLoading(false);
 
 			app.showToast('toastControlesSave');
 		}
@@ -217,7 +217,7 @@ export class VersementControlesComponent implements OnInit {
 			if (!app.isEmpty(this.tache))
 				this.role = app.getRoleTache(this.tache);
 
-			await this.versementControles.loadControles(this.versement.case_id, this.tache);
+			await this.versementControles().loadControles(this.versement.case_id, this.tache);
 
 			this.loading = false;
 		}
@@ -234,7 +234,7 @@ export class VersementControlesComponent implements OnInit {
 
 		await app.sleep(250);
 
-		this.tableReglements.getItems();
+		this.tableReglements().getItems();
 
 		this.readDdrDefinitif = true;
 
@@ -254,7 +254,8 @@ export class VersementControlesComponent implements OnInit {
 
 		await app.sleep(150);
 
-		if (this.tableDDrsDefinitif) {
+		const tableDDrsDefinitif = this.tableDDrsDefinitif();
+  if (tableDDrsDefinitif) {
 			this.reglementsDefinitif = [];
 
 			for (var reg of this.reglements) {
@@ -279,7 +280,7 @@ export class VersementControlesComponent implements OnInit {
 
 			await app.sleep(500);
 
-			this.tableDDrsDefinitif.getItems();
+			tableDDrsDefinitif.getItems();
 		}
 	}
 
@@ -301,14 +302,14 @@ export class VersementControlesComponent implements OnInit {
 
 		this.statut = '';
 
-		this.modalValidateReglement.setLoadingBtn();
+		this.modalValidateReglement().setLoadingBtn();
 
 		app.hideModal('modalValiderReglement');
 
 		await app.sleep(5000); //TODO pkoi encore la ???
 
-		this.tableReglements.setUrlParam(this.versement.numero_dossier_versement);
-		this.tableReglements.getItems();
+		this.tableReglements().setUrlParam(this.versement.numero_dossier_versement);
+		this.tableReglements().getItems();
 	}
 
 	async downloadFile(reglement: any) {
@@ -339,14 +340,14 @@ export class VersementControlesComponent implements OnInit {
 
 			await app.sleep(150);
 
-			await this.detailsReglement.gotoReglement(item, this.versement, update);
+			await this.detailsReglement().gotoReglement(item, this.versement, update);
 
-			this.tableReglements.setClickInProgress(false);
+			this.tableReglements().setClickInProgress(false);
 		}
 	}
 
 	toggleComments() {
-		var controles = this.versementControles.controles;
+		var controles = this.versementControles().controles;
 
 		if (controles != null) {
 			for (var i = 0; i < controles.length; i++) {
@@ -362,7 +363,7 @@ export class VersementControlesComponent implements OnInit {
 
 	async annulerDossier(DONotification?: any) {
 		if (DONotification == null) {
-			this.btnAnnulerDossier.setLoading(false);
+			this.btnAnnulerDossier().setLoading(false);
 			app.showToast('toastImpossibleAnnulerDossier');
 		}
 		else {
@@ -378,8 +379,8 @@ export class VersementControlesComponent implements OnInit {
 			if (codeStatut) {
 				await app.sleep(500);
 
-				this.notification.setLoadingBtn();
-				this.notification.hideModal();
+				this.notification().setLoadingBtn();
+				this.notification().hideModal();
 
 				app.showToast('toastVersementAnnulerOk');
 
@@ -387,7 +388,7 @@ export class VersementControlesComponent implements OnInit {
 
 				await this.getVersement();
 
-				await this.infosDossier.getNotifications();
+				await this.infosDossier().getNotifications();
 			}
 			else
 				app.showToast('toastVersementAnnulerKo');
@@ -396,7 +397,7 @@ export class VersementControlesComponent implements OnInit {
 
 	annulerAction(action: any) {
 		if (action == '-1')
-			this.btnAnnulerDossier.setLoading(false);
+			this.btnAnnulerDossier().setLoading(false);
 	}
 
 	async validerTacheDir() {
@@ -406,18 +407,18 @@ export class VersementControlesComponent implements OnInit {
 		if (app.isDirecteur(this.role)) {
 			var valideControle = await this.validerControles();
 			if (!valideControle) {
-				this.btnSaveControles.setLoading(false);
+				this.btnSaveControles().setLoading(false);
 				return;
 			}
 
-			for (var controle of this.versementControles.controles) {
+			for (var controle of this.versementControles().controles) {
 				var valueControle = controle.value;
 				if ((valueControle != '1') && controle.show && !controle.isAuto && controle.type == app.getEtapeTache(this.tache))
 					isControlesOk = false;
 			}
 		}
 
-		await this.notification.validerTache(isControlesOk);
+		await this.notification().validerTache(isControlesOk);
 
 		this.isLoadingValidate = false;
 	}
@@ -425,8 +426,9 @@ export class VersementControlesComponent implements OnInit {
 	async exportControlesToPDF() {
 		let listeControl: any[] = [];
 
-		if (Array.isArray(this.versementControles.controles))
-			for (var element of this.versementControles.controles)
+		const versementControles = this.versementControles();
+  if (Array.isArray(versementControles.controles))
+			for (var element of versementControles.controles)
 				listeControl.push(element);
 
 		for (let element of listeControl)
@@ -460,9 +462,9 @@ export class VersementControlesComponent implements OnInit {
 
 		this.versement.modalitePaiement = app.getRefLabel('refModalitesPaiementPROPARCO', this.versement.modalite_paiement, true);
 
-		this.exportBan.generate(listeControl, this.reglements, this.versement, this.ControleParThemes, this.isAFD);
+		this.exportBan().generate(listeControl, this.reglements, this.versement, this.ControleParThemes, this.isAFD);
 
-		this.btnExportPDFBan.setLoading(false);
+		this.btnExportPDFBan().setLoading(false);
 	}
 
 	//verifier que le dossier de versement est en status paiement confirmé
@@ -473,7 +475,7 @@ export class VersementControlesComponent implements OnInit {
 	async verifDDRDefinitif() {
 		var flagError = false;
 
-		for (var item of this.tableDDrsDefinitif.items) {
+		for (var item of this.tableDDrsDefinitif().items) {
 			if (item.datePaiement == null && app.isEmpty(item.montantPaiement) && app.isEmpty(item.devisePaiement))
 				console.log('versements-controles > verifDDRDefinitif - item', item);
 			else if (item.datePaiement == null || app.isEmpty(item.montantPaiement) || app.isEmpty(item.devisePaiement)) {
@@ -483,7 +485,7 @@ export class VersementControlesComponent implements OnInit {
 			}
 		}
 
-		this.btnSaveDdrDefinif.setLoading(false);
+		this.btnSaveDdrDefinif().setLoading(false);
 		if (!flagError)
 			app.showModal('modalConfirmDdrDefinitif');
 		else
@@ -497,7 +499,7 @@ export class VersementControlesComponent implements OnInit {
 	async validateDdrDefinitif() {
 		var allRenseignes = true;
 
-		for (var item of this.tableDDrsDefinitif.items) {
+		for (var item of this.tableDDrsDefinitif().items) {
 			if (app.isEmpty(item.montantPaiement) && item.datePaiement == null && app.isEmpty(item.devisePaiement)) {
 				allRenseignes = false;
 				break;
@@ -511,14 +513,15 @@ export class VersementControlesComponent implements OnInit {
 
 			const dossierReglementInput: Array<any> = [];
 
-			for (var i = 0; i < this.tableDDrsDefinitif.items.length; i++) {
+			for (var i = 0; i < this.tableDDrsDefinitif().items.length; i++) {
 				//IL FAUT PAS ENVOYER LES DDR DEJA VALIDEES
-				if (!this.tableDDrsDefinitif.items[i].ddrValidee) {
+				const tableDDrsDefinitif = this.tableDDrsDefinitif();
+    if (!tableDDrsDefinitif.items[i].ddrValidee) {
 					const DOcomplet = {
-						date_paiement: this.tableDDrsDefinitif.items[i].datePaiement,
-						montant_definitif_reglement: app.convertStringToFloat(this.tableDDrsDefinitif.items[i].montantPaiement),
-						devise_paiement: this.tableDDrsDefinitif.items[i].devisePaiement,
-						persistenceId: this.tableDDrsDefinitif.items[i].drPersistenceId,
+						date_paiement: tableDDrsDefinitif.items[i].datePaiement,
+						montant_definitif_reglement: app.convertStringToFloat(tableDDrsDefinitif.items[i].montantPaiement),
+						devise_paiement: tableDDrsDefinitif.items[i].devisePaiement,
+						persistenceId: tableDDrsDefinitif.items[i].drPersistenceId,
 					};
 					dossierReglementInput.push(DOcomplet);
 				}
@@ -542,7 +545,7 @@ export class VersementControlesComponent implements OnInit {
 			app.showToast('toastAllDdrsDefinitifs');
 		} else {
 			app.log("## SOME Ddrs en PDéfinitif ##");
-			var ddrsDefinitif = this.getInfosDdrDefinitif(this.tableDDrsDefinitif);
+			var ddrsDefinitif = this.getInfosDdrDefinitif(this.tableDDrsDefinitif());
 
 			//MODIF LIDIA => INSTANCIER LE PROCESS SEULEMENT S IL Y A DES DDRS A VALIDER
 			if (ddrsDefinitif.length > 0) {
@@ -576,7 +579,7 @@ export class VersementControlesComponent implements OnInit {
 				this.versement = await app.getExternalData(app.getUrl('urlGetVersement', storageId), 'validateDdrDefinitif > getVersement', true);
 			}
 		}
-		this.modalConfirmDdrDefinitif.setLoadingBtn();
+		this.modalConfirmDdrDefinitif().setLoadingBtn();
 
 		app.hideModal('modalConfirmDdrDefinitif');
 

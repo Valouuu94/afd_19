@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, viewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { StoreService } from '../../services/store.service';
 import { FormsModule } from '@angular/forms';
@@ -24,10 +24,10 @@ declare const lang: any;
 })
 export class ReportingComponent implements OnInit {
 
-	@ViewChild('modalFiltres') modalFiltres!: ModalComponent;
-	@ViewChild('reporting') reporting!: ExportExcelComponent;
-	@ViewChild('teleportReportingTiers') teleportReportingTiers!: TeleportComponent;
-	@ViewChild('tableTiers') tableTiers!: TableComponent;
+	readonly modalFiltres = viewChild.required<ModalComponent>('modalFiltres');
+	readonly reporting = viewChild.required<ExportExcelComponent>('reporting');
+	readonly teleportReportingTiers = viewChild.required<TeleportComponent>('teleportReportingTiers');
+	readonly tableTiers = viewChild.required<TableComponent>('tableTiers');
 
 	reports: any = [];
 	rows: any = [];
@@ -70,7 +70,7 @@ export class ReportingComponent implements OnInit {
 	async showModalFiltres(type: any) {
 		this.tiersSelected = '';
 		this.tiersSelectedLabel = '';
-		this.teleportReportingTiers.unteleport();
+		this.teleportReportingTiers().unteleport();
 
 		app.cleanDiv('formio_filtresVolumetries');
 		app.cleanDiv('formio_filtresDDR');
@@ -112,8 +112,8 @@ export class ReportingComponent implements OnInit {
 			appFormio.loadFormIO('filtresDDR');
 			this.titleModal = lang.reporting.titleModal.filtresDDR;
 
-			this.teleportReportingTiers.teleport();
-			this.teleportReportingTiers.show();
+			this.teleportReportingTiers().teleport();
+			this.teleportReportingTiers().show();
 		} else if (type == 'volumetriesDvEtDdr') {
 			var divisions;
 			if (app.isAFD(this.store.getUserEntite()))
@@ -213,8 +213,8 @@ export class ReportingComponent implements OnInit {
 			appFormio.loadFormIO('filtresPaiementTiers');
 			this.titleModal = lang.reporting.titleModal.filtresPaiementTiers;
 
-			this.teleportReportingTiers.teleport();
-			this.teleportReportingTiers.show();
+			this.teleportReportingTiers().teleport();
+			this.teleportReportingTiers().show();
 		}
 		else if (type == 'reportingPaiementDocContractuel') {
 			appFormio.loadFormIO('filtresPaiementDocContractuel');
@@ -223,8 +223,8 @@ export class ReportingComponent implements OnInit {
 			appFormio.loadFormIO('filtresDCTiers');
 			this.titleModal = lang.reporting.titleModal.filtresDCTiers;
 
-			this.teleportReportingTiers.teleport();
-			this.teleportReportingTiers.show();
+			this.teleportReportingTiers().teleport();
+			this.teleportReportingTiers().show();
 		} else if (type == 'ravByConcours') {
 			var divisions;
 			if (app.isAFD(this.store.getUserEntite()))
@@ -242,8 +242,8 @@ export class ReportingComponent implements OnInit {
 			appFormio.loadFormIO('filtresRemboursements');
 			this.titleModal = lang.reporting.titleModal.filtresRemboursements;
 
-			this.teleportReportingTiers.teleport();
-			this.teleportReportingTiers.show();
+			this.teleportReportingTiers().teleport();
+			this.teleportReportingTiers().show();
 		}
 
 		this.loading = false;
@@ -901,40 +901,41 @@ export class ReportingComponent implements OnInit {
 			}
 
 			if (type == 'reportingDDR') {
-				this.reporting.exportExcel('reportingDDR', this.rows, filtresSheetDDR, cols);//OK
+				this.reporting().exportExcel('reportingDDR', this.rows, filtresSheetDDR, cols);//OK
 			} else if (type == 'volumetriesDvEtDdr') {
-				this.reporting.exportExcel('volumetriesDvEtDdr', this.rows, filtresSheetVolDvEtDdr, cols);
+				this.reporting().exportExcel('volumetriesDvEtDdr', this.rows, filtresSheetVolDvEtDdr, cols);
 			} else if (type == 'volumetriesAnos') {
-				this.reporting.exportExcel('volumetriesAnos', this.rows, filtresSheetAnos, cols);//OK
+				this.reporting().exportExcel('volumetriesAnos', this.rows, filtresSheetAnos, cols);//OK
 			} else if (type == 'volumetriesDC') {
-				this.reporting.exportExcel('volumetriesDC', this.rows, filtresSheetDC, cols);//OK
+				this.reporting().exportExcel('volumetriesDC', this.rows, filtresSheetDC, cols);//OK
 			} else if (type == 'ctlRAJDossierControle') {
-				this.reporting.exportExcel('ctlRAJDossierControle', this.rows, filtresSheetRAjDC, cols);//OK
+				this.reporting().exportExcel('ctlRAJDossierControle', this.rows, filtresSheetRAjDC, cols);//OK
 			} else if (type == 'ctlRAJAnomalie') {
-				this.reporting.exportExcel('ctlRAJAnomalie', this.rows, filtresSheetRAjAnomalie, cols);//OK
+				this.reporting().exportExcel('ctlRAJAnomalie', this.rows, filtresSheetRAjAnomalie, cols);//OK
 			} else if (type == 'concoursRaj') {
-				this.reporting.exportExcel('concoursRaj', this.rows, filtresSheetConcoursRaj, null);
+				this.reporting().exportExcel('concoursRaj', this.rows, filtresSheetConcoursRaj, null);
 			} else if (type == 'reportingListeAvance') {
-				this.reporting.exportExcel('reportingListeAvance', this.rows, filtresSheetListeAvance, cols);
+				this.reporting().exportExcel('reportingListeAvance', this.rows, filtresSheetListeAvance, cols);
 			} else if (type == 'reportingPaiementTiers') {
-				this.reporting.exportExcel('reportingPaiementTiers', this.rows, filtresSheetListePaiementTiers, null);
+				this.reporting().exportExcel('reportingPaiementTiers', this.rows, filtresSheetListePaiementTiers, null);
 			} else if (type == 'reportingPaiementDocContractuel') {
-				this.reporting.exportExcel('reportingPaiementDocContractuel', this.rows, filtresSheetDocContractuel, cols);//OK
+				this.reporting().exportExcel('reportingPaiementDocContractuel', this.rows, filtresSheetDocContractuel, cols);//OK
 			} else if (type == 'dcByTiers') {
-				this.reporting.exportExcel('dcByTiers', this.rows, filtresSheetListeDCTiers, null);
+				this.reporting().exportExcel('dcByTiers', this.rows, filtresSheetListeDCTiers, null);
 			} else if (type == 'ravByConcours') {
-				this.reporting.exportExcel('ravByConcours', this.rows, filtresSheetrAV, cols);//OK
+				this.reporting().exportExcel('ravByConcours', this.rows, filtresSheetrAV, cols);//OK
 			} else if (type == 'reportingRemboursements') {
-				this.reporting.exportExcel('reportingRemboursements', this.rows, filtresSheetRemboursement, cols); //OK
+				this.reporting().exportExcel('reportingRemboursements', this.rows, filtresSheetRemboursement, cols); //OK
 			}
 		} else
 			app.showToast('toastReportingNoResult');
 
 		await app.sleep(2000);
-		console.log("this.loadingReport >> ", this.reporting.loading);
-		if (!this.reporting.loading) {
+		const reporting = this.reporting();
+  console.log("this.loadingReport >> ", reporting.loading);
+		if (!reporting.loading) {
 			app.hideModal('modalFiltres');
-			this.modalFiltres.setLoadingBtn();
+			this.modalFiltres().setLoadingBtn();
 		}
 
 	}
@@ -942,13 +943,13 @@ export class ReportingComponent implements OnInit {
 	// TIERS 
 
 	async getTiers() {
-		this.tableTiers.setLoading(true);
+		this.tableTiers().setLoading(true);
 
 		this.listTiers = app.getRef('refBeneficiaires');
 
 		await app.sleep(1000);
 
-		this.tableTiers.getItems();
+		this.tableTiers().getItems();
 	}
 
 	async selectTiers(item: any) {

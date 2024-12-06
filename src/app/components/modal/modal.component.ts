@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, OnInit, input, output, viewChild } from '@angular/core';
 import { BtnComponent } from '../btn/btn.component';
 import { NgClass, NgIf } from '@angular/common';
 
@@ -12,31 +12,31 @@ declare const lang: any;
 })
 export class ModalComponent implements OnInit {
 
-	@ViewChild('btnSave') btnSave!: BtnComponent;
+	readonly btnSave = viewChild.required<BtnComponent>('btnSave');
 
 	lang: any = lang;
 
-	@Input() modalId: any;
-	@Input() modalTitle: any;
-	@Input() size: any;
-	@Input() icon: any;
-	@Input() iconValidate: any;
-	@Input() hideFooter: any;
-	@Input() isError: any;
-	@Input() validateLabel: any;
-	@Input() labelBtnClose: any = '';
-	@Input() isDelete: boolean = false;
-	@Input() typeBtn: any = '';
-	@Input() noRightBtn: boolean = false;
-	@Input() subTitle: any = '';
-	@Input() classSubTitle: any = '';
-	@Input() showSwitchToUpdate: any = '';
-	@Input() disabledBtnSwitchToUpdate: boolean = false;
+	readonly modalId = input<any>();
+	readonly modalTitle = input<any>();
+	readonly size = input<any>();
+	readonly icon = input<any>();
+	readonly iconValidate = input<any>();
+	readonly hideFooter = input<any>();
+	readonly isError = input<any>();
+	readonly validateLabel = input<any>();
+	readonly labelBtnClose = input<any>('');
+	readonly isDelete = input<boolean>(false);
+	readonly typeBtn = input<any>('');
+	readonly noRightBtn = input<boolean>(false);
+	readonly subTitle = input<any>('');
+	readonly classSubTitle = input<any>('');
+	readonly showSwitchToUpdate = input<any>('');
+	readonly disabledBtnSwitchToUpdate = input<boolean>(false);
 
-	@Output() validate = new EventEmitter();
-	@Output() cancel = new EventEmitter();
-	@Output() delete = new EventEmitter();
-	@Output() switchToUpdate = new EventEmitter();
+	readonly validate = output();
+	readonly cancel = output();
+	readonly delete = output();
+	readonly switchToUpdate = output();
 
 	constructor() {
 		this.validateLabel = this.lang.validate;
@@ -61,7 +61,7 @@ export class ModalComponent implements OnInit {
 	}
 
 	setLoadingBtn() {
-		this.btnSave.setLoading(false);
+		this.btnSave().setLoading(false);
 	}
 	
 	enabledBtnSwitchToUpdate() {

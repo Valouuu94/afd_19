@@ -1,6 +1,6 @@
 <div *ngIf="documentContractuel != null" class="accordion container float-left p-1">
 	<div class="card infos card-collapse mt-3">
-		<div *ngIf="showLinkDc"class="card-header card-collapse-header mb-2" data-target="#collapseReglementDC">
+		<div *ngIf="showLinkDc()"class="card-header card-collapse-header mb-2" data-target="#collapseReglementDC">
 			<i class="fas fa-window-restore mr-3"></i>
 			{{ documentContractuel.code_fonctionnel }} - {{ documentContractuel.libelle }}
 			<button type="button" class="btn btn-collapse-goto w-auto float-right py-0 bg-transparent" (click)="gotoDC()">{{ lang.documentContractuel.open }}</button>

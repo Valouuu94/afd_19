@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit, input } from '@angular/core';
 import { StoreService } from '../../services/store.service';
 import { NgIf } from '@angular/common';
 
@@ -21,8 +21,8 @@ export class InfosBeneficiaireComponent implements OnInit {
 	concoursTiers: any;
 	idBeneficiaireInput: any;
 	
-	@Input() showTiersUsedByConcours: boolean = true;
-	@Input() objectParentRepris: boolean = false;
+	readonly showTiersUsedByConcours = input<boolean>(true);
+	readonly objectParentRepris = input<boolean>(false);
 
 	constructor(public store: StoreService) { }
 

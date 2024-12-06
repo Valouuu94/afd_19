@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, OnInit, input, output } from '@angular/core';
 import { StoreService } from '../../services/store.service';
 import { FormatNumberInput } from '../../directives/format-number/formatNumberInput';
 import { SpinnerComponent } from '../spinner/spinner.component';
@@ -40,74 +40,74 @@ export class TableComponent implements OnInit {
 	isLoadingBtnAdd: boolean = false;
 	clickInProgress: boolean = false;
 
-	@Input() isInsideModal: boolean = false;
-	@Input() type: any;
-	@Input() url: any;
-	@Input() parentItems: any;
-	@Input() manualLoading: any;
-	@Input() itemsByPage: any;
-	@Input() enableAdd: any;
-	@Input() enablePagination: any = true;
-	@Input() enableRefresh: any = true;
-	@Input() enableExport: boolean = false;
-	@Input() idRefresh: any;
-	@Input() read: any;
-	@Input() disabledEditAndDelete: any;
-	@Input() hideFilters: any;
-	@Input() hideSubfilters: any;
-	@Input() hideFooter: any;
-	@Input() hideSort: any;
-	@Input() advancedFiltersUnfolded: any;
-	@Input() forceAction: any;
-	@Input() highlightIf: any;
-	@Input() highlightIfValue: any;
-	@Input() highlightMode: any = '';
-	@Input() lineClickable: any = false;
-	@Input() filtersButtons: any;
-	@Input() noMT: boolean = false;
-	@Input() maxContentColumn: boolean = false;
-	@Input() isScrollable: boolean = false;
-	@Input() noRightBtn: boolean = false;
-	@Input() fixSecChild: boolean = false;
+	readonly isInsideModal = input<boolean>(false);
+	readonly type = input<any>();
+	readonly url = input<any>();
+	readonly parentItems = input<any>();
+	readonly manualLoading = input<any>();
+	readonly itemsByPage = input<any>();
+	readonly enableAdd = input<any>();
+	readonly enablePagination = input<any>(true);
+	readonly enableRefresh = input<any>(true);
+	readonly enableExport = input<boolean>(false);
+	readonly idRefresh = input<any>();
+	readonly read = input<any>();
+	readonly disabledEditAndDelete = input<any>();
+	readonly hideFilters = input<any>();
+	readonly hideSubfilters = input<any>();
+	readonly hideFooter = input<any>();
+	readonly hideSort = input<any>();
+	readonly advancedFiltersUnfolded = input<any>();
+	readonly forceAction = input<any>();
+	readonly highlightIf = input<any>();
+	readonly highlightIfValue = input<any>();
+	readonly highlightMode = input<any>('');
+	readonly lineClickable = input<any>(false);
+	readonly filtersButtons = input<any>();
+	readonly noMT = input<boolean>(false);
+	readonly maxContentColumn = input<boolean>(false);
+	readonly isScrollable = input<boolean>(false);
+	readonly noRightBtn = input<boolean>(false);
+	readonly fixSecChild = input<boolean>(false);
 
-	@Output() goto = new EventEmitter();
-	@Output() add = new EventEmitter();
-	@Output() treat = new EventEmitter();
-	@Output() affect = new EventEmitter();
-	@Output() edit = new EventEmitter();
-	@Output() payback = new EventEmitter();
-	@Output() update = new EventEmitter();
-	@Output() delete = new EventEmitter();
-	@Output() validate = new EventEmitter();
-	@Output() file = new EventEmitter();
-	@Output() addSPC = new EventEmitter();
-	@Output() select = new EventEmitter();
-	@Output() incOrder = new EventEmitter();
-	@Output() decOrder = new EventEmitter();
-	@Output() refresh = new EventEmitter();
-	@Output() export = new EventEmitter();
+	readonly goto = output();
+	readonly add = output();
+	readonly treat = output();
+	readonly affect = output();
+	readonly edit = output();
+	readonly payback = output();
+	readonly update = output();
+	readonly delete = output();
+	readonly validate = output();
+	readonly file = output();
+	readonly addSPC = output();
+	readonly select = output();
+	readonly incOrder = output();
+	readonly decOrder = output();
+	readonly refresh = output();
+	readonly export = output();
 
 	constructor(public store: StoreService) { }
 
 	async ngOnInit() {
-		this.unfolded = this.advancedFiltersUnfolded;
+		this.unfolded = this.advancedFiltersUnfolded();
 		this.userRole = this.store.getUserRole();
 		this.entite = this.store.getUserEntite();
 
-		if (!this.manualLoading)
+		if (!this.manualLoading())
 			this.getItems();
 
 		this.initFilters();
 	}
 
 	get columns() {
-		return columns[this.type];
+		return columns[this.type()];
 	}
 	get itemsCount() {
 		return this.items.length;
 	}
 	get pagesCount() {
-		return Math.ceil(this.itemsCount / this.itemsByPage);
+		return Math.ceil(this.itemsCount / this.itemsByPage());
 	}
 	get pagesCountArray() {
 		var result = [];
@@ -136,14 +136,14 @@ export class TableComponent implements OnInit {
 		return result;
 	}
 	get pageMax() {
-		var pageMax = this.itemsByPage * this.currentPage;
+		var pageMax = this.itemsByPage() * this.currentPage;
 		if (this.currentPage == this.pagesCount)
-			pageMax = (this.itemsByPage * (this.currentPage - 1)) + this.itemsCount - ((this.pagesCount - 1) * this.itemsByPage);
+			pageMax = (this.itemsByPage() * (this.currentPage - 1)) + this.itemsCount - ((this.pagesCount - 1) * this.itemsByPage());
 		return pageMax;
 	}
 	get itemsInPage() {
 		var itemsInPage = [];
-		for (var i = (this.itemsByPage * (this.currentPage - 1)); i < this.pageMax; i++)
+		for (var i = (this.itemsByPage() * (this.currentPage - 1)); i < this.pageMax; i++)
 			itemsInPage.push(this.items[i]);
 		return itemsInPage;
 	}
@@ -169,13 +169,13 @@ export class TableComponent implements OnInit {
 		return columnsWithFilter;
 	}
 	get placeholder() {
-		return this.lang.table.search + ((this.lang[this.type] != null && this.lang[this.type]['placeholder'] != null) ? ' ' + this.lang[this.type]['placeholder'] : '') + ' ...';
+		return this.lang.table.search + ((this.lang[this.type()] != null && this.lang[this.type()]['placeholder'] != null) ? ' ' + this.lang[this.type()]['placeholder'] : '') + ' ...';
 	}
 	get tooltipAdd() {
-		return ((this.lang[this.type] != null && this.lang[this.type]['tooltipAdd'] != null) ? this.lang[this.type]['tooltipAdd'] : '');
+		return ((this.lang[this.type()] != null && this.lang[this.type()]['tooltipAdd'] != null) ? this.lang[this.type()]['tooltipAdd'] : '');
 	}
 	get isHideSort() {
-		return (this.hideSort || (this.hideFooter && this.items.length <= 1));
+		return (this.hideSort() || (this.hideFooter() && this.items.length <= 1));
 	}
 	get itemsFiltered() {
 		return this.items;
@@ -210,11 +210,11 @@ export class TableComponent implements OnInit {
 	}
 
 	getColumnLabel(column: any) {
-		return (column.label != null) ? column.label : this.lang[this.type][column.key];
+		return (column.label != null) ? column.label : this.lang[this.type()][column.key];
 	}
 
 	getColumnTooltip(column: any) {
-		return (this.lang != null && this.lang[this.type] != null) ? this.lang[this.type][column.type] : '';
+		return (this.lang != null && this.lang[this.type()] != null) ? this.lang[this.type()][column.type] : '';
 	}
 
 	getColumnSort(column: any) {
@@ -233,7 +233,7 @@ export class TableComponent implements OnInit {
 
 	getColumnType(type: any) {
 		if (this.forceAction != null)
-			return this.forceAction;
+			return this.forceAction();
 		return type;
 	}
 
@@ -278,23 +278,23 @@ export class TableComponent implements OnInit {
 	}
 
 	isHighlightRow(item: any) {
-		return (this.highlightIf != null && item[this.highlightIf] == this.highlightIfValue);
+		return (this.highlightIf != null && item[this.highlightIf()] == this.highlightIfValue());
 	}
 
 	isHighlightRowDeleted(item: any) {
-		return (this.isHighlightRow(item) && this.highlightMode == 'deleted');
+		return (this.isHighlightRow(item) && this.highlightMode() == 'deleted');
 	}
 
 	isHighlightColCanceled(item: any) {
-		return (this.isHighlightRow(item) && this.highlightMode == 'canceled');
+		return (this.isHighlightRow(item) && this.highlightMode() == 'canceled');
 	}
 
 	emit(type: any, item?: any) {
 		if (this.forceAction != null)
-			type = this.forceAction;
+			type = this.forceAction();
 
 		if (type == 'goto') {
-			if (!this.lineClickable) { //Handling the case of several Clicks for non-clickable line
+			if (!this.lineClickable()) { //Handling the case of several Clicks for non-clickable line
 				if (!this.clickInProgress) {
 					console.log("emit(goto) >> non clickable line > clickInProgress is ", this.clickInProgress);
 					this.clickInProgress = true;
@@ -354,7 +354,7 @@ export class TableComponent implements OnInit {
 
 	isEnableAction(item: any, column: any) {
 		if (column.enable)
-			return app.enableTableAction(this.type + '-' + column.type, item);
+			return app.enableTableAction(this.type() + '-' + column.type, item);
 		return true;
 	}
 
@@ -539,16 +539,16 @@ export class TableComponent implements OnInit {
 		this.errorLoading = false;
 
 		if (this.url != null) {
-			var url = app.getUrl(this.url);
+			var url = app.getUrl(this.url());
 			if (this.urlParam != null)
-				url = app.getUrl(this.url, this.urlParam);
+				url = app.getUrl(this.url(), this.urlParam);
 
-			this.itemsRaw = await app.getExternalData(url, 'cmp-table > ' + this.type + ' > getItems');
+			this.itemsRaw = await app.getExternalData(url, 'cmp-table > ' + this.type() + ' > getItems');
 
 			if (!Array.isArray(this.itemsRaw) && typeof this.itemsRaw == 'object')
 				this.itemsRaw = [this.itemsRaw];
 		} else
-			this.itemsRaw = this.parentItems;
+			this.itemsRaw = this.parentItems();
 
 		if (this.itemsRaw == null) {
 			this.itemsRaw = [];
@@ -591,7 +591,7 @@ export class TableComponent implements OnInit {
 	}
 
 	getClick(event: any, item: any) {
-		if (!this.lineClickable)
+		if (!this.lineClickable())
 			return false;
 		else if (event != null && event.target != null && event.target.className != null && event.target.className.indexOf('event-catcher') != -1)
 			return false;

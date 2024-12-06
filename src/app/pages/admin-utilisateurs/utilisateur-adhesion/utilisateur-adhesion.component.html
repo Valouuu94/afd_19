@@ -23,10 +23,10 @@
             </div>
         </div>
     </div>
-    <div *ngIf="userRoles != null && userRoles.length > 0">
+    <div *ngIf="userRoles() != null && userRoles().length > 0">
         <div class="row controle-filtre mt-3 mb-2">
             <div class="col align-self-center">
-                <span *ngFor="let r of userRoles; let idxRole = index" class="critere role">
+                <span *ngFor="let r of userRoles(); let idxRole = index" class="critere role">
                     <div class="row">
                         <div class="col align-self-center">
                             {{ r.entiteOrga.typeEntiteOrga }} - {{ r.entiteOrga.libCourt }} - {{ app.getRefLabel('refRoles', r.id.roleUtilisateur) }}

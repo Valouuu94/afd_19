@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, viewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ModalComponent  } from '../../components/modal/modal.component';
 import { TableComponent  } from '../../components/table/table.component';
@@ -17,8 +17,8 @@ declare const lang: any;
 })
 export class RefsComponent implements OnInit {
 
-	@ViewChild('tableRef') tableRef!: TableComponent;
-	@ViewChild('modalRef') modalRef!: ModalComponent;
+	readonly tableRef = viewChild.required<TableComponent>('tableRef');
+	readonly modalRef = viewChild.required<ModalComponent>('modalRef');
 
 	urlType: any;
 	type: any;
@@ -46,8 +46,8 @@ export class RefsComponent implements OnInit {
 
 			await app.sleep(250);
 
-			this.tableRef.reset();
-			this.tableRef.getItems();
+			this.tableRef().reset();
+			this.tableRef().getItems();
 		}
 	}
 	async gotoDetail(item: any) {

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, input, viewChild } from '@angular/core';
 import { TableComponent } from '../table/table.component';
 import { NgIf } from '@angular/common';
 
@@ -13,10 +13,10 @@ declare const lang: any;
 })
 export class InfosConcoursComponent implements OnInit {
 
-	@ViewChild('tableConcoursDate') tableConcoursDate!: TableComponent;
-	@ViewChild('tableConcoursMontant') tableConcoursMontant!: TableComponent;
-	@ViewChild('tableVersement') tableVersement!: TableComponent;
-	@ViewChild('tableConcoursProduit') tableConcoursProduit!: TableComponent;
+	readonly tableConcoursDate = viewChild.required<TableComponent>('tableConcoursDate');
+	readonly tableConcoursMontant = viewChild.required<TableComponent>('tableConcoursMontant');
+	readonly tableVersement = viewChild.required<TableComponent>('tableVersement');
+	readonly tableConcoursProduit = viewChild.required<TableComponent>('tableConcoursProduit');
 
 	showConcours: boolean = false;
 	app: any = app;
@@ -25,12 +25,12 @@ export class InfosConcoursComponent implements OnInit {
 	lang: any = lang;
 	enableCollapse: any;
 
-	@Input() entite: any;
+	readonly entite = input<any>();
 
 	constructor() { }
 
 	ngOnInit() {
-		this.isAFD = app.isAFD(this.entite);
+		this.isAFD = app.isAFD(this.entite());
 	}
 
 	async getConcours(numeroConcours: any, enableCollapse: any) {
@@ -46,7 +46,7 @@ export class InfosConcoursComponent implements OnInit {
 			this.concours.rav_newV = (this.concours.resteAVerser != null ? this.concours.resteAVerser : 0) - montantsDDR;
 		}
 
-		var impayesFormat = app.renderEmpty(await app.getImpayeSIRP(concoursGCF, this.entite, projet));
+		var impayesFormat = app.renderEmpty(await app.getImpayeSIRP(concoursGCF, this.entite(), projet));
 
 		if (!this.isAFD && impayesFormat.length > 0) {
 			var impayesSplited = impayesFormat.split("<span");

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit, input } from '@angular/core';
 import { NgIf, NgClass } from '@angular/common';
 
 declare const lang: any;
@@ -13,8 +13,8 @@ export class SpinnerComponent implements OnInit {
 
 	lang: any = lang;
 
-	@Input() error: any;
-	@Input() small: any;
+	readonly error = input<any>();
+	readonly small = input<any>();
 
 	constructor() { }
 

@@ -4,7 +4,7 @@
     </div>
     <div *ngIf="!read && !loading" class="col-md-auto text-right d-flex">
         <app-btnMenu *ngIf="reglement != null" icon="fas fa-ellipsis-h" side="left">
-            <app-btn #btnAnnulerDossier [inMenu]=true colorLabel="text-danger" [label]="lang.reglement.annulerDossierbtn" (action)="notification.showModalNotification(-1)"></app-btn>
+            <app-btn #btnAnnulerDossier [inMenu]=true colorLabel="text-danger" [label]="lang.reglement.annulerDossierbtn" (action)="notification().showModalNotification(-1)"></app-btn>
         </app-btnMenu>
         <app-btn *ngIf="((!app.isAFD(entite) && versement != null && !read) || (app.isAFD(entite) && reglement != null && !read))" #btnSaveReglement [label]="lang.save" type="secondary" ico="save" (action)="saveReglement(false, true)"></app-btn>
         <ng-container *ngIf="(!app.isAFD(entite) && versement != null && !read) || (app.isAFD(entite) && reglement != null && !read && app.taskIsNotControles(etapeTache))">

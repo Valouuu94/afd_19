@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, viewChild } from '@angular/core';
 import { StoreService } from '../../services/store.service';
 
 import { FormsModule } from '@angular/forms';
@@ -19,8 +19,8 @@ declare const refs: any;
 })
 export class PilotagePerimetreComponent implements OnInit {
 
-	@ViewChild('tablePerimetres') tablePerimetres!: TableComponent;
-	@ViewChild('modalPerimetre') modalPerimetre!: ModalComponent;
+	readonly tablePerimetres = viewChild.required<TableComponent>('tablePerimetres');
+	readonly modalPerimetre = viewChild.required<ModalComponent>('modalPerimetre');
 
 	app: any = app;
 	lang: any = lang;
@@ -109,7 +109,7 @@ export class PilotagePerimetreComponent implements OnInit {
 
 		await app.sleep(250);
 
-		this.tablePerimetres.getItems();
+		this.tablePerimetres().getItems();
 	}
 
 	async updatePerimetre(item: any) {
@@ -188,7 +188,7 @@ export class PilotagePerimetreComponent implements OnInit {
 
 			await this.getPerimetres();
 
-			this.modalPerimetre.setLoadingBtn();
+			this.modalPerimetre().setLoadingBtn();
 
 			app.showToast('toastSaveSuccessPerimetre');
 

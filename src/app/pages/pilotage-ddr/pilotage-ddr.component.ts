@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, viewChild } from '@angular/core';
 import { StoreService } from '../../services/store.service';
 import { ModalComponent } from '../../components/modal/modal.component';
 import { ExportExcelComponent } from '../../components/export-excel/export-excel.component';
@@ -21,10 +21,10 @@ declare const crossVars: any;
 })
 export class PilotageDDRComponent implements OnInit {
 
-	@ViewChild('btnExportDDR') btnExportDDR!: BtnComponent;
-	@ViewChild('tableDDR') tableDDR!: TableComponent;
-	@ViewChild('modalConfirmUpdateControleur') modalConfirmUpdateControleur!: ModalComponent;
-	@ViewChild('exportDdrEligibles') exportDdrEligibles!: ExportExcelComponent;
+	readonly btnExportDDR = viewChild.required<BtnComponent>('btnExportDDR');
+	readonly tableDDR = viewChild.required<TableComponent>('tableDDR');
+	readonly modalConfirmUpdateControleur = viewChild.required<ModalComponent>('modalConfirmUpdateControleur');
+	readonly exportDdrEligibles = viewChild.required<ExportExcelComponent>('exportDdrEligibles');
 
 	app: any = app;
 	lang: any = lang;
@@ -77,7 +77,7 @@ export class PilotageDDRComponent implements OnInit {
 		// 	{ key: 'libelleStatut2Nd', order: 'asc' }
 		// ]); 
 
-		this.tableDDR.getItems();
+		this.tableDDR().getItems();
 	}
 
 	async confirmUpdateControleur(item: any) {
@@ -127,14 +127,14 @@ export class PilotageDDRComponent implements OnInit {
 			} else
 				app.showToast('toastErreurTechnique');
 
-			this.modalConfirmUpdateControleur.setLoadingBtn();
+			this.modalConfirmUpdateControleur().setLoadingBtn();
 			app.hideModal('modalConfirmUpdateControleur');
 		}
 	}
 
 	async exportExcel() {
-		this.btnExportDDR.setLoading(true);
-		var dossiers = this.tableDDR.itemsFiltered;
+		this.btnExportDDR().setLoading(true);
+		var dossiers = this.tableDDR().itemsFiltered;
 
 		var items = dossiers;
 
@@ -158,9 +158,9 @@ export class PilotageDDRComponent implements OnInit {
 
 		await app.sleep(2000);
 
-		this.exportDdrEligibles.exportExcel('ddrEligibles', this.rows, null, null);
+		this.exportDdrEligibles().exportExcel('ddrEligibles', this.rows, null, null);
 
-		this.btnExportDDR.setLoading(false);
+		this.btnExportDDR().setLoading(false);
 	}
 
 	enableToEdit() {

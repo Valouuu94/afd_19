@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, output, viewChild } from '@angular/core';
 import { TableComponent } from '../table/table.component';
 import { StoreService } from '../../services/store.service';
 import { ModalComponent } from '../modal/modal.component';
@@ -15,7 +15,7 @@ declare const lang: any;
     imports: [NgIf, FormsModule, NgFor, ModalComponent, TableComponent]
 })
 export class SelectBeneficiaireComponent implements OnInit {
-	@ViewChild('tableTiers') tableTiers!: TableComponent;
+	readonly tableTiers = viewChild.required<TableComponent>('tableTiers');
 
 	app: any = app;
 	lang: any = lang;
@@ -34,7 +34,7 @@ export class SelectBeneficiaireComponent implements OnInit {
 	isJDC: boolean = false;
 	isDC: boolean = false;
 
-	@Output() change = new EventEmitter();
+	readonly change = output();
 
 	constructor(public store: StoreService) { }
 
@@ -44,7 +44,7 @@ export class SelectBeneficiaireComponent implements OnInit {
 
 	//chargement de tous les tiers pour le tableau de recherche
 	async getTiers() {
-		this.tableTiers.setLoading(true);
+		this.tableTiers().setLoading(true);
 
 		var url = (this.typeParentObject == 'DR' ? 'urlGetBeneficiairesAdresseWithBank' : 'urlGetBeneficiairesAdresse');
 
@@ -57,7 +57,7 @@ export class SelectBeneficiaireComponent implements OnInit {
 
 		await app.sleep(1000);
 
-		this.tableTiers.getItems();
+		this.tableTiers().getItems();
 	}
 
 	//initialisation des données depuis le parent
@@ -102,7 +102,7 @@ export class SelectBeneficiaireComponent implements OnInit {
 
 		app.hideModal('modalAddTiers' + this.typeParentObject);
 
-		this.tableTiers.setClickInProgress(false);
+		this.tableTiers().setClickInProgress(false);
 
 		//si on appelle depuis une modale alors on refresh la modale appelante pour eviter le bug du scroll bootstrap
 		if (!app.isEmpty(this.nameModalParent))

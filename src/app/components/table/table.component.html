@@ -1,4 +1,4 @@
-<div *ngIf="!hideFilters" class="row" [ngClass]="{ 'mt-4': !noMT }">
+<div *ngIf="!hideFilters()" class="row" [ngClass]="{ 'mt-4': !noMT() }">
     <div class="d-flex col">
         <div class="input-group">
             <div class="input-group-prepend">
@@ -7,15 +7,15 @@
                 </div>
             </div>
             <input type="text" class="form-control no-radius-left" autocomplete="off" id="search" [(ngModel)]="filter" (keyup)="filterItems()" [placeholder]="placeholder">
-            <div *ngIf="columnsWithFilter.length > 0 && !hideSubfilters" class="input-group-append">
+            <div *ngIf="columnsWithFilter.length > 0 && !hideSubfilters()" class="input-group-append">
                 <button class="btn btn-filter" data-toggle="collapse" data-target="#collapseFilter" (click)="toggleFilters()">
                     <i class="fas fa-sliders-h ico-filter" [title]="lang.table.filters"></i>
                 </button>
             </div>
         </div>
     </div>
-    <div *ngIf="filtersButtons != null && filtersButtons.length > 0" class="col-auto pt-2px">
-        <ng-container *ngFor="let filtersButton of filtersButtons">
+    <div *ngIf="filtersButtons() != null && filtersButtons().length > 0" class="col-auto pt-2px">
+        <ng-container *ngFor="let filtersButton of filtersButtons()">
             <button class="btn" [ngClass]="{ 'btn-filter-selected': filterItemsSelected(filtersButton.key, filtersButton.value) }" (click)="filterItemsBy(filtersButton.key, filtersButton.value)">
                 <i class="fas fa-filter mr-2"></i>{{ filtersButton.label }}
             </button>
@@ -23,7 +23,7 @@
     </div>
 </div>
 <div class="row">
-    <div *ngIf="columnsWithFilter.length > 0" class="col-12 collapse" [ngClass]="{ show: advancedFiltersUnfolded }" id="collapseFilter">
+    <div *ngIf="columnsWithFilter.length > 0" class="col-12 collapse" [ngClass]="{ show: advancedFiltersUnfolded() }" id="collapseFilter">
         <div class="card mt-1">
             <div class="card-body">
                 <div class="form-row">
@@ -38,12 +38,12 @@
         </div>
     </div>
 </div>
-<div [ngClass]="{ 'overflow-auto tableFixHead': isScrollable, 'tableFixSecChild': fixSecChild, 'rubrique-table-width': isInsideModal }">
-    <table [class]="'table grid mt-2 ' + (maxContentColumn ? 'max-content' : '')">
+<div [ngClass]="{ 'overflow-auto tableFixHead': isScrollable(), 'tableFixSecChild': fixSecChild(), 'rubrique-table-width': isInsideModal() }">
+    <table [class]="'table grid mt-2 ' + (maxContentColumn() ? 'max-content' : '')">
         <thead>
             <tr>
                 <ng-container *ngFor="let column of columns; let indexColumn = index">
-                    <th *ngIf="!column.action || (column.action && !disabledEditAndDelete && (column.role == null || app.existStringInarray(userRole, column.role)))" [title]="((column.tooltip != null) ? column.tooltip : '')" [ngClass]="{ 'text-right th-amount': (column.amount), 'th-amount-no-sort': (column.amount && isHideSort), 'd-none': column.hidden }" scope="col" [style]="(column.width != null  && (column.role == null || app.existStringInarray(userRole, column.role))) ? 'width: ' + column.width : ((column.action) ? 'width: 0' : '')" (click)="sortItems(column)" [class]="((column.applyBorderRight && indexColumn < columns.length - 2) ? 'border-right' : '')">
+                    <th *ngIf="!column.action || (column.action && !disabledEditAndDelete() && (column.role == null || app.existStringInarray(userRole, column.role)))" [title]="((column.tooltip != null) ? column.tooltip : '')" [ngClass]="{ 'text-right th-amount': (column.amount), 'th-amount-no-sort': (column.amount && isHideSort), 'd-none': column.hidden }" scope="col" [style]="(column.width != null  && (column.role == null || app.existStringInarray(userRole, column.role))) ? 'width: ' + column.width : ((column.action) ? 'width: 0' : '')" (click)="sortItems(column)" [class]="((column.applyBorderRight && indexColumn < columns.length - 2) ? 'border-right' : '')">
                         <span>
                             <button *ngIf="column.isCheckAll" class="btn btn-checkbox" (click)="toggleBoolean(items, column.key, $event, column.uniqueChoice)">
                                 <i *ngIf="!app.isTrueAll(items, column.key)" class="far fa-square bg-white"></i>
@@ -63,9 +63,9 @@
                 </td>
             </tr>
             <ng-container *ngFor="let item of itemsInPage; let indexItem = index">
-                <tr *ngIf="!loading && items != null && items.length > 0" [class]="'body-tr border' + ((isHighlightRow(item)) ? ' body-tr-highlight-' + highlightMode : '') + ((!lineClickable) ? ' cursor-default' : '')" (click)="getClick($event, item)">
+                <tr *ngIf="!loading && items != null && items.length > 0" [class]="'body-tr border' + ((isHighlightRow(item)) ? ' body-tr-highlight-' + highlightMode() : '') + ((!lineClickable()) ? ' cursor-default' : '')" (click)="getClick($event, item)">
                     <ng-container *ngFor="let column of columns; let indexColumn = index">
-                        <td *ngIf="!column.action || (column.action && !disabledEditAndDelete && (column.role == null || app.existStringInarray(userRole, column.role)))" [ngClass]="{ 'text-right td-amount': (column.amount), 'd-none': column.hidden, 'td-truncate': survolActif(column, item) }" [class]="((column.applyBorderRight && indexColumn < columns.length - 2) ? 'border-right' : '')">
+                        <td *ngIf="!column.action || (column.action && !disabledEditAndDelete() && (column.role == null || app.existStringInarray(userRole, column.role)))" [ngClass]="{ 'text-right td-amount': (column.amount), 'd-none': column.hidden, 'td-truncate': survolActif(column, item) }" [class]="((column.applyBorderRight && indexColumn < columns.length - 2) ? 'border-right' : '')">
                             <span *ngIf="column.action == null" class="w-100 span-truncate">
                                 <span *ngIf="column.type == 'addSPC'">
                                     <button *ngIf="item.niveau == '1'" class="btn btn-secondary" (click)="emit(column.type, item)" [title]="lang.controlesDCV.titleAddSPC"><i class="fa fa-plus-circle"></i></button>
@@ -153,10 +153,10 @@
                                     </ng-template>
                                 </div>
                             </div>
-                            <span *ngIf="isHighlightRowDeleted(item) && column.action && isEnableAction(item, column) && !disabledEditAndDelete && (column.role == null || app.existStringInarray(userRole, column.role))" class="body-tr-highlight-deleted" title="Cet élément est supprimé">
+                            <span *ngIf="isHighlightRowDeleted(item) && column.action && isEnableAction(item, column) && !disabledEditAndDelete() && (column.role == null || app.existStringInarray(userRole, column.role))" class="body-tr-highlight-deleted" title="Cet élément est supprimé">
                                 <i class="fas fa-times"></i>
                             </span>
-                            <button *ngIf="!isHighlightRowDeleted(item) && column.action && isEnableAction(item, column) && !disabledEditAndDelete && (column.role == null || column.role == userRole) && !noRightBtn && (item.showRightIcon == null || (item.showRightIcon != null && item.showRightIcon))" class="btn event-catcher" [ngClass]="{ action: (column.type == 'validate') }" [title]="getColumnTooltip(column)" (click)="emit(column.type, item)" [disabled]="item.disabled">
+                            <button *ngIf="!isHighlightRowDeleted(item) && column.action && isEnableAction(item, column) && !disabledEditAndDelete() && (column.role == null || column.role == userRole) && !noRightBtn() && (item.showRightIcon == null || (item.showRightIcon != null && item.showRightIcon))" class="btn event-catcher" [ngClass]="{ action: (column.type == 'validate') }" [title]="getColumnTooltip(column)" (click)="emit(column.type, item)" [disabled]="item.disabled">
                                 <i *ngIf="getColumnType(column.type) == 'goto'" class="fas fa-folder event-catcher"></i>
                                 <i *ngIf="getColumnType(column.type) == 'edit'" class="fa fa-pen event-catcher"></i>
                                 <i *ngIf="getColumnType(column.type) == 'update'" class="fa fa-pen event-catcher"></i>
@@ -170,38 +170,38 @@
                     </ng-container>
                 </tr>
             </ng-container>
-            <tr *ngIf="!hideFooter" class="footer">
-                <td [attr.colspan]="(!enableRefresh && !enablePagination) ? '3' : columns.length">
+            <tr *ngIf="!hideFooter()" class="footer">
+                <td [attr.colspan]="(!enableRefresh() && !enablePagination()) ? '3' : columns.length">
                     <div class="d-flex justify-content-between align-items-center">
-                        <div *ngIf="!enableRefresh" class="d-flex align-items-center">
+                        <div *ngIf="!enableRefresh()" class="d-flex align-items-center">
                         </div>
-                        <div *ngIf="enableRefresh" class="d-flex align-items-center">
-                            <ng-container *ngIf="idRefresh != null">
-                                <button [id]="idRefresh" class="btn btn-alter mr-3" [ngClass]="{ 'd-none': read }" (click)="doRefresh()" [title]="lang.table.refresh">
+                        <div *ngIf="enableRefresh()" class="d-flex align-items-center">
+                            <ng-container *ngIf="idRefresh() != null">
+                                <button [id]="idRefresh()" class="btn btn-alter mr-3" [ngClass]="{ 'd-none': read() }" (click)="doRefresh()" [title]="lang.table.refresh">
                                     <i class="fa fa-refresh"></i>
                                 </button>
                             </ng-container>
-                            <ng-container *ngIf="idRefresh == null">
-                                <button class="btn btn-alter mr-3" [ngClass]="{ 'd-none': read }" (click)="doRefresh()" [title]="lang.table.refresh">
+                            <ng-container *ngIf="idRefresh() == null">
+                                <button class="btn btn-alter mr-3" [ngClass]="{ 'd-none': read() }" (click)="doRefresh()" [title]="lang.table.refresh">
                                     <i class="fa fa-refresh"></i>
                                 </button>
                             </ng-container>
-                            <button *ngIf="enableExport" class="btn btn-alter btn-spinner mr-3" (click)="exportTable()" [title]="lang.table.export">
+                            <button *ngIf="enableExport()" class="btn btn-alter btn-spinner mr-3" (click)="exportTable()" [title]="lang.table.export">
                                 <span *ngIf="loadingExport" class="spinner-border spinner-border-sm mr-1"></span>
                                 <i *ngIf="!loadingExport" class="fa fa-download"></i>
                             </button>
                             <div *ngIf="items != null && items.length > 0">
-                                {{ lang.table.results }} <b>{{ itemsByPage * (currentPage - 1) + 1 }}</b> {{ lang.table.pagingTo }} <b>{{ pageMax }}</b> {{ lang.table.pagingOf }} <b>{{ itemsCount }}</b>
+                                {{ lang.table.results }} <b>{{ itemsByPage() * (currentPage - 1) + 1 }}</b> {{ lang.table.pagingTo }} <b>{{ pageMax }}</b> {{ lang.table.pagingOf }} <b>{{ itemsCount }}</b>
                             </div>
                             <div *ngIf="items == null || items.length == 0">
                                 {{ lang.table.noResult }}
                             </div>
                         </div>
-                        <button *ngIf="enableAdd" #btnAdd class="btn" (click)="emit('add')" [title]="tooltipAdd" [class]="(!enablePagination && !enableRefresh) ? 'd-flex align-items-center td-fixed' : ''">
+                        <button *ngIf="enableAdd()" #btnAdd class="btn" (click)="emit('add')" [title]="tooltipAdd" [class]="(!enablePagination() && !enableRefresh()) ? 'd-flex align-items-center td-fixed' : ''">
                             <span *ngIf="isLoadingBtnAdd" class="spinner-border spinner-border-sm mr-1"></span>
                             <i *ngIf="!isLoadingBtnAdd"  class="fa fa-plus-circle"></i>
                         </button>
-                        <ul *ngIf="enablePagination" class="pagination">
+                        <ul *ngIf="enablePagination()" class="pagination">
                             <li class="page-item" [ngClass]="{ disabled: (currentPage == 1) }" (click)="changePage(currentPage - 1)">
                                 <a class="page-link">{{ lang.table.previous }}</a>
                             </li>

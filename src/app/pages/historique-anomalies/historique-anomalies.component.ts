@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, viewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ExportExcelComponent } from '../../components/export-excel/export-excel.component';
 import { TableComponent } from '../../components/table/table.component';
@@ -17,8 +17,8 @@ declare const lang: any;
 })
 export class HistoriqueAnomaliesComponent implements OnInit {
 
-	@ViewChild('tableAnomalies') tableAnomalies!: TableComponent;
-	@ViewChild('exportHistoAnos') exportHistoAnos!: ExportExcelComponent;
+	readonly tableAnomalies = viewChild.required<TableComponent>('tableAnomalies');
+	readonly exportHistoAnos = viewChild.required<ExportExcelComponent>('exportHistoAnos');
 
 	entite: string = '';
 	app: any = app;
@@ -39,7 +39,7 @@ export class HistoriqueAnomaliesComponent implements OnInit {
 	}
 
 	async getAnomalies() {
-		this.tableAnomalies.setLoading(true);
+		this.tableAnomalies().setLoading(true);
 
 		this.anomalies = await app.getExternalData(app.getUrl('urlGetHistoriqueAnomalies'), 'page > historique-anomalies > getAnomalies');
 
@@ -48,7 +48,7 @@ export class HistoriqueAnomaliesComponent implements OnInit {
 
 		await app.sleep(150);
 
-		this.tableAnomalies.getItems();
+		this.tableAnomalies().getItems();
 	}
 
 	async gotoAnomalie(item: any) {
@@ -56,9 +56,10 @@ export class HistoriqueAnomaliesComponent implements OnInit {
 	}
 
 	async exportExcel() {
-		this.tableAnomalies.loadingExport = true;
+		const tableAnomalies = this.tableAnomalies();
+  tableAnomalies.loadingExport = true;
 
-		var items = this.tableAnomalies.itemsFiltered;
+		var items = tableAnomalies.itemsFiltered;
 
 		for (var item of items) {
 			item.agenceGestion = app.getRefLabel('refAgencesGestions', item.agenceGestion);
@@ -70,9 +71,9 @@ export class HistoriqueAnomaliesComponent implements OnInit {
 
 		this.rows = items;
 
-		this.exportHistoAnos.exportExcel('histoAnos', this.rows, null, null);
+		this.exportHistoAnos().exportExcel('histoAnos', this.rows, null, null);
 
-		this.tableAnomalies.loadingExport = false;
+		tableAnomalies.loadingExport = false;
 	}
 
 	enableToEdit() {

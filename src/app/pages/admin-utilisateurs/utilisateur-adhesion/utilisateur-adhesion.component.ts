@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, input, output } from '@angular/core';
 import { NgFor, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -13,11 +13,11 @@ declare const lang: any;
 })
 export class UtilisateurAdhesionComponent implements OnInit {
 
-	@Input() userRoles: any;
-	@Input() DO: any;
+	readonly userRoles = input<any>();
+	readonly DO = input<any>();
 
-	@Output() addUtilisateurEntites = new EventEmitter();
-	@Output() removeUtilisaterEntite = new EventEmitter();
+	readonly addUtilisateurEntites = output();
+	readonly removeUtilisaterEntite = output();
 
 	entites: any = [];
 	roles: any;
@@ -45,12 +45,12 @@ export class UtilisateurAdhesionComponent implements OnInit {
 
 	deleteRole(item: any) {
 		const indexEntite: number = this.userEntites.indexOf(item);
-		var indexItem = this.userRoles.indexOf(item);
+		var indexItem = this.userRoles().indexOf(item);
 
 		if (indexEntite !== -1)
 			this.userEntites.splice(indexEntite, 1);
 		
-		this.userRoles.splice(indexItem, 1);
+		this.userRoles().splice(indexItem, 1);
 
 		var obj = item;
 
@@ -72,7 +72,7 @@ export class UtilisateurAdhesionComponent implements OnInit {
 	}
 
 	addAdhesion() {
-		for (let r of this.userRoles)
+		for (let r of this.userRoles())
 			this.userEntites.push(r['codeEntiteOrga']);
 
 		this.currentrole = [];
@@ -84,7 +84,7 @@ export class UtilisateurAdhesionComponent implements OnInit {
 		this.utilisateurAdhesionExist = this.currentrole[0]['entiteLibCourt'] + ' - ' + this.currentrole[0]['libelleRole'];
 	
 		var adhesionExist = false;
-		for(var userRole of this.userRoles) {
+		for(var userRole of this.userRoles()) {
 			if(userRole.id.codeEntiteOrga == this.userCurrentEntite && userRole.id.typeEntiteOrga == this.userCurrentTypeEntite && userRole.id.roleUtilisateur == this.currentrole[0]['codeRole']){
 				adhesionExist = true;
 				break;
@@ -99,7 +99,7 @@ export class UtilisateurAdhesionComponent implements OnInit {
 
 			this.obj = {
 				"id": {
-					"idUtilisateur": this.DO.idUtilisateur,
+					"idUtilisateur": this.DO().idUtilisateur,
 					"codeEntiteOrga": this.userCurrentEntite,
 					"roleUtilisateur": this.filtreRole.code,
 					"typeEntiteOrga": curEntite.typeEntiteOrga
@@ -126,7 +126,7 @@ export class UtilisateurAdhesionComponent implements OnInit {
 				}
 			};
 
-			this.userRoles.push(this.obj);
+			this.userRoles().push(this.obj);
 			
 			this.addUtilisateurEntites.emit(this.obj);
 		}

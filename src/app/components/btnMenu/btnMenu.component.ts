@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, input } from '@angular/core';
 
 @Component({
     selector: 'app-btnMenu',
@@ -7,8 +7,8 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 })
 export class BtnMenuComponent implements OnInit {
 
-	@Input() icon: any;
-	@Input() side: any;
+	readonly icon = input<any>();
+	readonly side = input<any>();
 	
 	constructor() { }
 	

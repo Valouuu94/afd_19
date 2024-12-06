@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, viewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StoreService } from '../../services/store.service';
 import { ModalComponent } from '../../components/modal/modal.component';
@@ -22,15 +22,15 @@ declare const lang: any;
 })
 export class ProjetsComponent implements OnInit {
 
-	@ViewChild('tableProjets') tableProjets!: TableComponent;
-	@ViewChild('tableConcours') tableConcours!: TableComponent;
-	@ViewChild('tableDC') tableDC!: TableComponent;
-	@ViewChild('tableAvance') tableAvance!: TableComponent;
-	@ViewChild('tableDdv') tableDdv!: TableComponent;
-	@ViewChild('tableDdr') tableDdr!: TableComponent;
-	@ViewChild('tableAnomalies') tableAnomalies!: TableComponent;
-	@ViewChild('tableDDC') tableDDC!: TableComponent;
-	@ViewChild('tableDDCRaj') tableDDCRaj!: TableComponent;
+	readonly tableProjets = viewChild.required<TableComponent>('tableProjets');
+	readonly tableConcours = viewChild.required<TableComponent>('tableConcours');
+	readonly tableDC = viewChild.required<TableComponent>('tableDC');
+	readonly tableAvance = viewChild.required<TableComponent>('tableAvance');
+	readonly tableDdv = viewChild.required<TableComponent>('tableDdv');
+	readonly tableDdr = viewChild.required<TableComponent>('tableDdr');
+	readonly tableAnomalies = viewChild.required<TableComponent>('tableAnomalies');
+	readonly tableDDC = viewChild.required<TableComponent>('tableDDC');
+	readonly tableDDCRaj = viewChild.required<TableComponent>('tableDDCRaj');
 
 	entite: any;
 	perimetre: any;
@@ -172,7 +172,7 @@ export class ProjetsComponent implements OnInit {
 
 		await app.sleep(250);
 
-		this.tableProjets.getItems();
+		this.tableProjets().getItems();
 	}
 
 	async selectProjet(item: any) {
@@ -337,7 +337,7 @@ export class ProjetsComponent implements OnInit {
 
 		await app.sleep(250);
 
-		this.tableConcours.getItems();
+		this.tableConcours().getItems();
 	}
 
 	async gotoDetailConcours(item: any) {
@@ -429,7 +429,7 @@ export class ProjetsComponent implements OnInit {
 	}
 
 	async getAvance() {
-		this.tableAvance.setLoading(true);
+		this.tableAvance().setLoading(true);
 
 		this.avances = await app.getExternalData(app.getUrl('urlGetAvanceContractuels', this.numProjet), 'page > projets > getAvance');
 
@@ -448,7 +448,7 @@ export class ProjetsComponent implements OnInit {
 
 		await app.sleep(250);
 
-		this.tableAvance.getItems();
+		this.tableAvance().getItems();
 	}
 
 	async gotoAvance(item?: any) {
@@ -488,7 +488,7 @@ export class ProjetsComponent implements OnInit {
 		return dcVar;
 	}
 	async getDC() {
-		this.tableDC.setLoading(true);
+		this.tableDC().setLoading(true);
 
 		this.DC = await app.getExternalData(app.getUrl('urlGetDocumentsContractuel', this.numProjet), 'page > projets > getDC');
 		for (var dcVar of this.DC)
@@ -496,7 +496,7 @@ export class ProjetsComponent implements OnInit {
 
 		await app.sleep(250);
 
-		this.tableDC.getItems();
+		this.tableDC().getItems();
 	}
 
 	gotoDC(item?: any) {
@@ -520,7 +520,7 @@ export class ProjetsComponent implements OnInit {
 	}
 
 	async getDdv() {
-		this.tableDdv.setLoading(true);
+		this.tableDdv().setLoading(true);
 
 		this.dossiersVersement = await app.getExternalData(app.getUrl('urlGetVersementsByNumProjet', this.numProjet), 'page > projets > getDvs');
 		this.projet = await app.getExternalData(app.getUrl('urlGetProjetByNum', this.numProjet), 'projets > showProjet', true);
@@ -540,7 +540,7 @@ export class ProjetsComponent implements OnInit {
 
 		await app.sleep(250);
 
-		this.tableDdv.getItems();
+		this.tableDdv().getItems();
 	}
 
 	gotoDdv(item?: any) {
@@ -577,7 +577,7 @@ export class ProjetsComponent implements OnInit {
 	}
 
 	async getDdr() {
-		this.tableDdr.setLoading(true);
+		this.tableDdr().setLoading(true);
 
 		var ddrs = await app.getExternalData(app.getUrl('urlGetReglementsByNumProjet', this.numProjet), 'page > projets > getDrs');
 
@@ -585,7 +585,7 @@ export class ProjetsComponent implements OnInit {
 
 		await app.sleep(250);
 
-		this.tableDdr.getItems();
+		this.tableDdr().getItems();
 	}
 
 	async gotoDdr(item?: any) {
@@ -611,13 +611,13 @@ export class ProjetsComponent implements OnInit {
 	}
 
 	async getAnomalies() {
-		this.tableAnomalies.setLoading(true);
+		this.tableAnomalies().setLoading(true);
 
 		this.anomalies = await app.getExternalData(app.getUrl('urlGetAnomaliesAllByproject', this.numProjet), 'page > historique-anomalies > getAnomalies');
 
 		await app.sleep(250);
 
-		this.tableAnomalies.getItems();
+		this.tableAnomalies().getItems();
 	}
 
 	gotoAnomalies(item?: any) {
@@ -646,7 +646,7 @@ export class ProjetsComponent implements OnInit {
 	}
 
 	async getDDC() {
-		this.tableDDC.setLoading(true);
+		this.tableDDC().setLoading(true);
 
 		this.DDC = await app.getExternalData(app.getUrl('urlGetDossiersControlesByProjet', this.numProjet), 'page > historique-dossiers-controles > getDossiersControles');
 
@@ -655,7 +655,7 @@ export class ProjetsComponent implements OnInit {
 
 		await app.sleep(250);
 
-		this.tableDDC.getItems();
+		this.tableDDC().getItems();
 	}
 
 	gotoDDC(item?: any) {
@@ -677,7 +677,7 @@ export class ProjetsComponent implements OnInit {
 	}
 
 	async getDDCRaj() {
-		this.tableDDCRaj.setLoading(true);
+		this.tableDDCRaj().setLoading(true);
 
 		this.DDCRaj = await app.getExternalData(app.getUrl('urlGetDossiersControlesRAJByProjet', this.numProjet), 'page > historique-dossiers-controles-raj > getDossiersControlesRaj');
 
@@ -686,7 +686,7 @@ export class ProjetsComponent implements OnInit {
 
 		await app.sleep(250);
 
-		this.tableDDCRaj.getItems();
+		this.tableDDCRaj().getItems();
 	}
 
 	gotoDDCRaj(item?: any) {

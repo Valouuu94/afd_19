@@ -3,7 +3,7 @@
 		<div class="card-header card-collapse-header" data-target="#collapseInfoAvance">
 			<i class="fas fa-window-restore mr-3"></i>
 			{{ avanceContractuel.code_fonctionnel }} - {{ avanceContractuel.libelle }}
-			<button *ngIf="displayButtonAvance" type="button" class="btn btn-collapse-goto w-auto float-right py-0 bg-transparent" (click)="goToAvanceContractuel()">{{ lang.avanceContractuel.open }}</button>
+			<button *ngIf="displayButtonAvance()" type="button" class="btn btn-collapse-goto w-auto float-right py-0 bg-transparent" (click)="goToAvanceContractuel()">{{ lang.avanceContractuel.open }}</button>
 		</div>
 		<div id="collapseInfoAvance" class="collapse show">
 			<div class="card-body py-0">

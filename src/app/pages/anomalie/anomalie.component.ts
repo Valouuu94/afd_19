@@ -1,5 +1,5 @@
 import { Location, NgIf, NgFor, NgClass } from '@angular/common';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, viewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalComponent } from '../../components/modal/modal.component';
 import { FormsModule } from '@angular/forms';
@@ -25,8 +25,8 @@ declare const actionsAnomalie: any;
 })
 export class AnomalieComponent implements OnInit {
 
-	@ViewChild('modalConfirmationValiderAnomalie') modalConfirmationValiderAnomalie!: ModalComponent;
-	@ViewChild('btnSaveAnomalie') btnSaveAnomalie!: BtnComponent;
+	readonly modalConfirmationValiderAnomalie = viewChild.required<ModalComponent>('modalConfirmationValiderAnomalie');
+	readonly btnSaveAnomalie = viewChild.required<BtnComponent>('btnSaveAnomalie');
 
 	app: any = app;
 	lang: any = lang;
@@ -450,7 +450,7 @@ export class AnomalieComponent implements OnInit {
 
 		await this.saveComment(validate);
 		if (!validate)
-			this.btnSaveAnomalie.setLoading(false);
+			this.btnSaveAnomalie().setLoading(false);
 	}
 
 	async validerAnomalie() {

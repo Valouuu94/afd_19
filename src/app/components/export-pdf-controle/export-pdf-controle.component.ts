@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, viewChild } from '@angular/core';
 import { ExportPdfComponent } from '../export-pdf/export-pdf.component';
 
 declare const app: any;
@@ -10,7 +10,7 @@ declare const app: any;
     imports: [ExportPdfComponent]
 })
 export class ExportPdfControleComponent implements OnInit {
-	@ViewChild('exportPDF') exportPDF!: ExportPdfComponent;
+	readonly exportPDF = viewChild.required<ExportPdfComponent>('exportPDF');
 
 	titre: any;
 	sousTitre: any;
@@ -123,6 +123,6 @@ export class ExportPdfControleComponent implements OnInit {
 		this.piedDepage = '\n' + 'Dossier de contrôle' + " version du " + new Date().toLocaleDateString();
 		this.fileName = "pdfDossierControle" + new Date().toLocaleDateString();
 
-		this.exportPDF.generator(this.titre, this.sousTitre, this.tableContext, this.tableBodyTheme, this.piedDepage, this.fileName);
+		this.exportPDF().generator(this.titre, this.sousTitre, this.tableContext, this.tableBodyTheme, this.piedDepage, this.fileName);
 	}
 }

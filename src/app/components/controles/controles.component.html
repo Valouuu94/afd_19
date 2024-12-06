@@ -107,7 +107,7 @@
                 <!-- zone commentaires et lien -->
                 <div *ngIf="showControle(controle, type)" [id]="'collapseControleComment-' + indexControle" class="row-controle py-0 pb-1 collapse px-4" [ngClass]="{ alterned: showAlterned(indexControle, controle) }">
                     <div class="col">
-                        <app-comments [attr.ref]="'controle-comments-' + controle.id" [DO]="controle" type="controle" [read]="((isAFD) ? read : (read || !type.current))" [currentUserRole]="role" (save)="showToastSaveComment($event)" (detectChanges)="cdr.detectChanges()"></app-comments>
+                        <app-comments [attr.ref]="'controle-comments-' + controle.id" [DO]="controle" type="controle" [read]="((isAFD) ? read : (read || !type.current))" [currentUserRole]="role()" (save)="showToastSaveComment($event)" (detectChanges)="cdr.detectChanges()"></app-comments>
                     </div>
                 </div>
                 <!-- anomalies -->

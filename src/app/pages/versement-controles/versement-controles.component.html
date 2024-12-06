@@ -13,15 +13,15 @@
     </div>
     <div class="col-auto text-right d-flex">
         <app-btnMenu *ngIf="showBtnMenu()" icon="fas fa-ellipsis-h" side="right">
-            <app-btn *ngIf="tache != null && !app.taskIsMisePaiement(tache)" #btnAnnulerDossier [inMenu]=true colorLabel="text-danger" [label]="lang.versement.annulerDossierbtn" (action)="notification.showModalNotification(-1)"></app-btn>
+            <app-btn *ngIf="tache != null && !app.taskIsMisePaiement(tache)" #btnAnnulerDossier [inMenu]=true colorLabel="text-danger" [label]="lang.versement.annulerDossierbtn" (action)="notification().showModalNotification(-1)"></app-btn>
             <app-btn *ngIf="ddvIsValide()" #btnExportPDFBan [inMenu]=true [label]="lang.versement.extractControles" (action)="exportControlesToPDF()"></app-btn>
         </app-btnMenu>
         <app-btn *ngIf="!read && !app.isEmpty(versement) && !app.isDossierAnnule(versement.code_statut_dossier) && !app.isMiseEnPaiementTask(tache)" #btnSaveControles class="float-right" [label]="lang.save" type="secondary" ico="save" (action)="validerTache(false, false)"></app-btn>
         <app-btn #btnSaveDdrDefinif *ngIf="tache != null && app.isMiseEnPaiementTask(tache) && !readDdrDefinitif" [label]="lang.validate" type="secondary" ico="check" (action)="verifDDRDefinitif()"></app-btn>
-        <button *ngIf="tache != null && !app.isChargeAppui(role) && !app.isDCV(entite, perimetre) && !app.isMiseEnPaiementTask(tache)" class="btn btn-secondary ml-2 float-right" (click)="notification.showModalNotification(1)">
+        <button *ngIf="tache != null && !app.isChargeAppui(role) && !app.isDCV(entite, perimetre) && !app.isMiseEnPaiementTask(tache)" class="btn btn-secondary ml-2 float-right" (click)="notification().showModalNotification(1)">
             <i class="fas fa-reply"></i> {{ lang.resend }}
         </button>
-        <button *ngIf="!read && !app.isDirecteur(role) && !app.isDCV(entite, perimetre) && !app.isMiseEnPaiementTask(tache)" class="btn btn-new ml-2 float-right" (click)="notification.showModalNotification(0)">
+        <button *ngIf="!read && !app.isDirecteur(role) && !app.isDCV(entite, perimetre) && !app.isMiseEnPaiementTask(tache)" class="btn btn-new ml-2 float-right" (click)="notification().showModalNotification(0)">
             <i class="fas fa-arrow-right"></i> {{ lang.reglementControles.validateControls }}
         </button>
         <button *ngIf="!read && (app.isDirecteur(role) || app.isDCV(entite, perimetre)) && !app.isMiseEnPaiementTask(tache)" class="btn btn-new ml-2 float-right" (click)="validerTacheDir()">

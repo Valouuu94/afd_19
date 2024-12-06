@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, viewChild } from '@angular/core';
 import { StoreService } from '../../services/store.service';
 import { FormsModule } from '@angular/forms';
 import { ModalComponent } from '../../components/modal/modal.component';
@@ -20,10 +20,10 @@ declare const $: any;
 })
 export class ParamControlesComponent implements OnInit {
 
-	@ViewChild('tableControles') tableControles!: TableComponent;
-	@ViewChild('tableControleEtapes') tableControleEtapes!: TableComponent;
-	@ViewChild('modalAddControle') modalAddControle!: ModalComponent;
-	@ViewChild('modalAddControleEtape') modalAddControleEtape!: ModalComponent;
+	readonly tableControles = viewChild.required<TableComponent>('tableControles');
+	readonly tableControleEtapes = viewChild.required<TableComponent>('tableControleEtapes');
+	readonly modalAddControle = viewChild.required<ModalComponent>('modalAddControle');
+	readonly modalAddControleEtape = viewChild.required<ModalComponent>('modalAddControleEtape');
 
 	create: boolean = true;
 	controles: any;
@@ -176,7 +176,7 @@ export class ParamControlesComponent implements OnInit {
 
 		await app.sleep(150);
 
-		this.tableControles.getItems((skipDefaultSort != null));
+		this.tableControles().getItems((skipDefaultSort != null));
 	}
 
 	async changeOrder(item: any, diff: any) {
@@ -241,7 +241,7 @@ export class ParamControlesComponent implements OnInit {
 		}
 
 		// Tri du tableau après modification
-		this.tableControles.sortByDefault();
+		this.tableControles().sortByDefault();
 		for (var controle of this.controles) {
 			if (controle.moved == true) {
 				await this.saveControle(app.copyJson(controle), true);
@@ -251,31 +251,34 @@ export class ParamControlesComponent implements OnInit {
 	}
 
 	filterControlesBy(type: any, value: any) {
-		if (this.tableControles.filters[type] == value)
-			this.tableControles.filters[type] = '';
+		const tableControles = this.tableControles();
+  if (tableControles.filters[type] == value)
+			tableControles.filters[type] = '';
 		else
-			this.tableControles.filters[type] = value;
+			tableControles.filters[type] = value;
 
-		this.tableControles.resetPage();
-		this.tableControles.filterItems();
-		this.tableControles.sortByDefault();
+		tableControles.resetPage();
+		tableControles.filterItems();
+		tableControles.sortByDefault();
 	}
 
 	filterControlesSelected(type: any, value: any) {
-		return (this.tableControles.filters[type] == value);
+		return (this.tableControles().filters[type] == value);
 	}
 
 	filterControlesAllSelected() {
-		return (this.tableControles.filters['niveau'] == '' && this.tableControles.filters['actif'] == '' && this.tableControles.filters['etape'] == '');
+		const tableControles = this.tableControles();
+  return (tableControles.filters['niveau'] == '' && tableControles.filters['actif'] == '' && tableControles.filters['etape'] == '');
 	}
 
 	filterControlesReset() {
-		this.tableControles.filters['niveau'] = '';
-		this.tableControles.filters['actif'] = '';
-		this.tableControles.filters['etape'] = '';
-		this.tableControles.resetPage();
-		this.tableControles.filterItems();
-		this.tableControles.sortByDefault();
+		const tableControles = this.tableControles();
+  tableControles.filters['niveau'] = '';
+		tableControles.filters['actif'] = '';
+		tableControles.filters['etape'] = '';
+		tableControles.resetPage();
+		tableControles.filterItems();
+		tableControles.sortByDefault();
 	}
 
 	async addSPC(item: any) {
@@ -393,7 +396,7 @@ export class ParamControlesComponent implements OnInit {
 			}
 		}
 
-		this.tableControleEtapes.getItems();
+		this.tableControleEtapes().getItems();
 	}
 
 	async loadThemesActifs() {
@@ -424,7 +427,7 @@ export class ParamControlesComponent implements OnInit {
 					var resultCreate = null;
 	
 					if (currentItem == null && !app.isValidForm('formio_' + this.controleId)) {
-						this.modalAddControle.setLoadingBtn();
+						this.modalAddControle().setLoadingBtn();
 						continue;
 					}
 	
@@ -435,7 +438,7 @@ export class ParamControlesComponent implements OnInit {
 	
 						if (alreadyExist) {
 							app.showToast('toastParamControlesAlreadyExist');
-							this.modalAddControle.setLoadingBtn();
+							this.modalAddControle().setLoadingBtn();
 							continue;
 						}
 					}
@@ -482,7 +485,7 @@ export class ParamControlesComponent implements OnInit {
 							await app.setExternalData(app.getUrl('urlSetParamControle', this.controle.id), DO, 'PUT');
 						}
 	
-						this.modalAddControle.setLoadingBtn();
+						this.modalAddControle().setLoadingBtn();
 						app.showToast('toastSaveSuccessParamControles');
 						app.hideModal('modalAddControle');
 					}
@@ -609,7 +612,7 @@ export class ParamControlesComponent implements OnInit {
 	async saveControleEtape(skipValid: any) {
 		if (!this.hasNoRight) {
 			if (!skipValid && !app.isValidForm('formio_' + this.controleId + 'Etape')) {
-				this.modalAddControleEtape.setLoadingBtn();
+				this.modalAddControleEtape().setLoadingBtn();
 				return;
 			}
 
@@ -672,11 +675,11 @@ export class ParamControlesComponent implements OnInit {
 			app.log('page-ref-controles > saveControleEtape - controleEtapes', this.controleEtapes);
 			app.log('page-ref-controles > saveControleEtape - filtres', JSON.stringify(this.filtres));
 
-			this.modalAddControleEtape.setLoadingBtn();
+			this.modalAddControleEtape().setLoadingBtn();
 
 			app.hideModal('modalAddControleEtape');
 
-			this.tableControleEtapes.getItems();
+			this.tableControleEtapes().getItems();
 		}
 	}
 

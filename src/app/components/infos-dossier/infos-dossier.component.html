@@ -1,19 +1,19 @@
-<div *ngIf="dossier != null" class="m-0 infos-dossier">
+<div *ngIf="dossier() != null" class="m-0 infos-dossier">
     <div class="row d-flex">
         <div class="col-auto mr-5">
             <h4 class="mb-4 text-dark">
                 {{ lang.infosFolder }}{{ (typeDossier == 'reglement') ? lang.infosFolderReglement : lang.infosFolderVersement }}
-                n° <span>{{ dossier.code_fonctionnel }}</span>
-                <span *ngIf="type == 'DDR' && dossier.numero_dossier_reglement == null">-x</span>
+                n° <span>{{ dossier().code_fonctionnel }}</span>
+                <span *ngIf="type() == 'DDR' && dossier().numero_dossier_reglement == null">-x</span>
             </h4>
         </div>
         <div class="col-auto mb-2 pl-0">
             <span [class]="(dossierAnnule ? 'danger-border' : (dossierRembourse ? 'warning-border' : 'info-border')) + ' ml-2 mr-2'" [title]="lang.versement.statutDossier">{{ statutDossier }}</span>
             <span class="anomalie-tags" [title]="lang.versement.modalite">{{ modalitePaiement }}</span>
-            <span *ngIf="app.isAFD(dossier.entite)" class="anomalie-tags ml-2" [title]="lang.versement.type">{{ typeVersement }}</span>
+            <span *ngIf="app.isAFD(dossier().entite)" class="anomalie-tags ml-2" [title]="lang.versement.type">{{ typeVersement }}</span>
         </div>
     </div>
-    <div *ngIf="dossier != null && app.isAFD(dossier.entite) && dossier.obj_ext_id != null" class="row m-0 mt-1 mb-5">
+    <div *ngIf="dossier() != null && app.isAFD(dossier().entite) && dossier().obj_ext_id != null" class="row m-0 mt-1 mb-5">
         <div class="badge-table col3"><span>{{ lang.reprise }}</span></div>
     </div>
     <div class="row m-0 mt-1 mb-5">
@@ -25,7 +25,7 @@
     </div>
 </div>
 <!-- MODALS -->
-<app-modal [modalId]="'modalAddItem' + dossier.id" [modalTitle]="lang.commentaireNotification.titleModalNotification" size="lg" hideFooter="true">
+<app-modal [modalId]="'modalAddItem' + dossier().id" [modalTitle]="lang.commentaireNotification.titleModalNotification" size="lg" hideFooter="true">
     <div *ngIf="notifications.length > 0" class="comments-scroll">
         <div *ngIf="notifications.length > 0">
             <div *ngFor="let notification of notifications">

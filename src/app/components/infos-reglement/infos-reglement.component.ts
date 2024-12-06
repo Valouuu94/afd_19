@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, input, viewChild } from '@angular/core';
 import { StoreService } from '../../services/store.service';
 import { InfosBeneficiaireComponent } from '../infos-beneficiaire/infos-beneficiaire.component';
 import { TeleportComponent } from '../teleport/teleport.component';
@@ -32,39 +32,39 @@ declare const lang: any;
 })
 export class InfosReglementComponent implements OnInit {
 
-	@ViewChild('infosBeneficiaireReglement') infosBeneficiaireReglement!: InfosBeneficiaireComponent;
-	@ViewChild('beneficiairePrimaire') beneficiairePrimaire!: InfosBeneficiaireComponent;
-	@ViewChild('teleportBeneficiaireReglement') teleportBeneficiaireReglement!: TeleportComponent;
-	@ViewChild('teleportDetailAvanceContractuel') teleportDetailAvanceContractuel!: TeleportComponent;
-	@ViewChild('infosAvance') infosAvance!: InfosAvanceComponent;
-	@ViewChild('teleportBeneficiairePrimaire') teleportBeneficiairePrimaire!: TeleportComponent;
-	@ViewChild('tableJustificatifsReglement') tableJustificatifsReglement!: TableComponent;
-	@ViewChild('teleportJustificatifReglement') teleportJustificatifReglement!: TeleportComponent;
-	@ViewChild('tableJustificatifsRemboursement') tableJustificatifsRemboursement!: TableComponent;
-	@ViewChild('teleportJustificatifRemboursement') teleportJustificatifRemboursement!: TeleportComponent;
-	@ViewChild('teleportEmetteurJustificatif') teleportEmetteurJustificatif!: TeleportComponent;
-	@ViewChild('teleportRubriquesJust') teleportRubriquesJust!: TeleportComponent;
-	@ViewChild('teleportDcJustificatif') teleportDcJustificatif!: TeleportComponent;
-	@ViewChild('teleportRubriquesRemboursement') teleportRubriquesRemboursement!: TeleportComponent;
-	@ViewChild('teleportDcJustifRemboursement') teleportDcJustifRemboursement!: TeleportComponent;
-	@ViewChild('teleportContrevaleur') teleportContrevaleur!: TeleportComponent;
-	@ViewChild('teleportEquivalent') teleportEquivalent!: TeleportComponent;
-	@ViewChild('teleportDevisesReglement') teleportDevisesReglement!: TeleportComponent;
-	@ViewChild('teleportDetailsCoordonneeBancaire') teleportDetailsCoordonneeBancaire!: TeleportComponent;
-	@ViewChild('infosCoordonneeBancaire') infosCoordonneeBancaire!: InfosCoordonneBancaireComponent;
-	@ViewChild('teleportConcours') teleportConcours!: TeleportComponent;
-	@ViewChild('infosConcours') infosConcours!: InfosConcoursComponent;
-	@ViewChild('selectEmetteur') selectEmetteur!: SelectBeneficiaireComponent;
-	@ViewChild('infosEmetteurJustificatif') infosEmetteurJustificatif!: InfosBeneficiaireComponent;
-	@ViewChild('teleportSelectAvance') teleportSelectAvance!: TeleportComponent;
-	@ViewChild('rubriquesComponentJust') rubriquesComponentJust!: RubriquesComponent;
-	@ViewChild('rubriquesComponent') rubriquesComponent!: RubriquesComponent;
-	@ViewChild('infosReglementDC') infosReglementDC!: DocumentContractuelComponent;
-	@ViewChild('infosReglementAvance') infosReglementAvance!: AvanceComponent;
-	@ViewChild('teleportDC') teleportDC!: TeleportComponent;
-	@ViewChild('infosDc') infosDc!: InfosDcComponent;
-	@ViewChild('tableRubriques') tableRubriques!: TableComponent;
-	@ViewChild('detailsDemandeReglement') detailsDemandeReglement!: ModalComponent;
+	readonly infosBeneficiaireReglement = viewChild.required<InfosBeneficiaireComponent>('infosBeneficiaireReglement');
+	readonly beneficiairePrimaire = viewChild.required<InfosBeneficiaireComponent>('beneficiairePrimaire');
+	readonly teleportBeneficiaireReglement = viewChild.required<TeleportComponent>('teleportBeneficiaireReglement');
+	readonly teleportDetailAvanceContractuel = viewChild.required<TeleportComponent>('teleportDetailAvanceContractuel');
+	readonly infosAvance = viewChild.required<InfosAvanceComponent>('infosAvance');
+	readonly teleportBeneficiairePrimaire = viewChild.required<TeleportComponent>('teleportBeneficiairePrimaire');
+	readonly tableJustificatifsReglement = viewChild.required<TableComponent>('tableJustificatifsReglement');
+	readonly teleportJustificatifReglement = viewChild.required<TeleportComponent>('teleportJustificatifReglement');
+	readonly tableJustificatifsRemboursement = viewChild.required<TableComponent>('tableJustificatifsRemboursement');
+	readonly teleportJustificatifRemboursement = viewChild.required<TeleportComponent>('teleportJustificatifRemboursement');
+	readonly teleportEmetteurJustificatif = viewChild.required<TeleportComponent>('teleportEmetteurJustificatif');
+	readonly teleportRubriquesJust = viewChild.required<TeleportComponent>('teleportRubriquesJust');
+	readonly teleportDcJustificatif = viewChild.required<TeleportComponent>('teleportDcJustificatif');
+	readonly teleportRubriquesRemboursement = viewChild.required<TeleportComponent>('teleportRubriquesRemboursement');
+	readonly teleportDcJustifRemboursement = viewChild.required<TeleportComponent>('teleportDcJustifRemboursement');
+	readonly teleportContrevaleur = viewChild.required<TeleportComponent>('teleportContrevaleur');
+	readonly teleportEquivalent = viewChild.required<TeleportComponent>('teleportEquivalent');
+	readonly teleportDevisesReglement = viewChild.required<TeleportComponent>('teleportDevisesReglement');
+	readonly teleportDetailsCoordonneeBancaire = viewChild.required<TeleportComponent>('teleportDetailsCoordonneeBancaire');
+	readonly infosCoordonneeBancaire = viewChild.required<InfosCoordonneBancaireComponent>('infosCoordonneeBancaire');
+	readonly teleportConcours = viewChild.required<TeleportComponent>('teleportConcours');
+	readonly infosConcours = viewChild.required<InfosConcoursComponent>('infosConcours');
+	readonly selectEmetteur = viewChild.required<SelectBeneficiaireComponent>('selectEmetteur');
+	readonly infosEmetteurJustificatif = viewChild.required<InfosBeneficiaireComponent>('infosEmetteurJustificatif');
+	readonly teleportSelectAvance = viewChild.required<TeleportComponent>('teleportSelectAvance');
+	readonly rubriquesComponentJust = viewChild.required<RubriquesComponent>('rubriquesComponentJust');
+	readonly rubriquesComponent = viewChild.required<RubriquesComponent>('rubriquesComponent');
+	readonly infosReglementDC = viewChild.required<DocumentContractuelComponent>('infosReglementDC');
+	readonly infosReglementAvance = viewChild.required<AvanceComponent>('infosReglementAvance');
+	readonly teleportDC = viewChild.required<TeleportComponent>('teleportDC');
+	readonly infosDc = viewChild.required<InfosDcComponent>('infosDc');
+	readonly tableRubriques = viewChild.required<TableComponent>('tableRubriques');
+	readonly detailsDemandeReglement = viewChild.required<ModalComponent>('detailsDemandeReglement');
 
 	showConcours: boolean = false;
 	entite: any;
@@ -123,7 +123,7 @@ export class InfosReglementComponent implements OnInit {
 	equivalentDateRender: any;
 	ddrReprise: boolean = false;
 
-	@Input() role: any;
+	readonly role = input<any>();
 
 	constructor(private router: Router, private route: ActivatedRoute, public store: StoreService) { }
 
@@ -172,18 +172,18 @@ export class InfosReglementComponent implements OnInit {
 		await this.generateSidebar();
 
 		//on vide les teleports formio
-		this.teleportBeneficiaireReglement.unteleport();
-		this.teleportDetailAvanceContractuel.unteleport();
-		this.teleportBeneficiairePrimaire.unteleport();
-		this.teleportDetailsCoordonneeBancaire.unteleport();
-		this.teleportConcours.unteleport();
-		this.teleportJustificatifRemboursement.unteleport();
+		this.teleportBeneficiaireReglement().unteleport();
+		this.teleportDetailAvanceContractuel().unteleport();
+		this.teleportBeneficiairePrimaire().unteleport();
+		this.teleportDetailsCoordonneeBancaire().unteleport();
+		this.teleportConcours().unteleport();
+		this.teleportJustificatifRemboursement().unteleport();
 		if (app.isAFD(this.entite)) {
-			this.teleportDevisesReglement.unteleport();
-			this.teleportJustificatifReglement.unteleport();
-			this.teleportContrevaleur.unteleport();
-			this.teleportEquivalent.unteleport();
-			this.teleportDC.unteleport();
+			this.teleportDevisesReglement().unteleport();
+			this.teleportJustificatifReglement().unteleport();
+			this.teleportContrevaleur().unteleport();
+			this.teleportEquivalent().unteleport();
+			this.teleportDC().unteleport();
 		}
 
 		//on vide le formulaire formio du reglement
@@ -235,14 +235,15 @@ export class InfosReglementComponent implements OnInit {
 		//chargement du tiers et coordonnees bancaires
 		await this.getBeneficiaireReglement();
 
-		if (!app.isEmpty(this.infosBeneficiaireReglement) && !app.isEmpty(this.infosBeneficiaireReglement.beneficiaire))
-			this.infosCoordonneeBancaire.setListCoordonneesBancaires(this.infosBeneficiaireReglement.beneficiaire.comptes, true, app.getEltInArray(this.infosBeneficiaireReglement.beneficiaire.comptes, 'idCbInterne', (this.reglement != null ? this.reglement.id_coordonnee_bancaire : null)));
+		const infosBeneficiaireReglement = this.infosBeneficiaireReglement();
+  if (!app.isEmpty(infosBeneficiaireReglement) && !app.isEmpty(infosBeneficiaireReglement.beneficiaire))
+			this.infosCoordonneeBancaire().setListCoordonneesBancaires(infosBeneficiaireReglement.beneficiaire.comptes, true, app.getEltInArray(infosBeneficiaireReglement.beneficiaire.comptes, 'idCbInterne', (this.reglement != null ? this.reglement.id_coordonnee_bancaire : null)));
 
 		//chargement du beneficiaire primaire
 		this.getBeneficiairePrimaire();
 
 		//chargement du concours
-		await this.infosConcours.getConcours(this.reglement.numero_concours, false);
+		await this.infosConcours().getConcours(this.reglement.numero_concours, false);
 
 		//chargement des justificatifs
 		if (app.isAFD(this.entite) && app.isRefinancementOrPaiementDirect(this.versement.modalite_paiement)) {
@@ -267,7 +268,7 @@ export class InfosReglementComponent implements OnInit {
 				await app.sleep(100);
 			}
 
-			this.tableJustificatifsReglement.getItems();
+			this.tableJustificatifsReglement().getItems();
 		}
 
 		//chargement des justificatifs-remboursement
@@ -292,7 +293,7 @@ export class InfosReglementComponent implements OnInit {
 				await app.sleep(100);
 			}
 
-			this.tableJustificatifsRemboursement.getItems();
+			this.tableJustificatifsRemboursement().getItems();
 		}
 
 		//chargement données avance
@@ -310,7 +311,7 @@ export class InfosReglementComponent implements OnInit {
 		}
 
 		if (this.reglement.id_document_contractuel != null)
-			await this.infosDc.getDetailDocumentContractuel(this.reglement.id_document_contractuel, this.reglement, null, null);
+			await this.infosDc().getDetailDocumentContractuel(this.reglement.id_document_contractuel, this.reglement, null, null);
 
 		//contrevaleur
 		if (app.isNotEmpty(this.reglement.devise_contrevaleur)) {
@@ -329,34 +330,34 @@ export class InfosReglementComponent implements OnInit {
 		}
 
 		//chargement des teleports
-		this.teleportBeneficiaireReglement.teleport();
-		this.teleportBeneficiaireReglement.show();
-		this.teleportDetailAvanceContractuel.teleport();
-		this.teleportDetailAvanceContractuel.show();
-		this.teleportBeneficiairePrimaire.teleport();
-		this.teleportBeneficiairePrimaire.show();
-		this.teleportDetailsCoordonneeBancaire.teleport();
-		this.teleportDetailsCoordonneeBancaire.show();
-		this.teleportConcours.teleport();
-		this.teleportConcours.show();
-		this.teleportJustificatifRemboursement.teleport();
-		this.teleportJustificatifRemboursement.show();
+		this.teleportBeneficiaireReglement().teleport();
+		this.teleportBeneficiaireReglement().show();
+		this.teleportDetailAvanceContractuel().teleport();
+		this.teleportDetailAvanceContractuel().show();
+		this.teleportBeneficiairePrimaire().teleport();
+		this.teleportBeneficiairePrimaire().show();
+		this.teleportDetailsCoordonneeBancaire().teleport();
+		this.teleportDetailsCoordonneeBancaire().show();
+		this.teleportConcours().teleport();
+		this.teleportConcours().show();
+		this.teleportJustificatifRemboursement().teleport();
+		this.teleportJustificatifRemboursement().show();
 		if (app.isAFD(this.entite)) {
-			this.teleportDevisesReglement.teleport();
-			this.teleportDevisesReglement.show();
-			this.teleportJustificatifReglement.teleport();
-			this.teleportJustificatifReglement.show();
-			this.teleportContrevaleur.teleport();
-			this.teleportContrevaleur.show();
-			this.teleportEquivalent.teleport();
-			this.teleportEquivalent.show();
-			this.teleportDC.teleport();
-			this.teleportDC.show();
+			this.teleportDevisesReglement().teleport();
+			this.teleportDevisesReglement().show();
+			this.teleportJustificatifReglement().teleport();
+			this.teleportJustificatifReglement().show();
+			this.teleportContrevaleur().teleport();
+			this.teleportContrevaleur().show();
+			this.teleportEquivalent().teleport();
+			this.teleportEquivalent().show();
+			this.teleportDC().teleport();
+			this.teleportDC().show();
 		}
 
 		this.loading = false;
 
-		this.detailsDemandeReglement.enabledBtnSwitchToUpdate();
+		this.detailsDemandeReglement().enabledBtnSwitchToUpdate();
 
 		console.timeEnd('info-reglement');
 	}
@@ -373,12 +374,12 @@ export class InfosReglementComponent implements OnInit {
 	}
 
 	async getBeneficiaireReglement() {
-		await this.infosBeneficiaireReglement.getBeneficiaire(null, null, this.reglement.id_beneficiaire_reglement, this.reglement.numero_concours, 'DR');
+		await this.infosBeneficiaireReglement().getBeneficiaire(null, null, this.reglement.id_beneficiaire_reglement, this.reglement.numero_concours, 'DR');
 	}
 
 	async getBeneficiairePrimaire() {
 		if (!app.isEmpty(this.reglement.id_beneficiaire_primaire))
-			await this.beneficiairePrimaire.getBeneficiaire(null, null, this.reglement.id_beneficiaire_primaire, this.reglement.numero_concours, 'DR');
+			await this.beneficiairePrimaire().getBeneficiaire(null, null, this.reglement.id_beneficiaire_primaire, this.reglement.numero_concours, 'DR');
 	}
 
 	async getAvanceContractuel(id?: any) {
@@ -386,15 +387,16 @@ export class InfosReglementComponent implements OnInit {
 
 		appFormio.setDataValue(crossVars.forms['formio_reglement' + this.entite], 'raj_sup_zero', '');
 
-		await this.infosAvance.getAvance(this.idAvanceContractuel, this.entite, this.versement.persistenceId, (this.reglement != null ? this.reglement.persistenceId : null));
+		await this.infosAvance().getAvance(this.idAvanceContractuel, this.entite, this.versement.persistenceId, (this.reglement != null ? this.reglement.persistenceId : null));
 
 		await app.sleep(100);
 
 		this.showAvance = true;
 		this.showButtonGetAvance = true;
 
-		if (this.infosAvance) {
-			this.resteJustifierDecaisserDossier = (this.infosAvance.isFixed) ? this.infosAvance.avanceFig.reste_justifier_decaisser_dossier_copy : this.infosAvance.resteJustifierDecaisserDossier;
+		const infosAvance = this.infosAvance();
+  if (infosAvance) {
+			this.resteJustifierDecaisserDossier = (infosAvance.isFixed) ? infosAvance.avanceFig.reste_justifier_decaisser_dossier_copy : infosAvance.resteJustifierDecaisserDossier;
 
 			if (this.resteJustifierDecaisserDossier > 0 && this.reglement != null && this.reglement.justificatif_complementaire_RAJ) {
 				appFormio.setDataValue(crossVars.forms['formio_reglement' + this.entite], 'raj_sup_zero', 'show');
@@ -476,7 +478,7 @@ export class InfosReglementComponent implements OnInit {
 		} else
 			app.hideElement('formio_avanceContractuelPROPARCOFinal');
 
-		this.infosReglementDC.getDC();
+		this.infosReglementDC().getDC();
 
 		this.loading = false;
 
@@ -502,7 +504,7 @@ export class InfosReglementComponent implements OnInit {
 		app.hideElement('formio_justificatifRemboursement');
 		app.hideElement('formio_justificatifAvance' + this.entite);
 
-		await this.infosReglementAvance.getAvance();
+		await this.infosReglementAvance().getAvance();
 
 		this.loading = false;
 
@@ -533,9 +535,9 @@ export class InfosReglementComponent implements OnInit {
 		else
 			app.hideElement('formio_avanceContractuelPROPARCOFinal');
 
-		this.teleportDcJustificatif.unteleport();
-		this.teleportRubriquesJust.unteleport();
-		this.teleportEmetteurJustificatif.unteleport();
+		this.teleportDcJustificatif().unteleport();
+		this.teleportRubriquesJust().unteleport();
+		this.teleportEmetteurJustificatif().unteleport();
 
 		app.cleanDiv('formio_justificatifReglement');
 
@@ -559,7 +561,7 @@ export class InfosReglementComponent implements OnInit {
 
 				app.cleanDiv("rubriquesComponentJust");
 
-				await this.rubriquesComponentJust.getRubriques(this.documentContractuel.autre_devise != null ? this.documentContractuel.autre_devise : [], this.documentContractuel, false, false, false, false, false, (this.documentContractuel != null ? this.documentContractuel.rubriques : null), true, item, ddrDevise, this.reglement);
+				await this.rubriquesComponentJust().getRubriques(this.documentContractuel.autre_devise != null ? this.documentContractuel.autre_devise : [], this.documentContractuel, false, false, false, false, false, (this.documentContractuel != null ? this.documentContractuel.rubriques : null), true, item, ddrDevise, this.reglement);
 			}
 
 			this.showRubriquesDC = true;
@@ -576,13 +578,13 @@ export class InfosReglementComponent implements OnInit {
 
 		//anomalie 2213
 		if (app.isPaiementDirectAndMoad(this.versement.modalite_paiement, this.versement.type_versement)) {
-			this.teleportDcJustificatif.teleport();
-			this.teleportDcJustificatif.show();
-			this.teleportRubriquesJust.teleport();
-			this.teleportRubriquesJust.show();
+			this.teleportDcJustificatif().teleport();
+			this.teleportDcJustificatif().show();
+			this.teleportRubriquesJust().teleport();
+			this.teleportRubriquesJust().show();
 		}
-		this.teleportEmetteurJustificatif.teleport();
-		this.teleportEmetteurJustificatif.show();
+		this.teleportEmetteurJustificatif().teleport();
+		this.teleportEmetteurJustificatif().show();
 
 		this.loading = false;
 		this.contentTitle = lang.subJustifReg;
@@ -617,8 +619,8 @@ export class InfosReglementComponent implements OnInit {
 			app.hideElement('formio_avanceContractuelPROPARCOFinal');
 
 		if (app.isAFD(this.entite)) {
-			this.teleportDcJustifRemboursement.unteleport();
-			this.teleportRubriquesRemboursement.unteleport();
+			this.teleportDcJustifRemboursement().unteleport();
+			this.teleportRubriquesRemboursement().unteleport();
 		}
 
 		app.cleanDiv('formio_justificatifRemboursement');
@@ -647,9 +649,10 @@ export class InfosReglementComponent implements OnInit {
 				this.showRubriquesDC = true;
 				await app.sleep(250);
 
-				this.tableRubriques.getItems();
+				this.tableRubriques().getItems();
 
-				if (this.tableRubriques) {
+				const tableRubriques = this.tableRubriques();
+    if (tableRubriques) {
 					this.ventilationRubriques = [];
 
 					for (var rub of this.rubriques) {
@@ -674,7 +677,7 @@ export class InfosReglementComponent implements OnInit {
 
 					await app.sleep(500);
 
-					this.tableRubriques.getItems();
+					tableRubriques.getItems();
 				}
 
 				// await this.rubriquesComponent.getRubriques(this.documentContractuel.autre_devise != null ? this.documentContractuel.autre_devise : [], this.documentContractuel, false, false, false, false, false, (this.documentContractuel != null ? this.documentContractuel.rubriques : null), true, null, ddrDevise, this.reglement, item);
@@ -694,10 +697,10 @@ export class InfosReglementComponent implements OnInit {
 		appFormio.setDataValue(crossVars.forms['formio_justificatifRemboursement'], 'devise', DO.devise_remboursement);
 
 		if (app.isAFD(this.entite)) {
-			this.teleportDcJustifRemboursement.teleport();
-			this.teleportDcJustifRemboursement.show();
-			this.teleportRubriquesRemboursement.teleport();
-			this.teleportRubriquesRemboursement.show();
+			this.teleportDcJustifRemboursement().teleport();
+			this.teleportDcJustifRemboursement().show();
+			this.teleportRubriquesRemboursement().teleport();
+			this.teleportRubriquesRemboursement().show();
 		}
 
 		this.loading = false;
@@ -729,7 +732,7 @@ export class InfosReglementComponent implements OnInit {
 		else
 			app.hideElement('formio_avanceContractuelPROPARCOFinal');
 
-		this.infosReglementAvance.teleportEmetteurJustificatifAvance.unteleport();
+		this.infosReglementAvance().teleportEmetteurJustificatifAvance().unteleport();
 
 		app.cleanDiv('formio_justificatifAvance' + this.entite);
 
@@ -752,8 +755,8 @@ export class InfosReglementComponent implements OnInit {
 
 		this.getEmetteurJustificatifAV(item.emetteur);
 
-		this.infosReglementAvance.teleportEmetteurJustificatifAvance.teleport();
-		this.infosReglementAvance.teleportEmetteurJustificatifAvance.show();
+		this.infosReglementAvance().teleportEmetteurJustificatifAvance().teleport();
+		this.infosReglementAvance().teleportEmetteurJustificatifAvance().show();
 
 		this.loading = false;
 
@@ -771,17 +774,19 @@ export class InfosReglementComponent implements OnInit {
 
 		if (!app.isEmpty(idEmetteur)) {
 			if (!app.isPaiementDirect(this.versement.modalite_paiement))
-				await this.infosEmetteurJustificatif.getBeneficiaire(null, null, idEmetteur, numeroConcours, 'JR');
+				await this.infosEmetteurJustificatif().getBeneficiaire(null, null, idEmetteur, numeroConcours, 'JR');
 			else
-				await this.infosEmetteurJustificatif.getBeneficiaire(null, null, idEmetteur, null, 'JDC');
+				await this.infosEmetteurJustificatif().getBeneficiaire(null, null, idEmetteur, null, 'JDC');
 		}
 	}
 
 	async getEmetteurJustificatifAV(emetteur?: any) {
 		var numeroConcours = appFormio.getDataValue(crossVars.forms['formio_reglement' + this.entite], 'numero_concours');
 		if (!app.isEmpty(emetteur)) {
-			this.infosReglementAvance.infosEmetteurJustificatifAvance.objectParentRepris = !app.isEmpty(this.avanceContractuel.obj_ext_id);
-			await this.infosReglementAvance.infosEmetteurJustificatifAvance.getBeneficiaire(null, null, emetteur, numeroConcours, 'JA');
+			const infosEmetteurJustificatifAvance = this.infosReglementAvance().infosEmetteurJustificatifAvance();
+			const infosReglementAvance = this.infosReglementAvance();
+			infosReglementAvance.objectParentRepris = !app.isEmpty(this.avanceContractuel.obj_ext_id);
+			await infosEmetteurJustificatifAvance.getBeneficiaire(null, null, emetteur, numeroConcours, 'JA');
 		}
 	}
 

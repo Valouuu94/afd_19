@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, viewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location, NgIf, NgFor } from '@angular/common';
 import { NotificationComponent } from '../../components/notification/notification.component';
@@ -26,12 +26,12 @@ declare const $: any;
 })
 export class AvanceContractuelControlesComponent implements OnInit {
 
-	@ViewChild('btnSaveControles') btnSaveControles!: BtnComponent;
-	@ViewChild('avanceContractuelControles') avanceContractuelControles!: ControlesComponent;
-	@ViewChild('notification') notification!: NotificationComponent;
-	@ViewChild('infosDossier') infosDossier!: InfosDossierComponent;
-	@ViewChild('btnAnnulerDossier') btnAnnulerDossier!: BtnComponent;
-	@ViewChild('tableAnomalies') tableAnomalies!: TableComponent;
+	readonly btnSaveControles = viewChild.required<BtnComponent>('btnSaveControles');
+	readonly avanceContractuelControles = viewChild.required<ControlesComponent>('avanceContractuelControles');
+	readonly notification = viewChild.required<NotificationComponent>('notification');
+	readonly infosDossier = viewChild.required<InfosDossierComponent>('infosDossier');
+	readonly btnAnnulerDossier = viewChild.required<BtnComponent>('btnAnnulerDossier');
+	readonly tableAnomalies = viewChild.required<TableComponent>('tableAnomalies');
 
 	id: any;
 	entite: any;
@@ -75,7 +75,7 @@ export class AvanceContractuelControlesComponent implements OnInit {
 	}
 
 	async autoSave() {
-		if (this.avanceContractuelControles.updatedValue) {
+		if (this.avanceContractuelControles().updatedValue) {
 			app.showToast('toastControlesAutoSave');
 
 			await app.sleep(5000);
@@ -85,10 +85,10 @@ export class AvanceContractuelControlesComponent implements OnInit {
 	}
 
 	async validerTache(validate: any, DO?: any, showModal?: any, verifControle?: any) {
-		var controles = await this.avanceContractuelControles.saveControles(verifControle);
+		var controles = await this.avanceContractuelControles().saveControles(verifControle);
 
 		if (controles == null) {
-			this.btnSaveControles.setLoading(false);
+			this.btnSaveControles().setLoading(false);
 			return;
 		}
 
@@ -107,8 +107,8 @@ export class AvanceContractuelControlesComponent implements OnInit {
 
 			await app.sleep(250);
 
-			this.notification.setLoadingBtn();
-			this.notification.hideModal();
+			this.notification().setLoadingBtn();
+			this.notification().hideModal();
 
 			app.showToast('toastControlesValid');
 
@@ -123,19 +123,19 @@ export class AvanceContractuelControlesComponent implements OnInit {
 			await app.saveFormData(app.getRootDO('avanceContractuelRAJDefault'), null, urls['urlProcessInstanciation'], urls['urlProcessUpdateAvanceRAJDefault']);
 			await app.sleep(250);
 
-			this.btnSaveControles.setLoading(false);
+			this.btnSaveControles().setLoading(false);
 
 			await this.getAvanceContractuel();
 
-			this.notification.setLoadingBtn();
-			this.notification.hideModal();
+			this.notification().setLoadingBtn();
+			this.notification().hideModal();
 
 			app.showToast('toastControlesSave');
 		}
 	}
 
 	async validerTacheDCV() {
-		await this.notification.validerTache(true);
+		await this.notification().validerTache(true);
 	}
 
 	async annulerTache() {
@@ -157,7 +157,7 @@ export class AvanceContractuelControlesComponent implements OnInit {
 
 		this.step = app.getEtapeTache(this.tache);
 
-		await this.avanceContractuelControles.loadControles(caseId, this.tache);
+		await this.avanceContractuelControles().loadControles(caseId, this.tache);
 
 		await app.sleep(100);
 
@@ -165,7 +165,7 @@ export class AvanceContractuelControlesComponent implements OnInit {
 	}
 
 	toggleComments() {
-		var controles = this.avanceContractuelControles.controles;
+		var controles = this.avanceContractuelControles().controles;
 
 		if (controles != null) {
 			for (var i = 0; i < controles.length; i++) {
@@ -180,13 +180,13 @@ export class AvanceContractuelControlesComponent implements OnInit {
 	}
 
 	async validerControles() {
-		var controles = await this.avanceContractuelControles.saveControles(true);
+		var controles = await this.avanceContractuelControles().saveControles(true);
 
 		return !(controles == null);
 	}
 
 	async getAnomalies() {
-		this.anomalies = await app.getExternalData(app.getUrl('urlGetAllAnomaliesByCaseIdDossier', this.avanceContractuelControles.caseId), 'page > historique-dossiers > getAnomaliesByDC');
+		this.anomalies = await app.getExternalData(app.getUrl('urlGetAllAnomaliesByCaseIdDossier', this.avanceContractuelControles().caseId), 'page > historique-dossiers > getAnomaliesByDC');
 
 		if (this.anomalies != null && this.anomalies.length > 0)
 			for (var ano of this.anomalies)
@@ -194,12 +194,13 @@ export class AvanceContractuelControlesComponent implements OnInit {
 
 		await app.sleep(150);
 
-		this.tableAnomalies.getItems();
+		this.tableAnomalies().getItems();
 	}
 
 	async gotoAnomalie(item: any) {
-		if (this.avanceContractuelControles.controles != null && this.avanceContractuelControles.controles.length > 0) {
-			if (this.avanceContractuelControles.controles[0].type == "controlesRAJZero")
+		const avanceContractuelControles = this.avanceContractuelControles();
+  if (avanceContractuelControles.controles != null && avanceContractuelControles.controles.length > 0) {
+			if (avanceContractuelControles.controles[0].type == "controlesRAJZero")
 				app.redirect(this.router, app.getUrl('urlGotoHistoriqueAnomalieRajZero', item.persistenceId));
 			else
 				app.redirect(this.router, app.getUrl('urlGotoHistoriqueAnomalieRajDefaut', item.persistenceId));

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, viewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StoreService } from '../../services/store.service';
 import { InfosCoordonneBancaireComponent } from '../../components/infos-coordonnee-bancaire/infos-coordonnee-bancaire.component';
@@ -43,57 +43,57 @@ declare const refs: any;
 })
 export class ReglementComponent implements OnInit {
 
-	@ViewChild('btnSaveReglement') btnSaveReglement!: BtnComponent;
-	@ViewChild('btnValidateTache') btnValidateTache!: BtnComponent;
-	@ViewChild('tableReglements') tableReglements!: TableComponent;
-	@ViewChild('tableVersements') tableVersements!: TableComponent;
-	@ViewChild('saveDocument') saveDocument!: ModalComponent;
-	@ViewChild('infosContext') infosContext!: InfosContextComponent;
-	@ViewChild('beneficiairePrimaire') beneficiairePrimaire!: InfosBeneficiaireComponent;
-	@ViewChild('teleportBeneficiairePrimaire') teleportBeneficiairePrimaire!: TeleportComponent;
-	@ViewChild('tableRubriquesDC') tableRubriquesDC!: TableComponent;
-	@ViewChild('tableJustificatifsReglement') tableJustificatifsReglement!: TableComponent;
-	@ViewChild('tableFournisseur') tableFournisseur!: TableComponent;
-	@ViewChild('detailsVersement') detailsVersement!: InfosVersementComponent;
-	@ViewChild('infosAvance') infosAvance!: InfosAvanceComponent;
-	@ViewChild('teleportFournisseur') teleportFournisseur!: TeleportComponent;
-	@ViewChild('teleportAvance') teleportAvance!: TeleportComponent;
-	@ViewChild('teleportNombreDC') teleportNombreDC!: TeleportComponent;
-	@ViewChild('teleportDC') teleportDC!: TeleportComponent;
-	@ViewChild('teleportAR') teleportAR!: TeleportComponent;
-	@ViewChild('teleportJustificatifReglement') teleportJustificatifReglement!: TeleportComponent;
-	@ViewChild('teleportRubriques') teleportRubriques!: TeleportComponent;
-	@ViewChild('teleportDetailAvanceContractuel') teleportDetailAvanceContractuel!: TeleportComponent
-	@ViewChild('saveJustificatif') saveJustificatif!: ModalComponent;
-	@ViewChild('teleportDcJustificatif') teleportDcJustificatif!: TeleportComponent;
-	@ViewChild('teleportDerniereDFT') teleportDerniereDFT!: TeleportComponent;
-	@ViewChild('modalConfirmationAddJustificatifReglement') modalConfirmationAddJustificatifReglement!: ModalComponent;
-	@ViewChild('btnReturn') btnReturn!: BtnComponent;
-	@ViewChild('infosVersement') infosVersement!: InfosVersementComponent;
-	@ViewChild('notification') notification!: NotificationComponent;
-	@ViewChild('modalDeleteJustificatifReglement') modalDeleteJustificatifReglement!: ModalComponent;
-	@ViewChild('modalMessagePaysExecution') modalMessagePaysExecution!: ModalComponent;
-	@ViewChild('teleportContrevaleur') teleportContrevaleur!: TeleportComponent;
-	@ViewChild('teleportEquivalent') teleportEquivalent!: TeleportComponent;
-	@ViewChild('teleportDetailsCoordonneeBancaire') teleportDetailsCoordonneeBancaire!: TeleportComponent;
-	@ViewChild('teleportDevisesReglement') teleportDevisesReglement!: TeleportComponent;
-	@ViewChild('infosDossier') infosDossier!: InfosDossierComponent;
-	@ViewChild('btnAnnulerDossier') btnAnnulerDossier!: BtnComponent;
-	@ViewChild('infosCoordonneeBancaire') infosCoordonneeBancaire!: InfosCoordonneBancaireComponent;
+	readonly btnSaveReglement = viewChild.required<BtnComponent>('btnSaveReglement');
+	readonly btnValidateTache = viewChild.required<BtnComponent>('btnValidateTache');
+	readonly tableReglements = viewChild.required<TableComponent>('tableReglements');
+	readonly tableVersements = viewChild.required<TableComponent>('tableVersements');
+	readonly saveDocument = viewChild.required<ModalComponent>('saveDocument');
+	readonly infosContext = viewChild.required<InfosContextComponent>('infosContext');
+	readonly beneficiairePrimaire = viewChild.required<InfosBeneficiaireComponent>('beneficiairePrimaire');
+	readonly teleportBeneficiairePrimaire = viewChild.required<TeleportComponent>('teleportBeneficiairePrimaire');
+	readonly tableRubriquesDC = viewChild.required<TableComponent>('tableRubriquesDC');
+	readonly tableJustificatifsReglement = viewChild.required<TableComponent>('tableJustificatifsReglement');
+	readonly tableFournisseur = viewChild.required<TableComponent>('tableFournisseur');
+	readonly detailsVersement = viewChild.required<InfosVersementComponent>('detailsVersement');
+	readonly infosAvance = viewChild.required<InfosAvanceComponent>('infosAvance');
+	readonly teleportFournisseur = viewChild.required<TeleportComponent>('teleportFournisseur');
+	readonly teleportAvance = viewChild.required<TeleportComponent>('teleportAvance');
+	readonly teleportNombreDC = viewChild.required<TeleportComponent>('teleportNombreDC');
+	readonly teleportDC = viewChild.required<TeleportComponent>('teleportDC');
+	readonly teleportAR = viewChild.required<TeleportComponent>('teleportAR');
+	readonly teleportJustificatifReglement = viewChild.required<TeleportComponent>('teleportJustificatifReglement');
+	readonly teleportRubriques = viewChild.required<TeleportComponent>('teleportRubriques');
+	readonly teleportDetailAvanceContractuel = viewChild.required<TeleportComponent>('teleportDetailAvanceContractuel');
+	readonly saveJustificatif = viewChild.required<ModalComponent>('saveJustificatif');
+	readonly teleportDcJustificatif = viewChild.required<TeleportComponent>('teleportDcJustificatif');
+	readonly teleportDerniereDFT = viewChild.required<TeleportComponent>('teleportDerniereDFT');
+	readonly modalConfirmationAddJustificatifReglement = viewChild.required<ModalComponent>('modalConfirmationAddJustificatifReglement');
+	readonly btnReturn = viewChild.required<BtnComponent>('btnReturn');
+	readonly infosVersement = viewChild.required<InfosVersementComponent>('infosVersement');
+	readonly notification = viewChild.required<NotificationComponent>('notification');
+	readonly modalDeleteJustificatifReglement = viewChild.required<ModalComponent>('modalDeleteJustificatifReglement');
+	readonly modalMessagePaysExecution = viewChild.required<ModalComponent>('modalMessagePaysExecution');
+	readonly teleportContrevaleur = viewChild.required<TeleportComponent>('teleportContrevaleur');
+	readonly teleportEquivalent = viewChild.required<TeleportComponent>('teleportEquivalent');
+	readonly teleportDetailsCoordonneeBancaire = viewChild.required<TeleportComponent>('teleportDetailsCoordonneeBancaire');
+	readonly teleportDevisesReglement = viewChild.required<TeleportComponent>('teleportDevisesReglement');
+	readonly infosDossier = viewChild.required<InfosDossierComponent>('infosDossier');
+	readonly btnAnnulerDossier = viewChild.required<BtnComponent>('btnAnnulerDossier');
+	readonly infosCoordonneeBancaire = viewChild.required<InfosCoordonneBancaireComponent>('infosCoordonneeBancaire');
 	//Tiers-reglement
-	@ViewChild('selectbeneficaire') selectbeneficaire!: SelectBeneficiaireComponent;
-	@ViewChild('infosBeneficiaireReglement') infosBeneficiaireReglement!: InfosBeneficiaireComponent;
-	@ViewChild('teleportBeneficiaireReglement') teleportBeneficiaireReglement!: TeleportComponent;
-	@ViewChild('teleportSelectBeneficiareReglement') teleportSelectBeneficiareReglement!: TeleportComponent;
+	readonly selectbeneficaire = viewChild.required<SelectBeneficiaireComponent>('selectbeneficaire');
+	readonly infosBeneficiaireReglement = viewChild.required<InfosBeneficiaireComponent>('infosBeneficiaireReglement');
+	readonly teleportBeneficiaireReglement = viewChild.required<TeleportComponent>('teleportBeneficiaireReglement');
+	readonly teleportSelectBeneficiareReglement = viewChild.required<TeleportComponent>('teleportSelectBeneficiareReglement');
 	//Emetteur-justificatif
-	@ViewChild('selectEmetteur') selectEmetteur!: SelectBeneficiaireComponent;
-	@ViewChild('infosEmetteurJustificatif') infosEmetteurJustificatif!: InfosBeneficiaireComponent;
-	@ViewChild('teleportEmetteurJustificatif') teleportEmetteurJustificatif!: TeleportComponent;
-	@ViewChild('teleportSelectEmetteurJustificatif') teleportSelectEmetteurJustificatif!: TeleportComponent;
-	@ViewChild('teleportEmetteurJustificatifDC') teleportEmetteurJustificatifDC!: TeleportComponent;
-	@ViewChild('rubriquesComponent') rubriquesComponent!: RubriquesComponent;
-	@ViewChild('teleportSelectAvance') teleportSelectAvance!: TeleportComponent;
-	@ViewChild('infosDc') infosDc!: InfosDcComponent;
+	readonly selectEmetteur = viewChild.required<SelectBeneficiaireComponent>('selectEmetteur');
+	readonly infosEmetteurJustificatif = viewChild.required<InfosBeneficiaireComponent>('infosEmetteurJustificatif');
+	readonly teleportEmetteurJustificatif = viewChild.required<TeleportComponent>('teleportEmetteurJustificatif');
+	readonly teleportSelectEmetteurJustificatif = viewChild.required<TeleportComponent>('teleportSelectEmetteurJustificatif');
+	readonly teleportEmetteurJustificatifDC = viewChild.required<TeleportComponent>('teleportEmetteurJustificatifDC');
+	readonly rubriquesComponent = viewChild.required<RubriquesComponent>('rubriquesComponent');
+	readonly teleportSelectAvance = viewChild.required<TeleportComponent>('teleportSelectAvance');
+	readonly infosDc = viewChild.required<InfosDcComponent>('infosDc');
 
 	loading: boolean = true;
 	isLoading: boolean = false;
@@ -391,20 +391,20 @@ export class ReglementComponent implements OnInit {
 				appFormio.setDataValue(crossVars.forms['formio_reglementAFD'], 'nature_taux', app.getRefLabel('refNatureTaux', this.natureTaux));
 
 			//reverse teleport avant formio
-			this.teleportBeneficiairePrimaire.unteleport();
-			this.teleportBeneficiaireReglement.unteleport();
-			this.teleportSelectBeneficiareReglement.unteleport();
-			this.teleportDetailsCoordonneeBancaire.unteleport();
-			this.teleportDetailAvanceContractuel.unteleport();
-			this.teleportNombreDC.unteleport();
-			this.teleportDC.unteleport();
-			this.teleportAR.unteleport();
-			this.teleportSelectAvance.unteleport();
+			this.teleportBeneficiairePrimaire().unteleport();
+			this.teleportBeneficiaireReglement().unteleport();
+			this.teleportSelectBeneficiareReglement().unteleport();
+			this.teleportDetailsCoordonneeBancaire().unteleport();
+			this.teleportDetailAvanceContractuel().unteleport();
+			this.teleportNombreDC().unteleport();
+			this.teleportDC().unteleport();
+			this.teleportAR().unteleport();
+			this.teleportSelectAvance().unteleport();
 			if (app.isAFD(this.entite)) {
-				this.teleportDevisesReglement.unteleport();
-				this.teleportJustificatifReglement.unteleport();
-				this.teleportContrevaleur.unteleport();
-				this.teleportEquivalent.unteleport();
+				this.teleportDevisesReglement().unteleport();
+				this.teleportJustificatifReglement().unteleport();
+				this.teleportContrevaleur().unteleport();
+				this.teleportEquivalent().unteleport();
 
 				if (this.reglement != null)
 					this.deviseSelected = (this.reglement.type_devise == "1" ? this.reglement.devise_reglement : this.reglement.devise_reference);
@@ -540,50 +540,50 @@ export class ReglementComponent implements OnInit {
 
 				await app.sleep(150);
 
-				this.tableJustificatifsReglement.getItems();
+				this.tableJustificatifsReglement().getItems();
 			}
 
 			await app.sleep(250);
 
-			this.teleportBeneficiairePrimaire.teleport();
-			this.teleportBeneficiairePrimaire.show();
-			this.teleportBeneficiaireReglement.teleport();
-			this.teleportBeneficiaireReglement.show();
-			this.teleportSelectBeneficiareReglement.teleport();
-			this.teleportSelectBeneficiareReglement.show();
-			this.teleportDetailsCoordonneeBancaire.teleport();
-			this.teleportDetailsCoordonneeBancaire.show();
+			this.teleportBeneficiairePrimaire().teleport();
+			this.teleportBeneficiairePrimaire().show();
+			this.teleportBeneficiaireReglement().teleport();
+			this.teleportBeneficiaireReglement().show();
+			this.teleportSelectBeneficiareReglement().teleport();
+			this.teleportSelectBeneficiareReglement().show();
+			this.teleportDetailsCoordonneeBancaire().teleport();
+			this.teleportDetailsCoordonneeBancaire().show();
 			if (app.isAFD(this.entite)) {
-				this.teleportDevisesReglement.teleport();
-				this.teleportDevisesReglement.show();
+				this.teleportDevisesReglement().teleport();
+				this.teleportDevisesReglement().show();
 			}
 
 			//récupérer le montant réglement des anciens DDRs
 			this.montantOldDDR = appFormio.getDataValue(crossVars.forms['formio_reglement' + this.entite], 'montant_reglement');
 
 			if (app.isAvance(this.versement.modalite_paiement) || app.isAvanceOrRefinancement(this.versement.modalite_paiement, this.entite)) {
-				this.teleportSelectAvance.teleport();
-				this.teleportSelectAvance.show();
-				this.teleportDetailAvanceContractuel.teleport();
-				this.teleportDetailAvanceContractuel.show();
+				this.teleportSelectAvance().teleport();
+				this.teleportSelectAvance().show();
+				this.teleportDetailAvanceContractuel().teleport();
+				this.teleportDetailAvanceContractuel().show();
 			}
 
 			if (app.isPaiementDirectAndMoad(this.versement.modalite_paiement, this.versement.type_versement)) {
-				this.teleportNombreDC.teleport();
-				this.teleportNombreDC.show();
-				this.teleportDC.teleport();
-				this.teleportDC.show();
-				this.teleportAR.teleport();
-				this.teleportAR.show();
+				this.teleportNombreDC().teleport();
+				this.teleportNombreDC().show();
+				this.teleportDC().teleport();
+				this.teleportDC().show();
+				this.teleportAR().teleport();
+				this.teleportAR().show();
 			}
 
 			if (app.isAFD(this.entite)) {
-				this.teleportJustificatifReglement.teleport();
-				this.teleportJustificatifReglement.show();
-				this.teleportContrevaleur.teleport();
-				this.teleportContrevaleur.show();
-				this.teleportEquivalent.teleport();
-				this.teleportEquivalent.show();
+				this.teleportJustificatifReglement().teleport();
+				this.teleportJustificatifReglement().show();
+				this.teleportContrevaleur().teleport();
+				this.teleportContrevaleur().show();
+				this.teleportEquivalent().teleport();
+				this.teleportEquivalent().show();
 			}
 
 			if (!app.isAFD(this.entite))
@@ -606,7 +606,7 @@ export class ReglementComponent implements OnInit {
 	getMontantNewDdrByDevise() {
 		var deviseReglement = this.deviseSelected;
 
-		return this.infosVersement.calculNewMontantDDR(deviseReglement);
+		return this.infosVersement().calculNewMontantDDR(deviseReglement);
 	}
 
 	montantNewDdrSupRav(input: any) {
@@ -614,8 +614,9 @@ export class ReglementComponent implements OnInit {
 		var existDdrByDeviseRav = false;
 		var ravPrevisionnel = 0;
 
-		if (this.infosDc != null && this.infosDc.documentContractuel != null && this.infosDc.documentContractuel.montantsDevises != null && this.infosDc.documentContractuel.montantsDevises.length > 0) {
-			for (var montantDevise of this.infosDc.documentContractuel.montantsDevises) {
+		const infosDc = this.infosDc();
+  if (this.infosDc != null && infosDc.documentContractuel != null && infosDc.documentContractuel.montantsDevises != null && infosDc.documentContractuel.montantsDevises.length > 0) {
+			for (var montantDevise of infosDc.documentContractuel.montantsDevises) {
 				if (deviseReglement == montantDevise.devise) {
 					existDdrByDeviseRav = true;
 					ravPrevisionnel = montantDevise.rav_previsionnel;
@@ -632,12 +633,13 @@ export class ReglementComponent implements OnInit {
 		var montantDDR = 0;
 		var ravConcours = 0;
 		if (app.isAFD(this.entite)) {
-			if (this.infosContext != null && this.infosContext.concours != null) {
-				var ravBackOffice = this.infosContext.concours.resteAVerser;
-				var sommeMontantsDDRs = ravBackOffice - this.infosContext.concours.ravPrevisionnel;
+			const infosContext = this.infosContext();
+   if (this.infosContext != null && infosContext.concours != null) {
+				var ravBackOffice = infosContext.concours.resteAVerser;
+				var sommeMontantsDDRs = ravBackOffice - infosContext.concours.ravPrevisionnel;
 				sommeMontantsDDRs = app.convertStringToFloat(sommeMontantsDDRs.toFixed(2));
 				var deviseDDR = this.deviseSelected;
-				var deviseConcours = this.infosContext.concours.idDevise;
+				var deviseConcours = infosContext.concours.idDevise;
 
 				if (((this.contrevaleurVisible && app.isEmpty(this.contrevaleurMontantReglement)) || (this.equivalentVisible && app.isEmpty(this.equivalentMontant))) && deviseConcours != deviseDDR) {
 					return true;
@@ -666,7 +668,8 @@ export class ReglementComponent implements OnInit {
 	async saveReglement(back: any, checkMontantsJustif: any) {
 		var lienRomeRAJ = appFormio.getDataValue(crossVars.forms['formio_reglement' + this.entite], 'lien_rom_raj');
 
-		if (this.resteJustifierDecaisserDossier > 0 && app.isEmpty(lienRomeRAJ) && !this.infosAvance.acRepris) {
+		const infosAvance = this.infosAvance();
+  if (this.resteJustifierDecaisserDossier > 0 && app.isEmpty(lienRomeRAJ) && !infosAvance.acRepris) {
 			appFormio.setDataValue(crossVars.forms['formio_reglement' + this.entite], 'raj_sup_zero', 'show');
 
 			await app.sleep(250);
@@ -682,7 +685,7 @@ export class ReglementComponent implements OnInit {
 		if (!this.verifFormulaireReglement() || (app.isAFD(this.entite) && app.isEmpty(this.deviseSelected))) {
 			if (app.isAFD(this.entite) && app.isEmpty(this.deviseSelected))
 				this.checkSelectDeviseReglement = true;
-			this.btnSaveReglement.setLoading(false);
+			this.btnSaveReglement().setLoading(false);
 			this.checkForm = false;
 			app.showToast('toastReglementSaveError');
 			return;
@@ -690,7 +693,7 @@ export class ReglementComponent implements OnInit {
 
 		if (this.checkPaysExecution && back) {
 			if (app.isAFD(this.entite) && this.verifPaysExecution() && !this.isAddJustificatif) {
-				this.btnSaveReglement.setLoading(false);
+				this.btnSaveReglement().setLoading(false);
 				app.showModal('modalMessagePaysExecution');
 				return;
 			}
@@ -705,10 +708,10 @@ export class ReglementComponent implements OnInit {
 		else
 			deviseDR = appFormio.getDataValue(crossVars.forms['formio_reglement' + this.entite], (typeDeviseReglement == '0' ? 'devise_reference' : 'devise_reglement'));
 
-		var toasterDeviseError = app.isAvanceOrRefinancement(this.versement.modalite_paiement, this.entite) && !app.isEmpty(this.infosAvance) && !app.isEmpty(this.infosAvance.avanceContractuel) && this.infosAvance.avanceContractuel.devise_avance != deviseDR;
+		var toasterDeviseError = app.isAvanceOrRefinancement(this.versement.modalite_paiement, this.entite) && !app.isEmpty(infosAvance) && !app.isEmpty(infosAvance.avanceContractuel) && infosAvance.avanceContractuel.devise_avance != deviseDR;
 
 		if (toasterDeviseError) {
-			this.btnSaveReglement.setLoading(false);
+			this.btnSaveReglement().setLoading(false);
 			app.showToast('toastDeviseReglementSurAvanceError');
 			return;
 		}
@@ -761,11 +764,11 @@ export class ReglementComponent implements OnInit {
 				if (validateMontantsJustificatifs) {
 					//ANOMALIE 3068 HORS HOT FIX
 					if (this.btnSaveReglement != null)
-						this.btnSaveReglement.setLoading(false);
+						this.btnSaveReglement().setLoading(false);
 					else if (this.btnValidateTache != null)
-						this.btnValidateTache.setLoading(false);
-					console.warn("btnValidateTache2 > ", this.btnValidateTache);
-					console.warn("btnSaveReglement2 > ", this.btnSaveReglement);
+						this.btnValidateTache().setLoading(false);
+					console.warn("btnValidateTache2 > ", this.btnValidateTache());
+					console.warn("btnSaveReglement2 > ", this.btnSaveReglement());
 					if (document.avance_remboursable == "1")
 						app.showToast('toastARMontantJustificatifsError');
 					else
@@ -781,7 +784,7 @@ export class ReglementComponent implements OnInit {
 			var commentaire = appFormio.getDataValue(crossVars.forms['formio_reglement' + this.entite], 'commentaire');
 
 			if (impayesSirpIsPositif && commentaire == null && commentaire.length != 0) {
-				this.btnSaveReglement.setLoading(false);
+				this.btnSaveReglement().setLoading(false);
 				app.showToast('toastCommentMondatoryError');
 				return;
 			}
@@ -792,13 +795,13 @@ export class ReglementComponent implements OnInit {
 		var DO = app.getDO('reglement');
 
 		//TODO a verifier si type operation == operation
-		DO.id_coordonnee_bancaire = this.infosCoordonneeBancaire.coordonneeBancaireSelected.idCbInterne;
+		DO.id_coordonnee_bancaire = this.infosCoordonneeBancaire().coordonneeBancaireSelected.idCbInterne;
 		DO.id_operation = this.concoursSIOP.idOperation;
 		DO.id_produit = (!app.isEmpty(this.concoursSIOP.produit) ? this.concoursSIOP.produit.idProduit : '');
 		DO.justificatifs_reglement = this.justificatifsReglement;
 		DO.taux = appFormio.getDataValue(crossVars.forms['formio_reglementAFD'], app.getRefLabel('refNatureTaux', 'nature_taux'));
 		DO.numero_compte_ktp = appFormio.getDataValue(crossVars.forms['formio_reglementPROPARCO'], 'numero_compte_ktp');
-		DO.id_beneficiaire_reglement = this.selectbeneficaire?.tiersSelected?.idTiers;
+		DO.id_beneficiaire_reglement = this.selectbeneficaire()?.tiersSelected?.idTiers;
 		DO.id_beneficiaire_primaire = (this.beneficiairePrim != null) ? this.beneficiairePrim.idTiers : "";
 		DO.numero_dossier_versement = this.versement.numero_dossier_versement;
 		DO.numero_dossier_reglement = (app.isEmpty(this.reglement) ? 0 : this.reglement.numero_dossier_reglement);
@@ -884,7 +887,7 @@ export class ReglementComponent implements OnInit {
 
 			//redirect apres save
 			if (!back) {
-				await this.infosVersement.getVersement();
+				await this.infosVersement().getVersement();
 
 				if (this.persistenceIDReglement != null && this.reglement == null)
 					app.setStorageItem('idReglementRefreshPage', this.persistenceIDReglement);
@@ -892,17 +895,17 @@ export class ReglementComponent implements OnInit {
 				await this.getReglement();
 			} else {
 				//AVANCE-FIGEE PROPARCO
-				if (this.infosAvance && app.isEmpty(DO.id_avance_contractuel))
-					this.infosAvance.getAvance(parseInt(DO.id_avance_contractuel), this.entite, this.versement.persistenceId, (this.reglement != null ? this.reglement.persistenceId : null));
+				if (infosAvance && app.isEmpty(DO.id_avance_contractuel))
+					infosAvance.getAvance(parseInt(DO.id_avance_contractuel), this.entite, this.versement.persistenceId, (this.reglement != null ? this.reglement.persistenceId : null));
 				//capture(add) Avance Figee
 				//si role agent de versement ou charge d'appui => save copy => faire photo (si y a des AR entre les autres agents la photo ne change jamais mais si elle est retourn� )
 				if (!app.isEmpty(DO.id_avance_contractuel) && app.isChargeAppui(this.role)) {
 					var avanceFigeeDO = app.getDO('avanceFigee');
 					avanceFigeeDO.id_avance_contractuel = parseInt(DO.id_avance_contractuel);
-					avanceFigeeDO.reste_justifier_decaisser_dossier_copy = this.infosAvance.resteJustifierDecaisserDossier;
-					avanceFigeeDO.reste_justifier_copy = this.infosAvance.resteJustifier;
-					avanceFigeeDO.montant_total_justificatifs_avance_copy = this.infosAvance.montantTotalJustificatifsAvance;
-					avanceFigeeDO.montant_verse_total_copy = this.infosAvance.montantVerseTotal;
+					avanceFigeeDO.reste_justifier_decaisser_dossier_copy = infosAvance.resteJustifierDecaisserDossier;
+					avanceFigeeDO.reste_justifier_copy = infosAvance.resteJustifier;
+					avanceFigeeDO.montant_total_justificatifs_avance_copy = infosAvance.montantTotalJustificatifsAvance;
+					avanceFigeeDO.montant_verse_total_copy = infosAvance.montantVerseTotal;
 
 					if (this.reglement != null)
 						avanceFigeeDO.id_dossier_reglement = this.reglement.persistenceId;
@@ -921,7 +924,7 @@ export class ReglementComponent implements OnInit {
 			}
 
 			if (this.btnSaveReglement != null)
-				this.btnSaveReglement.setLoading(false);
+				this.btnSaveReglement().setLoading(false);
 		}
 		app.showToast('toastReglementSave');
 		this.isLoading = false;
@@ -961,7 +964,8 @@ export class ReglementComponent implements OnInit {
 
 	async validerTache(back: any) {
 		//test si on doit affiche le lien rome complementaire
-		if (this.infosAvance?.resteJustifierDecaisserDossier > 0) {
+		const infosAvance = this.infosAvance();
+  if (infosAvance?.resteJustifierDecaisserDossier > 0) {
 			appFormio.setDataValue(crossVars.forms['formio_reglement' + this.entite], 'raj_sup_zero', 'show');
 
 			await app.sleep(250);
@@ -973,7 +977,7 @@ export class ReglementComponent implements OnInit {
 		if (!this.verifFormulaireReglement() || (app.isAFD(this.entite) && app.isEmpty(this.deviseSelected))) {
 			if (app.isAFD(this.entite) && app.isEmpty(this.deviseSelected))
 				this.checkSelectDeviseReglement = true;
-			this.btnValidateTache.setLoading(false);
+			this.btnValidateTache().setLoading(false);
 			app.showToast('toastReglementSaveError');
 			return;
 		}
@@ -986,17 +990,17 @@ export class ReglementComponent implements OnInit {
 		else
 			deviseDR = appFormio.getDataValue(crossVars.forms['formio_reglement' + this.entite], typeDeviseReglement == '0' ? 'devise_reference' : 'devise_reglement');
 
-		var toasterDeviseError = app.isAvanceOrRefinancement(this.versement.modalite_paiement, this.entite) && !app.isEmpty(this.infosAvance) && !app.isEmpty(this.infosAvance.avanceContractuel) && this.infosAvance.avanceContractuel.devise_avance != deviseDR;
+		var toasterDeviseError = app.isAvanceOrRefinancement(this.versement.modalite_paiement, this.entite) && !app.isEmpty(infosAvance) && !app.isEmpty(infosAvance.avanceContractuel) && infosAvance.avanceContractuel.devise_avance != deviseDR;
 
 		if (toasterDeviseError) {
-			this.btnValidateTache.setLoading(false);
+			this.btnValidateTache().setLoading(false);
 			app.showToast('toastDeviseReglementSurAvanceError');
 			return;
 		}
 
 		if (this.checkPaysExecution && back) {
 			if (app.isAFD(this.entite) && this.verifPaysExecution() && !this.isAddJustificatif) {
-				this.btnValidateTache.setLoading(false);
+				this.btnValidateTache().setLoading(false);
 				app.showModal('modalMessagePaysExecution');
 				return;
 			}
@@ -1052,10 +1056,10 @@ export class ReglementComponent implements OnInit {
 			if (validateMontantsJustificatifs) {
 
 				//ANOMALIE 3068 HORS HOT FIX
-				this.btnValidateTache.setLoading(false);
+				this.btnValidateTache().setLoading(false);
 
-				console.warn("btnValidateTache1 > ", this.btnValidateTache);
-				console.warn("btnSaveReglement1 > ", this.btnSaveReglement);
+				console.warn("btnValidateTache1 > ", this.btnValidateTache());
+				console.warn("btnSaveReglement1 > ", this.btnSaveReglement());
 
 				if (document.avance_remboursable == "1")
 					app.showToast('toastARMontantJustificatifsError');
@@ -1082,7 +1086,7 @@ export class ReglementComponent implements OnInit {
 			DO.id_produit = (!app.isEmpty(this.concoursSIOP.produit) ? this.concoursSIOP.produit.idProduit : '');
 			DO.taux = appFormio.getDataValue(crossVars.forms['formio_reglementAFD'], app.getRefLabel('refNatureTaux', 'nature_taux'));
 			DO.numero_compte_ktp = appFormio.getDataValue(crossVars.forms['formio_reglementPROPARCO'], 'numero_compte_ktp');
-			DO.id_beneficiaire_reglement = this.selectbeneficaire?.tiersSelected?.idTiers;
+			DO.id_beneficiaire_reglement = this.selectbeneficaire()?.tiersSelected?.idTiers;
 			DO.id_beneficiaire_primaire = (this.beneficiairePrim != null) ? this.beneficiairePrim.idTiers : "";
 			DO.justificatif_complementaire_RAJ = appFormio.getDataValue(crossVars.forms['formio_reglement' + this.entite], 'lien_rom_raj');
 
@@ -1091,7 +1095,7 @@ export class ReglementComponent implements OnInit {
 			app.getPaysRealisation(this.projet, DO);
 
 			DO.entite = this.entite;
-			DO.id_coordonnee_bancaire = this.infosCoordonneeBancaire.coordonneeBancaireSelected.idCbInterne;
+			DO.id_coordonnee_bancaire = this.infosCoordonneeBancaire().coordonneeBancaireSelected.idCbInterne;
 			DO.id_division = this.projet.idDivisionProparco;
 			DO.agence_gestion = this.projet.idAgenceGestion;
 			DO.direction_regionale = this.projet.idDirectionRegionale;
@@ -1219,17 +1223,17 @@ export class ReglementComponent implements OnInit {
 		}
 
 		if (codeRetourOk) {
-			this.notification.setLoadingBtn();
-			this.notification.hideModal();
+			this.notification().setLoadingBtn();
+			this.notification().hideModal();
 			app.showToast('toastReglementAnnulerOk');
 
 			await app.sleep(250);
 
 			await this.getReglement();
 
-			await this.infosVersement.getVersement();
+			await this.infosVersement().getVersement();
 
-			await this.infosDossier.getNotifications();
+			await this.infosDossier().getNotifications();
 		} else {
 			this.annulerAction('-1');
 			app.showToast('toastReglementAnnulerKo');
@@ -1238,7 +1242,7 @@ export class ReglementComponent implements OnInit {
 
 	annulerAction(action: any) {
 		if (action == '-1')
-			this.btnAnnulerDossier.setLoading(false);
+			this.btnAnnulerDossier().setLoading(false);
 	}
 
 	/* DOCUMENT CONTRACTUEL */
@@ -1263,38 +1267,40 @@ export class ReglementComponent implements OnInit {
 		var deviseDDREnCours = this.deviseSelected;
 		var montantDDREnCours = appFormio.getDataValue(crossVars.forms['formio_reglement' + this.entite], 'montant_reglement');
 
-		await this.infosDc.getDetailDocumentContractuel(idDocument, this.reglement, deviseDDREnCours, montantDDREnCours);
+		await this.infosDc().getDetailDocumentContractuel(idDocument, this.reglement, deviseDDREnCours, montantDDREnCours);
 
-		this.resteARembourser = this.infosDc.resteARembourser;
-		this.arInitiale = this.infosDc.arInitiale;
-		this.rembEffectuee = this.infosDc.rembEffectuee;
+		this.resteARembourser = this.infosDc().resteARembourser;
+		this.arInitiale = this.infosDc().arInitiale;
+		this.rembEffectuee = this.infosDc().rembEffectuee;
 	}
 	showDetailsAR() {
-		return (this.infosDc != null && this.infosDc.documentContractuel != null && this.infosDc.isAR);
+		const infosDc = this.infosDc();
+  return (this.infosDc != null && infosDc.documentContractuel != null && infosDc.isAR);
 	}
 
 	/* GET DES DONNEES LIEES AU REGLEMENT */
 	async getAutresDevises() {
-		await this.detailsVersement.getAutresDevises();
+		await this.detailsVersement().getAutresDevises();
 	}
 
 	async getBeneficiaireVersement() {
-		await this.detailsVersement.getBeneficiaire();
+		await this.detailsVersement().getBeneficiaire();
 	}
 
 	async getBeneficiaireReglement(input?: any) {
 		var numeroConcours = appFormio.getDataValue(crossVars.forms['formio_reglement' + this.entite], 'numero_concours');
 
-		if (this.selectbeneficaire != null && this.selectbeneficaire.tiersSelected != null) {
-			var idTiersVersement = this.selectbeneficaire.tiersSelected.idTiers;
+		const selectbeneficaire = this.selectbeneficaire();
+  if (this.selectbeneficaire != null && selectbeneficaire.tiersSelected != null) {
+			var idTiersVersement = selectbeneficaire.tiersSelected.idTiers;
 
 			if (!app.isEmpty(idTiersVersement)) {
-				await this.infosBeneficiaireReglement.getBeneficiaire(null, null, idTiersVersement, numeroConcours, 'DR');
+				await this.infosBeneficiaireReglement().getBeneficiaire(null, null, idTiersVersement, numeroConcours, 'DR');
 
 				//remplir la liste des coordonnées bancaire de benficiaire selectionne
 				this.showDetailsCoordonneeBancaire = true;
 
-				this.infosCoordonneeBancaire.setListCoordonneesBancaires(this.infosBeneficiaireReglement.beneficiaire.comptes, this.read, app.getEltInArray(this.infosBeneficiaireReglement.beneficiaire.comptes, 'idCbInterne', (this.reglement != null ? this.reglement.id_coordonnee_bancaire : null)));
+				this.infosCoordonneeBancaire().setListCoordonneesBancaires(this.infosBeneficiaireReglement().beneficiaire.comptes, this.read, app.getEltInArray(this.infosBeneficiaireReglement().beneficiaire.comptes, 'idCbInterne', (this.reglement != null ? this.reglement.id_coordonnee_bancaire : null)));
 			}
 		}
 	}
@@ -1317,10 +1323,10 @@ export class ReglementComponent implements OnInit {
 			
 		}
 
-		this.infosAvance.avanceContractuel = null;
+		this.infosAvance().avanceContractuel = null;
 
 		if (!this.loading)
-			this.infosContext.setInfosConcours(numeroConcours);
+			this.infosContext().setInfosConcours(numeroConcours);
 	}
 
 	async getFournisseur() {
@@ -1330,8 +1336,8 @@ export class ReglementComponent implements OnInit {
 
 		await app.sleep(250);
 
-		this.tableFournisseur.setUrlParam(idBeneficiaire);
-		this.tableFournisseur.getItems();
+		this.tableFournisseur().setUrlParam(idBeneficiaire);
+		this.tableFournisseur().getItems();
 	}
 
 	async getBeneficiairePrimaire() {
@@ -1378,13 +1384,14 @@ export class ReglementComponent implements OnInit {
 
 		appFormio.setDataValue(crossVars.forms['formio_reglement' + this.entite], 'raj_sup_zero', '');
 
-		if (this.infosAvance) {
-			await this.infosAvance.getAvance(this.idAvanceContractuel, this.entite, this.versement.persistenceId, (this.reglement != null ? this.reglement.persistenceId : null));
+		const infosAvance = this.infosAvance();
+  if (infosAvance) {
+			await infosAvance.getAvance(this.idAvanceContractuel, this.entite, this.versement.persistenceId, (this.reglement != null ? this.reglement.persistenceId : null));
 
-			this.resteJustifierDecaisserDossier = this.infosAvance.resteJustifierDecaisserDossier;
-			this.montantPlafondAvance = this.infosAvance.montantPlafondAvance;
-			if (this.infosAvance.avanceContractuel != null)
-				this.deviseAvance = this.infosAvance.avanceContractuel.devise_avance;
+			this.resteJustifierDecaisserDossier = infosAvance.resteJustifierDecaisserDossier;
+			this.montantPlafondAvance = infosAvance.montantPlafondAvance;
+			if (infosAvance.avanceContractuel != null)
+				this.deviseAvance = infosAvance.avanceContractuel.devise_avance;
 
 			if (this.resteJustifierDecaisserDossier > 0 && this.reglement != null) {
 				appFormio.setDataValue(crossVars.forms['formio_reglement' + this.entite], 'raj_sup_zero', 'show');
@@ -1405,19 +1412,20 @@ export class ReglementComponent implements OnInit {
 
 	async initSelectEmetteur(emetteurJustificatif?: any) {
 		if (this.selectEmetteur != null)
-			await this.selectEmetteur.initSelectBeneficaire(this.listEmetteursJustifByCr == null ? [] : this.listEmetteursJustifByCr, this.read, !app.isPaiementDirect(this.versement.modalite_paiement) ? 'JR' : 'JDC', emetteurJustificatif, 'modalAddJustificatifReglement');
+			await this.selectEmetteur().initSelectBeneficaire(this.listEmetteursJustifByCr == null ? [] : this.listEmetteursJustifByCr, this.read, !app.isPaiementDirect(this.versement.modalite_paiement) ? 'JR' : 'JDC', emetteurJustificatif, 'modalAddJustificatifReglement');
 	}
 
 	async getEmetteurJustificatifDDR() {
 		var numeroConcours = appFormio.getDataValue(crossVars.forms['formio_reglement' + this.entite], 'numero_concours');
 
-		if (this.selectEmetteur != null && this.selectEmetteur.tiersSelected != null) {
-			var idEmetteur = this.selectEmetteur.tiersSelected.idTiers;
+		const selectEmetteur = this.selectEmetteur();
+  if (this.selectEmetteur != null && selectEmetteur.tiersSelected != null) {
+			var idEmetteur = selectEmetteur.tiersSelected.idTiers;
 			if (!app.isEmpty(idEmetteur)) {
 				if (!app.isPaiementDirect(this.versement.modalite_paiement))
-					await this.infosEmetteurJustificatif.getBeneficiaire(null, null, idEmetteur, numeroConcours, 'JR');
+					await this.infosEmetteurJustificatif().getBeneficiaire(null, null, idEmetteur, numeroConcours, 'JR');
 				else
-					await this.infosEmetteurJustificatif.getBeneficiaire(null, null, idEmetteur, null, 'JDC');
+					await this.infosEmetteurJustificatif().getBeneficiaire(null, null, idEmetteur, null, 'JDC');
 			}
 		}
 	}
@@ -1441,7 +1449,7 @@ export class ReglementComponent implements OnInit {
 			this.loading = true;
 			app.scrollToTop();
 
-			this.modalConfirmationAddJustificatifReglement.setLoadingBtn();
+			this.modalConfirmationAddJustificatifReglement().setLoadingBtn();
 			app.hideModal('modalConfirmationAddJustificatifReglement');
 
 			if (!app.isValidForm('formio_reglement' + this.entite) || (!this.verifFormulaireReglement() || (app.isAFD(this.entite) && app.isEmpty(this.deviseSelected)))) {
@@ -1480,11 +1488,11 @@ export class ReglementComponent implements OnInit {
 		if (readJustificatif)
 			this.typeRubrique = 'rubriquesDCNotEditable';
 
-		this.teleportDcJustificatif.unteleport();
-		this.teleportRubriques.unteleport();
+		this.teleportDcJustificatif().unteleport();
+		this.teleportRubriques().unteleport();
 		if (this.reglement != null) {
-			this.teleportEmetteurJustificatif.unteleport();
-			this.teleportSelectEmetteurJustificatif.unteleport();
+			this.teleportEmetteurJustificatif().unteleport();
+			this.teleportSelectEmetteurJustificatif().unteleport();
 		}
 
 		app.cleanDiv('formio_justificatifReglement');
@@ -1507,8 +1515,9 @@ export class ReglementComponent implements OnInit {
 			app.mapDO(DO, item);
 
 			DO.persistence_id = item.persistenceId;
-			if (!app.isPaiementDirect(this.versement.modalite_paiement))
-				DO.emetteur = (this.selectEmetteur != null && this.selectEmetteur.tiersSelected != null) ? this.selectEmetteur.tiersSelected.idTiers : "";
+			const selectEmetteur = this.selectEmetteur();
+   if (!app.isPaiementDirect(this.versement.modalite_paiement))
+				DO.emetteur = (this.selectEmetteur != null && selectEmetteur.tiersSelected != null) ? selectEmetteur.tiersSelected.idTiers : "";
 		} else {
 			this.justificatifReglement = null;
 			this.alreadyCreatedJustifReg = false;
@@ -1599,7 +1608,7 @@ export class ReglementComponent implements OnInit {
 				await this.initSelectEmetteur(null);
 
 				if (this.infosEmetteurJustificatif != null)
-					this.infosEmetteurJustificatif.beneficiaire = null;
+					this.infosEmetteurJustificatif().beneficiaire = null;
 			}
 		}
 
@@ -1607,16 +1616,16 @@ export class ReglementComponent implements OnInit {
 
 		//ano 2213
 		if (app.isPaiementDirectAndMoad(this.versement.modalite_paiement, this.versement.type_versement)) {
-			this.teleportDcJustificatif.teleport();
-			this.teleportDcJustificatif.show();
-			this.teleportRubriques.teleport();
-			this.teleportRubriques.show();
+			this.teleportDcJustificatif().teleport();
+			this.teleportDcJustificatif().show();
+			this.teleportRubriques().teleport();
+			this.teleportRubriques().show();
 		}
 		if (this.reglement != null) {
-			this.teleportEmetteurJustificatif.teleport();
-			this.teleportEmetteurJustificatif.show();
-			this.teleportSelectEmetteurJustificatif.teleport();
-			this.teleportSelectEmetteurJustificatif.show();
+			this.teleportEmetteurJustificatif().teleport();
+			this.teleportEmetteurJustificatif().show();
+			this.teleportSelectEmetteurJustificatif().teleport();
+			this.teleportSelectEmetteurJustificatif().show();
 		}
 
 		//si document contractuel
@@ -1627,7 +1636,7 @@ export class ReglementComponent implements OnInit {
 
 			this.infosDcJustificatif = this.document.code_fonctionnel + ' - ' + this.document.libelle;
 
-			await this.rubriquesComponent.getRubriques(this.document.autre_devise != null ? this.document.autre_devise : [], this.document, false, true, false, false, false, (this.document != null ? this.document.rubriques : null), true, item, ddrDevise, this.reglement, null);
+			await this.rubriquesComponent().getRubriques(this.document.autre_devise != null ? this.document.autre_devise : [], this.document, false, true, false, false, false, (this.document != null ? this.document.rubriques : null), true, item, ddrDevise, this.reglement, null);
 		}
 
 		if (item != null && !update)
@@ -1637,7 +1646,7 @@ export class ReglementComponent implements OnInit {
 
 		this.loadingJustificatif = false;
 
-		this.tableJustificatifsReglement.setClickInProgress(false);
+		this.tableJustificatifsReglement().setClickInProgress(false);
 
 		this.loading = false;
 	}
@@ -1645,9 +1654,10 @@ export class ReglementComponent implements OnInit {
 	async saveJustificatifReglement() {
 		this.isAddJustificatif = false;
 
-		if (!app.isValidForm('formio_justificatifReglement') ||
-			(this.selectEmetteur != null && this.selectEmetteur.tiersSelected == null)) {
-			this.saveJustificatif.setLoadingBtn();
+		const selectEmetteur = this.selectEmetteur();
+  if (!app.isValidForm('formio_justificatifReglement') ||
+			(this.selectEmetteur != null && selectEmetteur.tiersSelected == null)) {
+			this.saveJustificatif().setLoadingBtn();
 			app.showToast('toastJustificatifsReglementSaveError');
 			return;
 		}
@@ -1655,24 +1665,25 @@ export class ReglementComponent implements OnInit {
 		var idDC = appFormio.getDataValue(crossVars.forms['formio_reglement' + this.entite], 'id_document_contractuel');
 		var DO = app.getRootDO('justificatifReglement');
 
-		if (!app.isEmpty(idDC) && !DO.deleted) {
-			if (!this.rubriquesComponent.verifSommesMntsRubVentileWithMntJustificatif(this.avanceRemboursable, appFormio.getDataValue(crossVars.forms['formio_justificatifReglement'], 'montant_finance_afd'))) {
-				this.saveJustificatif.setLoadingBtn();
+		const rubriquesComponent = this.rubriquesComponent();
+  if (!app.isEmpty(idDC) && !DO.deleted) {
+			if (!rubriquesComponent.verifSommesMntsRubVentileWithMntJustificatif(this.avanceRemboursable, appFormio.getDataValue(crossVars.forms['formio_justificatifReglement'], 'montant_finance_afd'))) {
+				this.saveJustificatif().setLoadingBtn();
 				app.showToast('toastMontantsVentilationError');
 				return;
 			}
-			if (this.avanceRemboursable && !this.rubriquesComponent.verifMntsARembourser(this.resteARembourser)) {
-				this.saveJustificatif.setLoadingBtn();
+			if (this.avanceRemboursable && !rubriquesComponent.verifMntsARembourser(this.resteARembourser)) {
+				this.saveJustificatif().setLoadingBtn();
 				app.showToast('toastMontantAPayerError');
 				return;
 			}
-			if (!this.avanceRemboursable && !this.rubriquesComponent.verifRavMontantAPayer()) {
-				this.saveJustificatif.setLoadingBtn();
+			if (!this.avanceRemboursable && !rubriquesComponent.verifRavMontantAPayer()) {
+				this.saveJustificatif().setLoadingBtn();
 				app.showToast('toastMontantAPayerDCError');
 				return;
 			}
-			if (this.avanceRemboursable && !this.rubriquesComponent.verifravsRubriquesAR()) {
-				this.saveJustificatif.setLoadingBtn();
+			if (this.avanceRemboursable && !rubriquesComponent.verifravsRubriquesAR()) {
+				this.saveJustificatif().setLoadingBtn();
 				app.showToast('toastMontantsRubriqueSaveError');
 				return;
 			}
@@ -1681,15 +1692,15 @@ export class ReglementComponent implements OnInit {
 		var jutificatifInput = DO.jutificatifInput;
 
 		if (!app.isEmpty(idDC)) {
-			var montants = this.rubriquesComponent.getListeMontantsJustificatifs();
-			DO.documentContractuel = this.rubriquesComponent.getDcAndRubVentile(this.avanceRemboursable, DO.deleted);
+			var montants = rubriquesComponent.getListeMontantsJustificatifs();
+			DO.documentContractuel = rubriquesComponent.getDcAndRubVentile(this.avanceRemboursable, DO.deleted);
 			jutificatifInput.montantsJustificatifRubrique = montants;
-			jutificatifInput.montant_ventile = this.rubriquesComponent.getMontantVentileJustif(this.avanceRemboursable);
-			jutificatifInput.montant_a_rembourser = (this.document.dossiers_reglements.length == 1) ? null : ((this.avanceRemboursable) ? this.rubriquesComponent.getMontantARembJustif() : null);
+			jutificatifInput.montant_ventile = rubriquesComponent.getMontantVentileJustif(this.avanceRemboursable);
+			jutificatifInput.montant_a_rembourser = (this.document.dossiers_reglements.length == 1) ? null : ((this.avanceRemboursable) ? rubriquesComponent.getMontantARembJustif() : null);
 		}
 
 		jutificatifInput.id_dossier_reglement = this.reglement.persistenceId;
-		jutificatifInput.emetteur = (this.selectEmetteur != null && this.selectEmetteur.tiersSelected != null) ? this.selectEmetteur.tiersSelected.idTiers : "";
+		jutificatifInput.emetteur = (this.selectEmetteur != null && selectEmetteur.tiersSelected != null) ? selectEmetteur.tiersSelected.idTiers : "";
 
 		DO.jutificatifInput = jutificatifInput;
 
@@ -1715,9 +1726,9 @@ export class ReglementComponent implements OnInit {
 
 		await app.sleep(250);
 
-		this.tableJustificatifsReglement.getItems();
+		this.tableJustificatifsReglement().getItems();
 
-		this.saveJustificatif.setLoadingBtn();
+		this.saveJustificatif().setLoadingBtn();
 
 		await this.getDetailDocumentContractuel();
 
@@ -1770,9 +1781,9 @@ export class ReglementComponent implements OnInit {
 
 		await app.sleep(700);
 
-		this.tableJustificatifsReglement.getItems();
+		this.tableJustificatifsReglement().getItems();
 
-		this.modalDeleteJustificatifReglement.setLoadingBtn();
+		this.modalDeleteJustificatifReglement().setLoadingBtn();
 
 		app.showToast('toastJustificatifDeleteSuccess');
 
@@ -1997,7 +2008,7 @@ export class ReglementComponent implements OnInit {
 
 	async changePretAdosse() {
 		if (!app.isAFD(this.entite)) {
-			var dv = this.infosVersement.versement;
+			var dv = this.infosVersement().versement();
 			var idOperation = this.trim(this.concoursSIOP.idOperation);
 
 			var pretAdosse = appFormio.getDataValue(crossVars.forms['formio_reglement' + this.entite], 'pret_adosse_subvention_seche');
@@ -2139,7 +2150,7 @@ export class ReglementComponent implements OnInit {
 		var valeurToggleBtn = appFormio.getDataValue(crossVars.forms['formio_reglement' + this.entite], 'dc_attache');
 		if (valeurToggleBtn == '0') {
 			if (this.infosDc != null)
-				this.infosDc.documentContractuel = null;
+				this.infosDc().documentContractuel = null;
 			appFormio.setDataValue(crossVars.forms['formio_reglement' + this.entite], 'id_document_contractuel', '');
 		}
 		else if ((valeurToggleBtn == '1') && ((this.reglement != null && !this.read && app.isAgentVersement(this.role)) || this.reglement == null))
@@ -2151,7 +2162,7 @@ export class ReglementComponent implements OnInit {
 
 		this.validerTache(true);
 
-		this.modalMessagePaysExecution.setLoadingBtn();
+		this.modalMessagePaysExecution().setLoadingBtn();
 
 		app.hideModal('modalMessagePaysExecution');
 	}
@@ -2183,7 +2194,7 @@ export class ReglementComponent implements OnInit {
 			this.montantDdrNotSupDv = (montantNewDDR + this.montantOldDDR) >= input;
 
 			if (app.isAvance(this.versement.modalite_paiement)) {
-				this.montantPlafondAvance = this.infosAvance.montantPlafondAvance;
+				this.montantPlafondAvance = this.infosAvance().montantPlafondAvance;
 				this.montantDdrNotSupPlaf = this.montantPlafondAvance == null || this.montantPlafondAvance >= input;
 
 				return (this.montantDdrNotSupPlaf && this.montantDdrNotSupRav && this.montantDdrNotSupDv && this.montantDdrNotSupRavConcours && input != 0);
@@ -2192,7 +2203,7 @@ export class ReglementComponent implements OnInit {
 				return (this.montantDdrNotSupRav && this.montantDdrNotSupDv && this.montantDdrNotSupRavConcours && input != 0);
 		}
 		else if (app.isAvanceOrRefinancement(this.versement.modalite_paiement, this.entite)) {
-			this.montantPlafondAvance = this.infosAvance.montantPlafondAvance;
+			this.montantPlafondAvance = this.infosAvance().montantPlafondAvance;
 			this.montantDdrNotSupPlaf = this.montantPlafondAvance == null || this.montantPlafondAvance >= input;
 
 			return (this.montantDdrNotSupPlaf && input != 0);
@@ -2246,11 +2257,11 @@ export class ReglementComponent implements OnInit {
 	}
 
 	async initSelectBeneficiaire(tierReglement?: any) {
-		await this.selectbeneficaire.initSelectBeneficaire(this.listTiersByConcours, this.read, 'DR', tierReglement);
+		await this.selectbeneficaire().initSelectBeneficaire(this.listTiersByConcours, this.read, 'DR', tierReglement);
 	}
 
 	verifFormulaireReglement() {
-		return (app.isValidForm('formio_reglement' + this.entite) && !this.selectbeneficaire.checkSelectedBeneficiaire() && !this.infosCoordonneeBancaire.checkCoordonneeBancaire());
+		return (app.isValidForm('formio_reglement' + this.entite) && !this.selectbeneficaire().checkSelectedBeneficiaire() && !this.infosCoordonneeBancaire().checkCoordonneeBancaire());
 	}
 
 	getLabelDeviseByTypeDeviseRegSelected(typeDevise: any) {

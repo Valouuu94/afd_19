@@ -6,7 +6,7 @@
     </div>
     <div *ngIf="versement != null && !isDossierAnnule" class="col-auto text-right d-flex">
         <app-btnMenu *ngIf="!read" icon="fas fa-ellipsis-h" [side]="(versement != null && versement.dossier_reglement.length > 0 && !app.isAFD(entite)) ? 'left' : 'right'">
-            <app-btn #btnAnnulerDossier [inMenu]=true colorLabel="text-danger" side="right" [label]="lang.versement.annulerDossierbtn" (action)="notification.showModalNotification(-1)"></app-btn>
+            <app-btn #btnAnnulerDossier [inMenu]=true colorLabel="text-danger" side="right" [label]="lang.versement.annulerDossierbtn" (action)="notification().showModalNotification(-1)"></app-btn>
         </app-btnMenu>
         <button *ngIf="!read && versement.dossier_reglement.length > 0 && !app.isAFD(entite)" class="btn btn-new ml-2" (click)="validerTache(true)">
             <span *ngIf="isLoadingValidate" class="spinner-border spinner-border-sm mr-1"></span>

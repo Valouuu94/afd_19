@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Output, EventEmitter, Input } from "@angular/core";
+import { Component, OnInit, input, output, viewChild } from "@angular/core";
 import { TableComponent } from "../table/table.component";
 import { StoreService } from '../../services/store.service';
 import { ModalComponent } from "../modal/modal.component";
@@ -18,9 +18,9 @@ declare const columns: any;
     imports: [NgIf, TableComponent, ModalComponent]
 })
 export class RubriquesComponent implements OnInit {
-    @ViewChild("tableRubriques") tableRubriques!: TableComponent;
-    @ViewChild("tableRubriquesAR") tableRubriquesAR!: TableComponent;
-    @ViewChild('modalDeleteRubrique') modalDeleteRubrique!: ModalComponent;
+    readonly tableRubriques = viewChild.required<TableComponent>("tableRubriques");
+    readonly tableRubriquesAR = viewChild.required<TableComponent>("tableRubriquesAR");
+    readonly modalDeleteRubrique = viewChild.required<ModalComponent>('modalDeleteRubrique');
 
     isAFD: boolean = false;
     lang: any = lang;
@@ -49,12 +49,12 @@ export class RubriquesComponent implements OnInit {
     hasDuplicateDevise: boolean = false;
     isJustifRembIntegral: boolean = false;
 
-    @Input() enableAdd: boolean = true;
-    @Input() readOnly: boolean = false;
-    @Input() isInsideModal: boolean = false;
-    @Input() isJustificatifRemboursment: boolean = false;
+    readonly enableAdd = input<boolean>(true);
+    readonly readOnly = input<boolean>(false);
+    readonly isInsideModal = input<boolean>(false);
+    readonly isJustificatifRemboursment = input<boolean>(false);
 
-    @Output() change = new EventEmitter();
+    readonly change = output();
 
     constructor(public store: StoreService) { }
 
@@ -76,7 +76,8 @@ export class RubriquesComponent implements OnInit {
         this.devisesDC = Object.assign([], devisesDC);
 
         app.log('rubriques > getRubriques - isJustifRembIntegral', this.isJustifRembIntegral);
-        app.log('rubriques > getRubriques - isJustificatifRemboursment', this.isJustificatifRemboursment);
+        const isJustificatifRemboursment = this.isJustificatifRemboursment();
+        app.log('rubriques > getRubriques - isJustificatifRemboursment', isJustificatifRemboursment);
 
         // recuperation de la devise AFD de DC
         if (!this.isVentilation) {
@@ -417,7 +418,8 @@ export class RubriquesComponent implements OnInit {
             // RECUPERER LES DEVISES DE DC et RAJOUTER LE MAPPING DANS COLUMNS
             if (!addRubrique) {
                 if (this.isAvanceRemboursable && this.rubriquesAR == null) {
-                    if (this.isJustificatifRemboursment && this.isVentilation) {
+                    const readOnly = this.readOnly();
+                    if (isJustificatifRemboursment && this.isVentilation) {
                         //faut pas afficher la case a cocher quand c'est en lecture seule
                         columns["rubriquesTemplateAR"] = [
                             { label: lang.rubriques.label, key: 'libelle', width: "200px", editable: true, changeCss: true, applyBorderDanger: true, isFixed: true }
@@ -429,7 +431,7 @@ export class RubriquesComponent implements OnInit {
                     }
                     else {
                         if (!this.isVentilation) {
-                            if (this.readOnly)
+                            if (readOnly)
                                 columns["rubriquesTemplateAR"] = [
                                     { label: lang.rubriques.label, key: 'libelle', width: "200px", editable: true, changeCss: true, applyBorderDanger: true, isFixed: true }
                                 ];
@@ -473,7 +475,7 @@ export class RubriquesComponent implements OnInit {
                     if (this.isJustifRembIntegral)
                         montantARembourserDc = dc.montant_enregistreAFD;
                     else
-                        montantARembourserDc = this.isInsideModal ? (this.justificatifRemboursement != null) ? this.justificatifRemboursement.montant_remboursement : '' : '';
+                        montantARembourserDc = this.isInsideModal() ? (this.justificatifRemboursement != null) ? this.justificatifRemboursement.montant_remboursement : '' : '';
 
                     this.rubriquesAR.push({
                         "libelle": libelleDC,
@@ -560,7 +562,7 @@ export class RubriquesComponent implements OnInit {
                                     "libelleParent": libelleDC,
                                     "applyBorderDanger": { "nameFunction": (!this.isVentilation ? "labelRubIsNullOrDoubling" : "checkMontantAPayer") },
                                     "clumnsIcons": { "pourcentage_avance": "fa fa-percent" },
-                                    "disabled": this.readOnly,
+                                    "disabled": readOnly,
                                     "collumnsDisabled": {
                                         "montant_initial": true,
                                         "montant_final": disabledMontantFinal,
@@ -626,7 +628,7 @@ export class RubriquesComponent implements OnInit {
                                             "libelleParent": rubrique.libelle_rubrique,
                                             "applyBorderDanger": { "nameFunction": (!this.isVentilation ? "labelRubIsNullOrDoubling" : "checkMontantAPayer") },
                                             "clumnsIcons": { "pourcentage_avance": "fa fa-percent" },
-                                            "disabled": this.readOnly,
+                                            "disabled": readOnly,
                                             "collumnsDisabled": {
                                                 "montant_initial": true,
                                                 "montant_final": disabledMontantFinal,
@@ -692,7 +694,7 @@ export class RubriquesComponent implements OnInit {
                                                     "clumnsIcons": { "pourcentage_avance": "fa fa-percent" },
                                                     "id": (sousRubriqueLevel2.persistenceId != null ? sousRubriqueLevel2.persistenceId : '0'),
                                                     "libelleParent": sousRubrique.libelle,
-                                                    "disabled": this.readOnly,
+                                                    "disabled": readOnly,
                                                     "applyBorderDanger": { "nameFunction": (!this.isVentilation ? "labelRubIsNullOrDoubling" : "checkMontantAPayer") },
                                                     "collumnsDisabled": {
                                                         "montant_initial": true,
@@ -752,7 +754,7 @@ export class RubriquesComponent implements OnInit {
                                                             ["devise"]: sousRubriqueLevel3.devise_avance,
                                                             "id": (sousRubriqueLevel3.persistenceId != null ? sousRubriqueLevel3.persistenceId : '0'),
                                                             "libelleParent": sousRubrique.libelle_rubrique,
-                                                            "disabled": this.readOnly,
+                                                            "disabled": readOnly,
                                                             "applyBorderDanger": { "nameFunction": (!this.isVentilation ? "labelRubIsNullOrDoubling" : "checkMontantAPayer") },
                                                             "collumnsDisabled": {
                                                                 "montant_initial": true,
@@ -776,7 +778,8 @@ export class RubriquesComponent implements OnInit {
                 else {
                     if (this.firstLoad || this.rubriques == null) {
                         //reinitialiser la liste des columns
-                        if (!this.isVentilation && !this.readOnly) {
+                        const readOnly = this.readOnly();
+                        if (!this.isVentilation && !readOnly) {
                             columns["rubriquesTemplate"] = [
                                 { label: '', key: 'rubriqueSelected', editable: true, type: 'boolean', width: "100px", fixed: true, uniqueChoice: true, isFixed: true },
                                 { label: lang.rubriques.label, key: 'libelle', width: "200px", editable: true, changeCss: true, fixed: true, applyBorderDanger: true, isFixed: true }];
@@ -785,7 +788,7 @@ export class RubriquesComponent implements OnInit {
                                 { label: lang.rubriques.label, key: 'libelle', width: "200px", fixed: true, editable: true, changeCss: true, isFixed: true, applyBorderDanger: true }];
                         }
                         for (var autreDevise of this.devisesDC) {
-                            if (this.isJustificatifRemboursment && this.isVentilation) {
+                            if (isJustificatifRemboursment && this.isVentilation) {
                                 columns["rubriquesTemplate"].push(
                                     { "label": lang.rubriquesDC.mntRegle + autreDevise.devise, "key": "montant_final_" + autreDevise.devise, "type": "number", "amount": true, width: "200px", "editable": true, "separator": true },
                                     { "label": lang.rubriques.rav + autreDevise.devise, "key": "montant_reste_a_verser_" + autreDevise.devise, "type": "number", "amount": true, width: "200px", "editable": true, "separator": true, read: true, applyBorderRight: (this.isVentilation ? false : true) },
@@ -801,7 +804,7 @@ export class RubriquesComponent implements OnInit {
                                 }
                             }
                         }
-                        if (!this.isVentilation && !this.readOnly)
+                        if (!this.isVentilation && !readOnly)
                             columns["rubriquesTemplate"].push({ action: true, type: 'delete' });
 
                         if (this.rubriques == null)
@@ -812,7 +815,7 @@ export class RubriquesComponent implements OnInit {
                         if (this.isJustifRembIntegral)
                             montantARembourserDc = dc.montant_enregistreAFD;
                         else
-                            montantARembourserDc = this.isInsideModal ? (this.justificatifRemboursement != null) ? this.justificatifRemboursement.montant_remboursement : '' : '';
+                            montantARembourserDc = this.isInsideModal() ? (this.justificatifRemboursement != null) ? this.justificatifRemboursement.montant_remboursement : '' : '';
 
                         var indexDC = ((this.rubriques != null && this.rubriques.length > 0) ? app.getIndexElementInArrayByValue(this.rubriques, "type", "DC", false) : -1);
                         if (indexDC == -1)
@@ -823,7 +826,7 @@ export class RubriquesComponent implements OnInit {
                                 ["montant_enregistre_" + this.deviseAFD]: (dc != null ? dc.montant_enregistreAFD : "0"),
                                 ["montant_reste_a_verser_" + this.deviseAFD]: (dc != null ? dc.montant_reste_a_verserAFD : "0"),
                                 ["montant_ventile_" + (!app.isEmpty(this.deviseAFD) ? this.deviseAFD : dc.devise_afd)]: (!app.isEmpty(this.justificatif) ? (dc.devise_afd == this.deviseDR ? this.justificatif.montant_ventile : "0") : "0"),
-                                ["montant_a_rembourser_justificatif_" + (!app.isEmpty(this.deviseAFD) ? this.deviseAFD : dc.devise_afd)]: (this.isJustificatifRemboursment) ? montantARembourserDc : "",
+                                ["montant_a_rembourser_justificatif_" + (!app.isEmpty(this.deviseAFD) ? this.deviseAFD : dc.devise_afd)]: (isJustificatifRemboursment) ? montantARembourserDc : "",
                                 "type": "DC",
                                 "showRightIcon": false,
                                 "disabled": true,
@@ -903,8 +906,8 @@ export class RubriquesComponent implements OnInit {
                                                         'cmpCurrent': 'rubriques',
                                                         'nameFunction': 'updateMontantsCalcules',
                                                         "updateParentsItems": true,
-                                                        "disabled": this.readOnly,
-                                                        "disabledCheckBox": this.readOnly,
+                                                        "disabled": readOnly,
+                                                        "disabledCheckBox": readOnly,
                                                         "persistenceId": (rubrique.persistenceId != null ? rubrique.persistenceId : '0'),
                                                         "id": (rubrique.persistenceId != null ? rubrique.persistenceId : '0'),
                                                         "libelleParent": libelleDC,
@@ -996,8 +999,8 @@ export class RubriquesComponent implements OnInit {
                                                                 "libelleParent": rubrique.libelle_rubrique,
                                                                 "rubriqueSelected": false,
                                                                 'cmpCurrent': 'rubriques',
-                                                                "disabled": this.readOnly,
-                                                                "disabledCheckBox": this.readOnly,
+                                                                "disabled": readOnly,
+                                                                "disabledCheckBox": readOnly,
                                                                 'nameFunction': 'updateMontantsCalcules',
                                                                 "updateParentsItems": true,
                                                                 "applyBorderDanger": { "nameFunction": (!this.isVentilation ? "labelRubIsNullOrDoubling" : "checkMontantAPayer") },
@@ -1078,7 +1081,7 @@ export class RubriquesComponent implements OnInit {
                                                                             ["montant_a_rembourser_justificatif_" + deviseMontantSousRub2.devise]: (this.isJustifRembIntegral) ? deviseMontantSousRub2.montant_enregistre : montantARembJustificatif,
                                                                             ["montant_ventile_initial_" + deviseMontantSousRub2.devise]: montantVentile,
                                                                             "type": "SUBRUB",
-                                                                            "disabled": this.readOnly,
+                                                                            "disabled": readOnly,
                                                                             "level": "2",
                                                                             "classCss": this.classCssLevel2,
                                                                             'cmpCurrent': 'rubriques',
@@ -1159,7 +1162,7 @@ export class RubriquesComponent implements OnInit {
                                                                                         'nameFunction': 'updateMontantsCalcules',
                                                                                         "updateParentsItems": true,
                                                                                         "disabledCheckBox": true,
-                                                                                        "disabled": this.readOnly,
+                                                                                        "disabled": readOnly,
                                                                                         "persistenceId": (sousRubriqueLevel3.persistenceId != null ? sousRubriqueLevel3.persistenceId : '0'),
                                                                                         "libelleParent": sousRubriqueLevel2.libelle,
                                                                                         "id": (sousRubriqueLevel3.persistenceId != null ? sousRubriqueLevel3.persistenceId : '0'),
@@ -1358,7 +1361,7 @@ export class RubriquesComponent implements OnInit {
             this.rubriques = this.formatMontantRubriques();
             await app.sleep(500);
 
-            this.tableRubriques.getItems();
+            this.tableRubriques().getItems();
         }
         else {
             this.showRubriques = false;
@@ -1366,7 +1369,7 @@ export class RubriquesComponent implements OnInit {
             this.rubriquesAR = this.formatMontantRubriques();
             await app.sleep(500);
 
-            this.tableRubriquesAR.getItems();
+            this.tableRubriquesAR().getItems();
         }
 
         console.timeEnd('getRubriques');
@@ -1389,8 +1392,9 @@ export class RubriquesComponent implements OnInit {
             var indexEltAR = app.getIndexElementInArrayByValue(this.rubriquesAR, "libelle", "Avance remboursable", false);
 
             // this.tableRubriquesAR.items[indexEltAR]["montant_avance"] = app.convertStringToFloat(montantAvanceDemarrage) * app.convertStringToFloat(pourcentage) / 100;
-            this.tableRubriquesAR.items[indexEltAR]["montant_initial"] = montantAvanceDemarrage;
-            this.tableRubriquesAR.items[indexEltAR]["montant_final"] = montantAvanceDemarrage;
+            const tableRubriquesAR = this.tableRubriquesAR();
+            tableRubriquesAR.items[indexEltAR]["montant_initial"] = montantAvanceDemarrage;
+            tableRubriquesAR.items[indexEltAR]["montant_final"] = montantAvanceDemarrage;
             // this.tableRubriquesAR.items[indexEltAR]["pourcentage_avance"] = pourcentage;
         }
 
@@ -1399,7 +1403,7 @@ export class RubriquesComponent implements OnInit {
     rubriqueIsSelected(item: any) {
         if (!app.isEmpty(item)) {
             if (!app.isEmpty(this.rubriqueSelected)) {
-                var itemVar = app.getEltInArray((!this.isAvanceRemboursable ? this.tableRubriques.items : this.tableRubriquesAR.items), 'libelle', this.rubriqueSelected.libelle);
+                var itemVar = app.getEltInArray((!this.isAvanceRemboursable ? this.tableRubriques().items : this.tableRubriquesAR().items), 'libelle', this.rubriqueSelected.libelle);
                 if (itemVar != null && itemVar.rubriqueSelected && this.rubriqueSelected.rubriqueSelected)
                     return;
             }
@@ -1483,7 +1487,7 @@ export class RubriquesComponent implements OnInit {
             var itemVar = item;
             var libelleParent = item.libelleParent;
             var columnChange = itemVar.columnName;
-            var typeTableRubriques = this.isAvanceRemboursable ? this.tableRubriquesAR : this.tableRubriques;
+            var typeTableRubriques = this.isAvanceRemboursable ? this.tableRubriquesAR() : this.tableRubriques();
             var index;
 
             if (!deleted) {
@@ -1560,9 +1564,9 @@ export class RubriquesComponent implements OnInit {
                     if (!columnChange.toString().includes("pourcentage")) {
                         itemParent[columnChange] = app.formatNumberWithDecimals(resultSommeMontantByLevel);
                         if (!this.isAvanceRemboursable)
-                            this.tableRubriques.items[index] = itemParent;
+                            this.tableRubriques().items[index] = itemParent;
                         else
-                            this.tableRubriquesAR.items[index] = itemParent;
+                            this.tableRubriquesAR().items[index] = itemParent;
                     }
                     libelleParent = itemParent.libelleParent;
                     itemVar = itemParent;
@@ -1578,7 +1582,7 @@ export class RubriquesComponent implements OnInit {
                             if ((key.includes("montant_initial") || key.includes("montant_final") || key.includes("montant_reste_a_verser"))) {
                                 var indexVar;
                                 if (this.isAvanceRemboursable) {
-                                    indexVar = this.getIndexRubrique(this.tableRubriquesAR.items, libelleParent);
+                                    indexVar = this.getIndexRubrique(this.tableRubriquesAR().items, libelleParent);
                                     if (app.convertStringToFloat(item[key]) == 0.0) {
                                         var resultCalcul = this.getSommeMontantsByLevel(typeTableRubriques.items, key, itemVar.level, itemVar.libelleParent);
                                         console.warn("resultCalcul > ", resultCalcul)
@@ -1590,11 +1594,11 @@ export class RubriquesComponent implements OnInit {
                                     if (itemParent.type != 'DC' && ((key.includes("montant_initial") && (item.persistenceId == null || item.persistenceId == 0 || item.persistenceId == '')) || key.includes("montant_final")))
                                         item.collumnsDisabled[key] = false;
 
-                                    this.tableRubriquesAR.items[indexVar] = itemParent;
+                                    this.tableRubriquesAR().items[indexVar] = itemParent;
                                 }
                                 else {
                                     if (key.includes(dev.devise)) {
-                                        indexVar = this.getIndexRubrique(this.tableRubriques.items, libelleParent);
+                                        indexVar = this.getIndexRubrique(this.tableRubriques().items, libelleParent);
                                         if (app.convertStringToFloat(item[key]) == 0.0) {
                                             var resultCalcul = this.getSommeMontantsByLevel(typeTableRubriques.items, key, itemVar.level, itemVar.libelleParent);
                                             itemParent[key] = app.formatNumberWithDecimals(resultCalcul);
@@ -1605,7 +1609,7 @@ export class RubriquesComponent implements OnInit {
                                         if (itemParent.type != 'DC' && !this.haveChildren(this.rubriques, itemParent.libelle) && ((key.includes("montant_initial") && (item.persistenceId == null || item.persistenceId == 0 || item.persistenceId == '')) || key.includes("montant_final")))
                                             itemParent.collumnsDisabled[key] = false;
 
-                                        this.tableRubriques.items[indexVar] = itemParent;
+                                        this.tableRubriques().items[indexVar] = itemParent;
                                     }
                                 }
                             }
@@ -1803,12 +1807,12 @@ export class RubriquesComponent implements OnInit {
             }
 
             //mettre a jour la ligne dans la tableau
-            var index = app.getIndexElementInArrayByValue((this.isAvanceRemboursable ? this.tableRubriquesAR.items : this.tableRubriques.items), "libelle", itemVar.libelle, false);
+            var index = app.getIndexElementInArrayByValue((this.isAvanceRemboursable ? this.tableRubriquesAR().items : this.tableRubriques().items), "libelle", itemVar.libelle, false);
 
             if (!this.isAvanceRemboursable)
-                this.tableRubriques.items[index] = itemVar;
+                this.tableRubriques().items[index] = itemVar;
             else
-                this.tableRubriquesAR.items[index] = itemVar;
+                this.tableRubriquesAR().items[index] = itemVar;
 
             libelle = itemVar.libelleParent;
             itemVar = itemParent;
@@ -1894,21 +1898,21 @@ export class RubriquesComponent implements OnInit {
 
             //METTRE A JOUR LE RAV de la ligne concernee
             if (!this.isAvanceRemboursable) {
-                var index = app.getIndexElementInArrayByValue(this.tableRubriques.items, "libelle", item.libelle, false);
+                var index = app.getIndexElementInArrayByValue(this.tableRubriques().items, "libelle", item.libelle, false);
 
-                this.tableRubriques.items[index]["montant_enregistre_" + devise] = app.formatNumberWithDecimals((app.convertStringToFloat(this.tableRubriques.items[index]["montant_enregistre_initial_" + devise]) - app.convertStringToFloat(this.tableRubriques.items[index]["montant_ventile_initial_" + devise])) + app.convertStringToFloat(this.tableRubriques.items[index][columnCurrent]));
+                this.tableRubriques().items[index]["montant_enregistre_" + devise] = app.formatNumberWithDecimals((app.convertStringToFloat(this.tableRubriques().items[index]["montant_enregistre_initial_" + devise]) - app.convertStringToFloat(this.tableRubriques().items[index]["montant_ventile_initial_" + devise])) + app.convertStringToFloat(this.tableRubriques().items[index][columnCurrent]));
 
-                this.tableRubriques.items[index]["montant_reste_a_verser_" + devise] = (!this.isJustificatifRemboursment) ? app.formatNumberWithDecimals(app.convertStringToFloat(item["montant_final_" + devise]) - app.convertStringToFloat(item["montant_enregistre_" + devise])) : app.formatNumberWithDecimals(app.convertStringToFloat(item["montant_reste_a_verser_" + devise]) + app.convertStringToFloat(item["montant_a_rembourser_justificatif_" + devise]));
+                this.tableRubriques().items[index]["montant_reste_a_verser_" + devise] = (!this.isJustificatifRemboursment()) ? app.formatNumberWithDecimals(app.convertStringToFloat(item["montant_final_" + devise]) - app.convertStringToFloat(item["montant_enregistre_" + devise])) : app.formatNumberWithDecimals(app.convertStringToFloat(item["montant_reste_a_verser_" + devise]) + app.convertStringToFloat(item["montant_a_rembourser_justificatif_" + devise]));
             }
             else {
-                var index = app.getIndexElementInArrayByValue(this.tableRubriquesAR.items, "libelle", item.libelle, false);
+                var index = app.getIndexElementInArrayByValue(this.tableRubriquesAR().items, "libelle", item.libelle, false);
                 // if ((this.tableRubriquesAR.items[index].libelle != "Avance remboursable")) {
                 // if (!this.isJustificatifRemboursment)
                 // 	this.tableRubriquesAR.items[index]["montant_reste_a_verser"] = (app.convertStringToFloat(item["montant_final"]) != app.convertStringToFloat(item["montant_ventile"])) ? app.convertStringToFloat(this.tableRubriquesAR.items[index]["montant_reste_a_verser"]) - app.convertStringToFloat(item["montant_ventile"]) : app.convertStringToFloat(item["montant_final"]) - app.convertStringToFloat(item["montant_ventile"]);
                 // else
                 // 	app.convertStringToFloat(item["montant_reste_a_verser"]);
                 // var montant = app.convertStringToFloat(item["montant_reste_a_verser"]);
-                this.tableRubriquesAR.items[index]["montant_reste_a_verser"] = app.formatNumberWithDecimals((!this.isJustificatifRemboursment) ? ((app.convertStringToFloat(item["montant_final"]) != app.convertStringToFloat(item["montant_ventile"]) && app.convertStringToFloat(item["montant_reste_a_verser_fixe"]) != 0) ? app.convertStringToFloat(item["montant_reste_a_verser_fixe"]) : app.convertStringToFloat(item["montant_final"])) - app.convertStringToFloat(item["montant_ventile"]) : app.convertStringToFloat(item["montant_reste_a_verser"]));
+                this.tableRubriquesAR().items[index]["montant_reste_a_verser"] = app.formatNumberWithDecimals((!this.isJustificatifRemboursment()) ? ((app.convertStringToFloat(item["montant_final"]) != app.convertStringToFloat(item["montant_ventile"]) && app.convertStringToFloat(item["montant_reste_a_verser_fixe"]) != 0) ? app.convertStringToFloat(item["montant_reste_a_verser_fixe"]) : app.convertStringToFloat(item["montant_final"])) - app.convertStringToFloat(item["montant_ventile"]) : app.convertStringToFloat(item["montant_reste_a_verser"]));
                 // } 
                 // 	else
                 // this.tableRubriquesAR.items[index]["montant_reste_a_verser"] = '-';
@@ -1938,20 +1942,22 @@ export class RubriquesComponent implements OnInit {
             var resultSommeMontantVentileByLevel = this.getSommeMontantsByLevel(typeRubriques, columnChange, itemVar.level, itemVar.libelleParent);
             var column = "montant_enregistre_" + devise;
 
-            var indexVar = (!this.isAvanceRemboursable) ? app.getIndexElementInArrayByValue(this.tableRubriques.items, "libelle", itemVar.libelleParent, false) : app.getIndexElementInArrayByValue(this.tableRubriquesAR.items, "libelle", itemVar.libelleParent, false);
+            var indexVar = (!this.isAvanceRemboursable) ? app.getIndexElementInArrayByValue(this.tableRubriques().items, "libelle", itemVar.libelleParent, false) : app.getIndexElementInArrayByValue(this.tableRubriquesAR().items, "libelle", itemVar.libelleParent, false);
 
             if (this.isAvanceRemboursable) { //pour le parent DC
-                this.tableRubriquesAR.items[indexVar][columnChange] = app.formatNumberWithDecimals(resultSommeMontantVentileByLevel);
-                this.tableRubriquesAR.items[indexVar]["montant_reste_a_verser"] = app.formatNumberWithDecimals((!this.isJustificatifRemboursment) ? ((app.convertStringToFloat(this.tableRubriquesAR.items[indexVar]["montant_final"]) != app.convertStringToFloat(this.tableRubriquesAR.items[indexVar]["montant_ventile"]) && app.convertStringToFloat(this.tableRubriquesAR.items[indexVar]["montant_reste_a_verser_fixe"]) != 0) ? app.convertStringToFloat(this.tableRubriquesAR.items[indexVar]["montant_reste_a_verser_fixe"]) : app.convertStringToFloat(this.tableRubriquesAR.items[indexVar]["montant_final"])) - app.convertStringToFloat(this.tableRubriquesAR.items[indexVar]["montant_ventile"]) : app.convertStringToFloat(this.tableRubriquesAR.items[indexVar]["montant_reste_a_verser"]));
+                const tableRubriquesAR = this.tableRubriquesAR();
+                tableRubriquesAR.items[indexVar][columnChange] = app.formatNumberWithDecimals(resultSommeMontantVentileByLevel);
+                tableRubriquesAR.items[indexVar]["montant_reste_a_verser"] = app.formatNumberWithDecimals((!this.isJustificatifRemboursment()) ? ((app.convertStringToFloat(tableRubriquesAR.items[indexVar]["montant_final"]) != app.convertStringToFloat(tableRubriquesAR.items[indexVar]["montant_ventile"]) && app.convertStringToFloat(tableRubriquesAR.items[indexVar]["montant_reste_a_verser_fixe"]) != 0) ? app.convertStringToFloat(tableRubriquesAR.items[indexVar]["montant_reste_a_verser_fixe"]) : app.convertStringToFloat(tableRubriquesAR.items[indexVar]["montant_final"])) - app.convertStringToFloat(tableRubriquesAR.items[indexVar]["montant_ventile"]) : app.convertStringToFloat(tableRubriquesAR.items[indexVar]["montant_reste_a_verser"]));
                 // this.tableRubriquesAR.items[indexVar]["montant_reste_a_verser"] = (!this.isJustificatifRemboursment) ? app.formatNumberWithDecimals(app.convertStringToFloat(this.tableRubriquesAR.items[indexVar]["montant_final"]) - app.convertStringToFloat(resultSommeMontantVentileByLevel)) : app.formatNumberWithDecimals(app.convertStringToFloat(this.tableRubriquesAR.items[indexVar]["montant_reste_a_verser"]));
-                this.tableRubriquesAR.items[indexVar]["montant_ventile"] = this.getSommeMontantVentileByLevel(typeRubriques, columnChange, itemVar.level, itemVar.libelleParent);
+                tableRubriquesAR.items[indexVar]["montant_ventile"] = this.getSommeMontantVentileByLevel(typeRubriques, columnChange, itemVar.level, itemVar.libelleParent);
             }
             else {
                 var resultSommeMontantEnregistreByLevel = this.getSommeMontantsByLevel(this.rubriques, column, itemVar.level, itemVar.libelleParent);
 
-                this.tableRubriques.items[indexVar][columnChange] = app.formatNumberWithDecimals(resultSommeMontantVentileByLevel);
-                this.tableRubriques.items[indexVar]["montant_enregistre_" + devise] = app.formatNumberWithDecimals(resultSommeMontantEnregistreByLevel);
-                this.tableRubriques.items[indexVar]["montant_reste_a_verser_" + devise] = app.formatNumberWithDecimals(app.convertStringToFloat(this.tableRubriques.items[indexVar]["montant_final_" + devise]) - app.convertStringToFloat(resultSommeMontantEnregistreByLevel));
+                const tableRubriques = this.tableRubriques();
+                tableRubriques.items[indexVar][columnChange] = app.formatNumberWithDecimals(resultSommeMontantVentileByLevel);
+                tableRubriques.items[indexVar]["montant_enregistre_" + devise] = app.formatNumberWithDecimals(resultSommeMontantEnregistreByLevel);
+                tableRubriques.items[indexVar]["montant_reste_a_verser_" + devise] = app.formatNumberWithDecimals(app.convertStringToFloat(tableRubriques.items[indexVar]["montant_final_" + devise]) - app.convertStringToFloat(resultSommeMontantEnregistreByLevel));
             }
             libelleParent = itemParent.libelleParent;
             itemVar = itemParent;
@@ -1985,7 +1991,7 @@ export class RubriquesComponent implements OnInit {
 
             await app.sleep(1000);
 
-            this.tableRubriquesAR.getItems();
+            this.tableRubriquesAR().getItems();
         }
         else {
             var indeElt = this.getIndexRubriqueDeleted(this.rubriques, this.rubriqueDeleted);
@@ -2002,9 +2008,9 @@ export class RubriquesComponent implements OnInit {
 
             await app.sleep(1000);
 
-            this.tableRubriques.getItems();
+            this.tableRubriques().getItems();
         }
-        this.modalDeleteRubrique.setLoadingBtn();
+        this.modalDeleteRubrique().setLoadingBtn();
         app.hideModal('modalConfirmSuppressionRubrique');
     }
 
@@ -2331,7 +2337,7 @@ export class RubriquesComponent implements OnInit {
         return result;
     }
     async checkRubriqueVentile(id: any) {
-        if (!this.isJustificatifRemboursment) {
+        if (!this.isJustificatifRemboursment()) {
             var result = await app.getExternalData(app.getUrl('urlGetMontantJustificatifRubriqueById', id), 'page-checkRubriqueVentile > checkRubriqueVentile', true);
             if (app.isEmpty(result))
                 return false;
@@ -2364,9 +2370,10 @@ export class RubriquesComponent implements OnInit {
                 if (!rubriquesResult[index].deleted) {
                     for (var key of Object.keys(rubriquesResult[index])) {
                         if (key.includes("montant")) {
-                            if (this.verifRubrique(rubriquesResult[index], key) || (this.readOnly && rubriquesResult[index][key] != '-')) {
+                            const readOnly = this.readOnly();
+                            if (this.verifRubrique(rubriquesResult[index], key) || (readOnly && rubriquesResult[index][key] != '-')) {
                                 rubriquesResult[index][key] = app.formatNumberWithDecimals(app.isEmpty(rubriquesResult[index][key]) ? '0' : app.convertStringToFloat(rubriquesResult[index][key]));
-                            } else if (!this.readOnly)
+                            } else if (!readOnly)
                                 rubriquesResult[index][key] = '';
                         }
                     }

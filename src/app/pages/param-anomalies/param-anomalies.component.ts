@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, viewChild } from '@angular/core';
 import { StoreService } from '../../services/store.service';
 import { ModalComponent  } from '../../components/modal/modal.component';
 import { TableComponent   } from '../../components/table/table.component';
@@ -18,9 +18,9 @@ declare const appFormio: any;
 })
 export class ParamAnomaliesComponent implements OnInit {
 
-	@ViewChild('tableParamAnomalies') tableParamAnomalies!: TableComponent;
-	@ViewChild('modalAnomalie') modalAnomalie!: ModalComponent;
-	@ViewChild('modalConfirmationAnomalie') modalConfirmationAnomalie!: ModalComponent;
+	readonly tableParamAnomalies = viewChild.required<TableComponent>('tableParamAnomalies');
+	readonly modalAnomalie = viewChild.required<ModalComponent>('modalAnomalie');
+	readonly modalConfirmationAnomalie = viewChild.required<ModalComponent>('modalConfirmationAnomalie');
 
 	app: any = app;
 	lang: any = lang;
@@ -59,7 +59,7 @@ export class ParamAnomaliesComponent implements OnInit {
 
 		await app.sleep(150);
 
-		this.tableParamAnomalies.getItems();
+		this.tableParamAnomalies().getItems();
 	}
 
 	async addAnomalie() {
@@ -75,7 +75,7 @@ export class ParamAnomaliesComponent implements OnInit {
 
 		await app.sleep(100);
 
-		this.modalAnomalie.setLoadingBtn();
+		this.modalAnomalie().setLoadingBtn();
 
 		app.showModal('modalAnomalie');
 	}
@@ -94,7 +94,7 @@ export class ParamAnomaliesComponent implements OnInit {
 
 		await app.sleep(100);
 
-		this.modalAnomalie.setLoadingBtn();
+		this.modalAnomalie().setLoadingBtn();
 
 		app.showModal('modalAnomalie');
 	}
@@ -133,13 +133,13 @@ export class ParamAnomaliesComponent implements OnInit {
 		if (!this.hasNoRight) {
 			if (!app.isValidForm('formio_typeAnomalie')) {
 				app.showToast('toastTypeAnomalieSaveError');
-				this.modalAnomalie.setLoadingBtn();
+				this.modalAnomalie().setLoadingBtn();
 				return;
 			}
 
 			if (this.create) {
-				this.modalAnomalie.setLoadingBtn();
-				this.modalConfirmationAnomalie.setLoadingBtn();
+				this.modalAnomalie().setLoadingBtn();
+				this.modalConfirmationAnomalie().setLoadingBtn();
 				app.showModal('modalConfirmationAnomalie');
 			} else
 				this.saveAnomalie();
@@ -159,25 +159,27 @@ export class ParamAnomaliesComponent implements OnInit {
 	}
 
 	filterAnomaliesBy(type: any, value: any) {
-		this.tableParamAnomalies.filters[type] = value;
-		this.tableParamAnomalies.resetPage();
-		this.tableParamAnomalies.filterItems();
-		this.tableParamAnomalies.sortByDefault();
+		const tableParamAnomalies = this.tableParamAnomalies();
+  tableParamAnomalies.filters[type] = value;
+		tableParamAnomalies.resetPage();
+		tableParamAnomalies.filterItems();
+		tableParamAnomalies.sortByDefault();
 	}
 
 	filterAnomaliesSelected(type: any, value: any) {
-		return (this.tableParamAnomalies.filters[type] == value);
+		return (this.tableParamAnomalies().filters[type] == value);
 	}
 
 	filterAnomaliesAllSelected() {
-		return (this.tableParamAnomalies.filters['statutActif'] == '');
+		return (this.tableParamAnomalies().filters['statutActif'] == '');
 	}
 
 	filterAnomaliesReset() {
-		this.tableParamAnomalies.filters['statutActif'] = '';
-		this.tableParamAnomalies.resetPage();
-		this.tableParamAnomalies.filterItems();
-		this.tableParamAnomalies.sortByDefault();
+		const tableParamAnomalies = this.tableParamAnomalies();
+  tableParamAnomalies.filters['statutActif'] = '';
+		tableParamAnomalies.resetPage();
+		tableParamAnomalies.filterItems();
+		tableParamAnomalies.sortByDefault();
 	}
 	
 	enableToEdit() {

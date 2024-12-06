@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, viewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { StoreService } from '../../services/store.service';
 import { TableComponent } from '../../components/table/table.component';
@@ -17,7 +17,7 @@ declare const lang: any;
 })
 export class TachesComponent implements OnInit {
 
-	@ViewChild('tableTaches') tableTaches!: TableComponent;
+	readonly tableTaches = viewChild.required<TableComponent>('tableTaches');
 
 	lang: any = lang;
 	taches: any = [];
@@ -48,11 +48,11 @@ export class TachesComponent implements OnInit {
 	ngAfterViewInit() {
 		this.getTaches();
 
-		this.tableTaches.filterItemsBy('userTask', 'true');
+		this.tableTaches().filterItemsBy('userTask', 'true');
 	}
 
 	async getTaches() {
-		this.tableTaches.setLoading(true);
+		this.tableTaches().setLoading(true);
 
 		var tachesBdd = await app.getExternalData(app.getUrl('urlGetTaches', this.store.getUserId()), 'page-taches > getTaches');
 
@@ -97,7 +97,7 @@ export class TachesComponent implements OnInit {
 
 		await app.sleep(150);
 
-		this.tableTaches.getItems();
+		this.tableTaches().getItems();
 	}
 
 	async gotoTache(tache: any) {
@@ -120,28 +120,32 @@ export class TachesComponent implements OnInit {
 	}
 
 	filterItemsBy(type: any, value: any) {
-		if (this.tableTaches.filters[type] == value)
-			this.tableTaches.filters[type] = '';
+		const tableTaches = this.tableTaches();
+  if (tableTaches.filters[type] == value)
+			tableTaches.filters[type] = '';
 		else
-			this.tableTaches.filters[type] = value;
+			tableTaches.filters[type] = value;
 
-		this.tableTaches.resetPage();
-		this.tableTaches.filterItems();
-		this.tableTaches.sortByDefault();
+		tableTaches.resetPage();
+		tableTaches.filterItems();
+		tableTaches.sortByDefault();
 	}
 
 	filterItemsSelected(type: any, value: any) {
-		return (this.tableTaches && this.tableTaches.filters[type] == value);
+		const tableTaches = this.tableTaches();
+  return (tableTaches && tableTaches.filters[type] == value);
 	}
 
 	filterItemsAllSelected() {
-		return (this.tableTaches && this.tableTaches.filters['descStatut'] == '');
+		const tableTaches = this.tableTaches();
+  return (tableTaches && tableTaches.filters['descStatut'] == '');
 	}
 	
 	filterItemsReset() {
-		this.tableTaches.filters['descStatut'] = '';
-		this.tableTaches.resetPage();
-		this.tableTaches.filterItems();
-		this.tableTaches.sortByDefault();
+		const tableTaches = this.tableTaches();
+  tableTaches.filters['descStatut'] = '';
+		tableTaches.resetPage();
+		tableTaches.filterItems();
+		tableTaches.sortByDefault();
 	}
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, input } from '@angular/core';
 import { Router } from '@angular/router';
 import { StoreService } from '../../services/store.service';
 import { NgIf, NgFor } from '@angular/common';
@@ -23,8 +23,8 @@ export class InfosDcComponent implements OnInit {
     lang: any = lang;
     reglementEnCours: any;
 
-    @Input() showLinkDc: boolean = false;
-    @Input() versement: any;
+    readonly showLinkDc = input<boolean>(false);
+    readonly versement = input<any>();
 
     constructor(private router: Router, public store: StoreService) { }
 
@@ -44,7 +44,7 @@ export class InfosDcComponent implements OnInit {
 			deviseDDREnCours = deviseDDREnCours;
 			montantDDREnCours = montantDDREnCours;
 
-			if (this.reglementEnCours != null && this.showLinkDc) {
+			if (this.reglementEnCours != null && this.showLinkDc()) {
 				idDDREnCours = this.reglementEnCours.persistenceId;
 				statutDDREnCours = this.reglementEnCours.code_statut_dossier;
 			}
@@ -64,7 +64,7 @@ export class InfosDcComponent implements OnInit {
         if(this.reglementEnCours != null)
             app.setStorageItem('idReglement', this.reglementEnCours.persistenceId);
         else
-			app.setStorageItem('idVersement', this.versement.persistenceId);
+			app.setStorageItem('idVersement', this.versement().persistenceId);
 
         app.redirect(this.router, app.getUrl('urlGoToDocumentContractuel', this.documentContractuel.persistenceId));
     }

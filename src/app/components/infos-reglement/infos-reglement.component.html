@@ -187,7 +187,7 @@
     <app-infos-beneficiaire #infosBeneficiaireReglement [objectParentRepris]="ddrReprise"></app-infos-beneficiaire>
 </app-teleport>
 <app-teleport #teleportDetailAvanceContractuel to=".teleport-avance">
-    <app-infos-avance [displayButtonAvance]="!showButtonGetAvance" [enableCollapse]="false" [role]="role" #infosAvance></app-infos-avance>
+    <app-infos-avance [displayButtonAvance]="!showButtonGetAvance" [enableCollapse]="false" [role]="role()" #infosAvance></app-infos-avance>
 </app-teleport>
 <app-teleport #teleportBeneficiairePrimaire to=".teleport-beneficiaire-primaire">
     <app-infos-beneficiaire #beneficiairePrimaire [showTiersUsedByConcours]="false" [objectParentRepris]="ddrReprise"></app-infos-beneficiaire>

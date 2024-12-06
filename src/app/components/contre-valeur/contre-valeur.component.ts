@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, input, output } from '@angular/core';
 import { NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -13,12 +13,12 @@ declare const lang: any;
 })
 
 export class ContreValeurComponent implements OnInit {
-	@Input() contrevaleurVisible: boolean = false;
-	@Input() contrevaleurDevise: any = '';
-	@Input() contrevaleurMontant: any = null;
-	@Input() contrevaleurDate: any = null;
-	@Input() ref: any;
-	@Input() isFormio: boolean = false;
+	readonly contrevaleurVisible = input<boolean>(false);
+	readonly contrevaleurDevise = input<any>('');
+	readonly contrevaleurMontant = input<any>(null);
+	readonly contrevaleurDate = input<any>(null);
+	readonly ref = input<any>();
+	readonly isFormio = input<boolean>(false);
 
 	changeCssContrevaleur: boolean = false;
 	contrevaleurMontantRender: any;
@@ -28,7 +28,7 @@ export class ContreValeurComponent implements OnInit {
 	devise: any;
 	lang: any = lang;
 
-	@Output() displayToast = new EventEmitter();
+	readonly displayToast = output();
 
 	constructor() { }
 
@@ -97,10 +97,13 @@ export class ContreValeurComponent implements OnInit {
 		}
 		this.contrevaleurVisible = result;
 
-		var contrevaleurResult = {
-			'contrevaleurDevise': (this.contrevaleurDevise == null ? '' : this.contrevaleurDevise),
-			'contrevaleurMontant': (this.contrevaleurMontant == null ? null : this.contrevaleurMontant),
-			'contrevaleurDate': (this.contrevaleurDate == null ? null : this.contrevaleurDate),
+		const contrevaleurDevise = this.contrevaleurDevise();
+  const contrevaleurMontant = this.contrevaleurMontant();
+  const contrevaleurDate = this.contrevaleurDate();
+  var contrevaleurResult = {
+			'contrevaleurDevise': (contrevaleurDevise == null ? '' : contrevaleurDevise),
+			'contrevaleurMontant': (contrevaleurMontant == null ? null : contrevaleurMontant),
+			'contrevaleurDate': (contrevaleurDate == null ? null : contrevaleurDate),
 			'responseCtx': responseCtx,
 			'displayToast': displayToast
 		};
@@ -112,12 +115,14 @@ export class ContreValeurComponent implements OnInit {
 	}
 
 	renderContrevaleur() {
-		if (!app.isEmpty(this.contrevaleurMontant))
-			this.contrevaleurMontantRender = app.formatNumberWithDecimals(this.contrevaleurMontant);
+		const contrevaleurMontant = this.contrevaleurMontant();
+  if (!app.isEmpty(contrevaleurMontant))
+			this.contrevaleurMontantRender = app.formatNumberWithDecimals(contrevaleurMontant);
 		else
 			this.contrevaleurMontantRender = null;
 
-		if (!app.isEmpty(this.contrevaleurDate))
-			this.contrevaleurDateRender = app.formatDate(this.contrevaleurDate);
+		const contrevaleurDate = this.contrevaleurDate();
+  if (!app.isEmpty(contrevaleurDate))
+			this.contrevaleurDateRender = app.formatDate(contrevaleurDate);
 	}
 }

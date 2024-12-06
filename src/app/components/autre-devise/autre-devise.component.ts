@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, OnInit, input, viewChildren } from '@angular/core';
 import { ContreValeurComponent  } from '../contre-valeur/contre-valeur.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -15,7 +15,7 @@ declare const crossVars: any;
 })
 
 export class AutreDeviseComponent implements OnInit {
-	@ViewChildren(ContreValeurComponent) contrevaleurs!: QueryList<ContreValeurComponent>;
+	readonly contrevaleurs = viewChildren(ContreValeurComponent);
 
 	lang: any = lang;
 	app: any = app;
@@ -24,14 +24,14 @@ export class AutreDeviseComponent implements OnInit {
 	checkAtrDevise: boolean = false;
 	displayIfValidate: boolean = false;
 
-	@Input() autresDevises: any;
-	@Input() filteredDevises: any;
-	@Input() read: boolean;
-	@Input() checkDuplicate: boolean;
-	@Input() isInsideModal: boolean = false;
-	@Input() parentObject: any = null;
-	@Input() typeObject: any = '';
-	@Input() maxDevises: any = 4;
+	readonly autresDevises = input<any>();
+	readonly filteredDevises = input<any>();
+	readonly read = input<boolean>();
+	readonly checkDuplicate = input<boolean>();
+	readonly isInsideModal = input<boolean>(false);
+	readonly parentObject = input<any>(null);
+	readonly typeObject = input<any>('');
+	readonly maxDevises = input<any>(4);
 
 	constructor() {
 		this.autresDevises = [];
@@ -45,7 +45,7 @@ export class AutreDeviseComponent implements OnInit {
 	}
 
 	addAutreDevise() {
-		this.autresDevises.push({
+		this.autresDevises().push({
 			montant: '',
 			devise: ''
 		});
@@ -53,13 +53,13 @@ export class AutreDeviseComponent implements OnInit {
 
 	async deleteAutreDevise(item: any) {
 		var index = -1;
-		for (var i = 0; i < this.autresDevises.length; i++)
-			if (item == this.autresDevises[i])
+		for (var i = 0; i < this.autresDevises().length; i++)
+			if (item == this.autresDevises()[i])
 				index = i;
 		if (index != -1)
-			this.autresDevises.splice(index, 1);
+			this.autresDevises().splice(index, 1);
 
-		if (this.typeObject == "DC") {
+		if (this.typeObject() == "DC") {
 			var checkDevise = this.checkDuplicateDevises(item);
 			app.getCurrentCmp('documentContractuel').getRubriques(item, checkDevise);
 		}
@@ -68,8 +68,8 @@ export class AutreDeviseComponent implements OnInit {
 	checkAutresDevises() {
 		this.checkAtrDevise = true;
 
-		for (var autreDevise of this.autresDevises) {
-			if (app.isEmpty(autreDevise.montant) || app.isEmpty(autreDevise.devise) || (this.checkDuplicate && this.checkDuplicateDevises(autreDevise)) || !this.checkAutreDeviseUsedByChildObject(autreDevise, true)) {
+		for (var autreDevise of this.autresDevises()) {
+			if (app.isEmpty(autreDevise.montant) || app.isEmpty(autreDevise.devise) || (this.checkDuplicate() && this.checkDuplicateDevises(autreDevise)) || !this.checkAutreDeviseUsedByChildObject(autreDevise, true)) {
 				this.displayIfValidate = true;
 				return false;
 			} else
@@ -80,24 +80,26 @@ export class AutreDeviseComponent implements OnInit {
 	}
 
 	loadFilteredDevises() {
-		if (this.filteredDevises == null || this.filteredDevises.length == 0)
+		const filteredDevises = this.filteredDevises();
+  if (filteredDevises == null || filteredDevises.length == 0)
 			this.devises = app.getStorageItem('refDevises');
 		else
-			this.devises = this.filteredDevises;
+			this.devises = filteredDevises;
 	}
 
 	checkDuplicateDevises(paramAutreDevise: any) {
 		var listDevises: any = [];
 		var devisePrincipale = '';
 
-		if (this.typeObject == "DV")
+		const typeObject = this.typeObject();
+  if (typeObject == "DV")
 			devisePrincipale = appFormio.getDataValue(crossVars.forms['formio_versementAFD'], 'devise');
-		else if (this.typeObject == "DC")
+		else if (typeObject == "DC")
 			devisePrincipale = appFormio.getDataValue(crossVars.forms['formio_documentContractuel'], 'devise_afd');
 
 		listDevises.push(devisePrincipale);
 
-		for (var autreDevise of this.autresDevises)
+		for (var autreDevise of this.autresDevises())
 			if (!app.isEmpty(autreDevise.devise))
 				listDevises.push(autreDevise.devise);
 
@@ -118,15 +120,15 @@ export class AutreDeviseComponent implements OnInit {
 	}
 
 	checkAutreDeviseUsedByChildObject(currentItem: any, isAmount: any) {
-		if (this.typeObject == "DV") {
-			this.checkAtrDevise = app.checkAutreDeviseUsedByDDR(this.parentObject, currentItem, isAmount);
+		if (this.typeObject() == "DV") {
+			this.checkAtrDevise = app.checkAutreDeviseUsedByDDR(this.parentObject(), currentItem, isAmount);
 			return this.checkAtrDevise;
 		}
 		return true;
 	}
 
 	async updateContrevaleur(autreDevise?: any, index?: any, isDevise?: any) {
-		if (this.typeObject == "DC" && isDevise) {
+		if (this.typeObject() == "DC" && isDevise) {
 			var checkDevise = this.checkDuplicateDevises(autreDevise);
 			app.getCurrentCmp('documentContractuel').getRubriques(autreDevise, checkDevise);
 		}
@@ -134,9 +136,9 @@ export class AutreDeviseComponent implements OnInit {
 	}
 
 	async getContrevaleur(update?: any, autreDevise?: any, index?: any) {
-		for (var contrevaleur of this.contrevaleurs) {
-			if (contrevaleur.ref == 'contrevaleur-' + index) {
-				var contrevaleurResult = await contrevaleur.getContrevaleur(update, autreDevise.montant, autreDevise.devise, this.parentObject);
+		for (var contrevaleur of this.contrevaleurs()) {
+			if (contrevaleur.ref() == 'contrevaleur-' + index) {
+				var contrevaleurResult = await contrevaleur.getContrevaleur(update, autreDevise.montant, autreDevise.devise, this.parentObject());
 
 				autreDevise.montant_contrevaleur = contrevaleurResult.contrevaleurMontant;
 				autreDevise.devise_contrevaleur = contrevaleurResult.contrevaleurDevise;
